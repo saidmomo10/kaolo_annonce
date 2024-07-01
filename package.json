@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --output public",
     "vercel-build": "vite build",
     "deploy": "vercel --prod",
     "preview": "vite preview",
