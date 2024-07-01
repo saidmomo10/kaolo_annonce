@@ -1,11 +1,11 @@
-<!-- <template>
-    <div>
+<template>
+    <!-- <div>
       <input @change="handleFileChange" ref="fileInput" type="file" class="d-none">
       <img @click="openFileInput" src="../assets/images/clients/client1.svg" alt="">
-    </div>
+    </div> -->
   </template>
   
-  <script setup lang="ts"> -->
+  <script setup lang="ts">
   // import { ref } from 'vue';
   
   // export default {
