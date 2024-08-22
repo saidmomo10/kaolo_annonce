@@ -115,7 +115,7 @@ async function sub(){
  -->
 
 
- <template>
+ <!-- <template>
     <lightgallery
       :settings="{ speed: 500, plugins: plugins }"
       @lgInit="onInit"
@@ -150,60 +150,105 @@ async function sub(){
   const onBeforeSlide = () => {
     console.log('calling before slide');
   };
-  </script>
+  </script> -->
   
   <style scoped>
   /* Add any custom styles here */
   </style>
   
 
-  
+<template>
+    <form @submit.prevent="submitForm" enctype="multipart/form-data" action="" >
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Add Title*</label>
+                    <input name="title" type="text" placeholder="Enter Title" v-model="name">
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="upload-input">
+                    <input type="file" id="upload" name="icone" multiple @change="onFileChange">
+                    <label for="upload" class="text-center content">
+                        <span class="text">
+                            <span class="d-block mb-15">Drop files anywhere
+                                to Upload</span>
+                            <span class=" mb-15 plus-icon"><i
+                                    class="lni lni-plus"></i></span>
+                            <span class="main-btn d-block btn-hover">Select
+                                File</span>
+                            <span class="d-block">Maximum upload file size
+                                10Mb</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label>Category*</label>
+                    <div class="selector-head">
+                        <span class="arrow"><i class="lni lni-chevron-down"></i></span>
+                        <select class="user-chosen-select" v-model="category_id">
+                            <option value="none">Select a Category</option>
+
+                            <option v-for = "category in category" :key="category.id" :value="`${category.id}`">{{ category.name }}</option>
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button">
+            <button class="btn">Registration</button>
+        </div>
+    </form>
+ </template>
 
 
 
-<!-- <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import useCategories from '../components/composables/categoriesApi'
+<script setup lang="ts">
+    import { ref, onMounted } from 'vue';
+    import axios from 'axios';
+    import { useCategories } from '../../components/composables/categoriesApi'
 
-const{cat, category} = useCategories()
-onMounted(cat)
+    const{cat, category} = useCategories()
+    onMounted(cat)
 
-const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
 
-const clientHttp = axios.create(
-    {
-        baseURL: "http://localhost:8000/api/",
-        headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
+    const clientHttp = axios.create(
+        {
+            baseURL: "http://localhost:8000/api/",
+            headers: {
+                Accept: "application/json",
+                Authorization: `Bearer ${token}`,
+            }
         }
-    }
-)
+    )
 
-const name = ref('');
-const category_id = ref('');
-const icone = ref<File | null>(null);
+    const name = ref('');
+    const category_id = ref('');
+    const icone = ref<File | null>(null);
 
-// Méthode pour envoyer les données du formulaire
-const submitForm = async () => {
-//   if (!icone.value) {
-//     errorMessage.value = "Veuillez sélectionner une image.";
-//     return;
-//   }
+    // Méthode pour envoyer les données du formulaire
+    const submitForm = async () => {
+        //   if (!icone.value) {
+        //     errorMessage.value = "Veuillez sélectionner une image.";
+        //     return;
+        //   }
 
-  const formData = new FormData();
-  formData.append('name', name.value);
-  formData.append('category_id', category_id.value);
-  formData.append('icone', icone.value);
+        const formData = new FormData();
+        formData.append('name', name.value);
+        formData.append('category_id', category_id.value);
+        formData.append('icone', icone.value);
 
-  try {
+        try {
             const user = await clientHttp.post('subcategories', formData,{
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          }
-          });
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                }
+            });
             console.log(user);
             // router.replace('/');
             // toast.success(user.data)
@@ -215,16 +260,16 @@ const submitForm = async () => {
             // });
                 console.log(error);
         }
-};
+    };
 
-// Méthode pour gérer le changement de fichier
-const onFileChange = (event: Event) => {
-  const files = (event.target as HTMLInputElement).files;
-  if (files && files.length > 0) {
-    icone.value = files[0];
-  }
-};
-</script> -->
+    // Méthode pour gérer le changement de fichier
+    const onFileChange = (event: Event) => {
+        const files = (event.target as HTMLInputElement).files;
+        if (files && files.length > 0) {
+            icone.value = files[0];
+        }
+    }
+</script>
 
 
 
