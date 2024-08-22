@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "vercel-build": "vue-cli-service serve",
+    "dev": "vite",
+    "build": "vite build",
+    "vercel-build": "vite build",
     "deploy": "vercel --prod",
     "preview": "vite preview",
     "build-only": "vite build",
