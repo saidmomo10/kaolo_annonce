@@ -11,13 +11,13 @@ export default defineConfig({
     rollupOptions: {
       // Assurez-vous que l'entrée est le fichier HTML
       input: {
-        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        main: fileURLToPath(new URL('/index.html', import.meta.url)),
       },
     },
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('/src', import.meta.url))
     }
   }
 })
