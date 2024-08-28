@@ -71,7 +71,7 @@ categoryStore.getAdsCategories()
  const getImageUrl = (icone: string) =>{
     // Implémentez votre fonction getImageUrl ici
     // Par exemple, si les images ont des chemins relatifs, vous pouvez les préfixer avec une URL de base
-    return `http://localhost:8000/storage/${icone}`;
+    return `https://classifieds-app-back.onrender.com/storage/${icone}`;
 }
 
 // const getImageUrl = (images: string) => {
