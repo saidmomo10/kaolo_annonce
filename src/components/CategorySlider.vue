@@ -19,7 +19,7 @@
   const categories = ref<any[]>([]);
   
   const clientHttp = axios.create({
-    baseURL: 'http://localhost:8000/api/',
+    baseURL: 'https://classifieds-app-back.onrender.com/api/',
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@
   };
   
   const getImageUrl = (icone: string) => {
-    return `http://localhost:8000/storage/${icone}`;
+    return `https://classifieds-app-back.onrender.com/storage/${icone}`;
   };
   
   onMounted(fetchCategories);

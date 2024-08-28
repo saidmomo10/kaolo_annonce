@@ -36,7 +36,7 @@ const reloadPage = (categoryId: any) => {
 }
 
 const getImageUrl = (icone: string) => {
-    return `http://localhost:8000/storage/${icone}`;
+    return `https://classifieds-app-back.onrender.com/storage/${icone}`;
   };
 
 </script>

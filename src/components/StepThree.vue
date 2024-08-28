@@ -88,7 +88,7 @@ const token = localStorage.getItem('token');
 
 const clientHttp = axios.create(
     {
-        baseURL: "http://localhost:8000/api/",
+        baseURL: "https://classifieds-app-back.onrender.com/api/",
         headers: {
             'Content-Type': "multipart/form-data",
             Accept: "application/json",

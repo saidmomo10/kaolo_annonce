@@ -394,7 +394,7 @@ onMounted(() => {
 
 const token = localStorage.getItem('token');
 const clientHttp = axios.create({
-    baseURL: "http://localhost:8000/api/",
+    baseURL: "https://classifieds-app-back.onrender.com/api/",
     headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -433,7 +433,7 @@ async function activateSubscription(id: number) {
 // Fonction pour obtenir l'URL de l'image
 const getImageUrl = (images: string) => {
     if (images && images.length > 0) {
-        return 'http://localhost:8000/storage/' + images[0].path;
+        return 'https://classifieds-app-back.onrender.com/storage/' + images[0].path;
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
 };

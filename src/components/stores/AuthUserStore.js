@@ -8,7 +8,7 @@ export const useAuthUserStore = defineStore('AuthUserStore', () => {
 
     const clientHttp = axios.create(
         {
-            baseURL: "http://localhost:8000/api/",
+            baseURL: "https://classifieds-app-back.onrender.com/api/",
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,
