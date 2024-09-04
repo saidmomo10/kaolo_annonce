@@ -2,12 +2,13 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { ref } from "vue";
 
+
 export const useCategoryStore = defineStore('category-store', () => {
     const token = localStorage.getItem('token');
 
     const clientHttp = axios.create(
         {
-            baseURL: "https://classifieds-app-back.onrender.com/api/",
+            baseURL: `${backendUrl}/api/`,
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,

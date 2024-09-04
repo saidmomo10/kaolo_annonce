@@ -51,6 +51,9 @@ import axios from 'axios';
 import router from '@/router';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const props = defineProps(['formValues']);
 console.log(props.formValues)
 
@@ -88,7 +91,7 @@ const token = localStorage.getItem('token');
 
 const clientHttp = axios.create(
     {
-        baseURL: "https://classifieds-app-back.onrender.com/api/",
+        baseURL: `${backendUrl}/api/`,
         headers: {
             'Content-Type': "multipart/form-data",
             Accept: "application/json",

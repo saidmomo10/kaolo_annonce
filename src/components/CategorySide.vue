@@ -17,6 +17,7 @@ import { ref, onMounted } from 'vue'
 import { useCategories } from './composables/categoriesApi';
 import { RouterLink } from 'vue-router'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const {categoryData, status} = useCategories()
 onMounted(status)
@@ -36,7 +37,7 @@ const reloadPage = (categoryId: any) => {
 }
 
 const getImageUrl = (icone: string) => {
-    return `https://classifieds-app-back.onrender.com/storage/${icone}`;
+    return `https://${backendUrl}/storage/${icone}`;
   };
 
 </script>

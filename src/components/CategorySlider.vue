@@ -14,12 +14,14 @@
   import { ref, onMounted, nextTick } from 'vue';
   import axios from 'axios';
   import { tns } from 'tiny-slider/src/tiny-slider';
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   
   const token = localStorage.getItem('token');
   const categories = ref<any[]>([]);
   
   const clientHttp = axios.create({
-    baseURL: 'https://classifieds-app-back.onrender.com/api/',
+    baseURL: `${backendUrl}/api/`,
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
@@ -61,7 +63,7 @@
   };
   
   const getImageUrl = (icone: string) => {
-    return `https://classifieds-app-back.onrender.com/storage/${icone}`;
+    return `${backendUrl}/storage/${icone}`;
   };
   
   onMounted(fetchCategories);

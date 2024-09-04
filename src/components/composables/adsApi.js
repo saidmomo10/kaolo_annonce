@@ -5,8 +5,7 @@ import 'vue3-toastify/dist/index.css';
 import router from '@/router';
 // import { useRoute } from 'vue-router';
 
-
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 // import { useHttpStore } from '@/stores/http'
 
@@ -16,7 +15,7 @@ export function useAds(){
 
     const clientHttp = axios.create(
         {
-            baseURL: "https://classifieds-app-back.onrender.com/api/",
+            baseURL: `${backendUrl}/api/`,
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,

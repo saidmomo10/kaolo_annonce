@@ -42,10 +42,12 @@
   import axios from 'axios';
   import moment from 'moment';
   
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
   const token = localStorage.getItem('token');
   
   const clientHttp = axios.create({
-    baseURL: "https://classifieds-app-back.onrender.com/api/",
+    baseURL: `${backendUrl}/api/`,
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,

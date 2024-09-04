@@ -2,12 +2,14 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { ref } from "vue";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 export const useAdStore = defineStore('ad-store', () => {
     const token = localStorage.getItem('token');
 
     const clientHttp = axios.create(
         {
-            baseURL: "https://classifieds-app-back.onrender.com/api/",
+            baseURL: `${backendUrl}/api/`,
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,

@@ -1,11 +1,13 @@
 import { ref } from 'vue';
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 export function useCategories() {
     const token = localStorage.getItem('token');
 
     const clientHttp = axios.create({
-        baseURL: "https://classifieds-app-back.onrender.com/api/",
+        baseURL: `${backendUrl}/api/`,
         headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,

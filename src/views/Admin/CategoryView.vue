@@ -207,68 +207,70 @@ async function sub(){
 
 
 <script setup lang="ts">
-    import { ref, onMounted } from 'vue';
-    import axios from 'axios';
-    import { useCategories } from '../../components/composables/categoriesApi'
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { useCategories } from '../../components/composables/categoriesApi'
 
-    const{cat, category} = useCategories()
-    onMounted(cat)
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    const token = localStorage.getItem('token');
+const{cat, category} = useCategories()
+onMounted(cat)
 
-    const clientHttp = axios.create(
-        {
-            baseURL: "https://classifieds-app-back.onrender.com/api/",
-            headers: {
-                Accept: "application/json",
-                Authorization: `Bearer ${token}`,
-            }
-        }
-    )
+const token = localStorage.getItem('token');
 
-    const name = ref('');
-    const category_id = ref('');
-    const icone = ref<File | null>(null);
-
-    // Méthode pour envoyer les données du formulaire
-    const submitForm = async () => {
-        //   if (!icone.value) {
-        //     errorMessage.value = "Veuillez sélectionner une image.";
-        //     return;
-        //   }
-
-        const formData = new FormData();
-        formData.append('name', name.value);
-        formData.append('category_id', category_id.value);
-        formData.append('icone', icone.value);
-
-        try {
-            const user = await clientHttp.post('subcategories', formData,{
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-            console.log(user);
-            // router.replace('/');
-            // toast.success(user.data)
-        }catch(error){
-                // emailError.value = 'L\'adresse email doit contenir le symbole "@".';
-                // passwordError.value = 'Le mot de passe doit avoir au moins 8 caractères.';
-            //     toast.error(error.response.data.message, {
-            // autoClose: 1000,
-            // });
-                console.log(error);
-        }
-    };
-
-    // Méthode pour gérer le changement de fichier
-    const onFileChange = (event: Event) => {
-        const files = (event.target as HTMLInputElement).files;
-        if (files && files.length > 0) {
-            icone.value = files[0];
+const clientHttp = axios.create(
+    {
+        baseURL: `${backendUrl}/api/`,
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
         }
     }
+)
+
+const name = ref('');
+const category_id = ref('');
+const icone = ref<File | null>(null);
+
+// Méthode pour envoyer les données du formulaire
+const submitForm = async () => {
+    //   if (!icone.value) {
+    //     errorMessage.value = "Veuillez sélectionner une image.";
+    //     return;
+    //   }
+
+    const formData = new FormData();
+    formData.append('name', name.value);
+    formData.append('category_id', category_id.value);
+    formData.append('icone', icone.value);
+
+    try {
+        const user = await clientHttp.post('subcategories', formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            }
+        });
+        console.log(user);
+        // router.replace('/');
+        // toast.success(user.data)
+    }catch(error){
+            // emailError.value = 'L\'adresse email doit contenir le symbole "@".';
+            // passwordError.value = 'Le mot de passe doit avoir au moins 8 caractères.';
+        //     toast.error(error.response.data.message, {
+        // autoClose: 1000,
+        // });
+            console.log(error);
+    }
+};
+
+// Méthode pour gérer le changement de fichier
+const onFileChange = (event: Event) => {
+    const files = (event.target as HTMLInputElement).files;
+    if (files && files.length > 0) {
+        icone.value = files[0];
+    }
+}
 </script>
 
 

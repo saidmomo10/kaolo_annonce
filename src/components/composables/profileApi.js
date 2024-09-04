@@ -5,10 +5,7 @@ import 'vue3-toastify/dist/index.css';
 import router from '@/router';
 import { useRoute } from 'vue-router';
 
-
-
-
-// import { useHttpStore } from '@/stores/http'
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export default function useProfile(){
     const token = localStorage.getItem('token');
@@ -16,7 +13,7 @@ export default function useProfile(){
 
     const clientHttp = axios.create(
         {
-            baseURL: "https://classifieds-app-back.onrender.com/api/",
+            baseURL: `${backendUrl}/api/`,
             headers: {
                 Accept: "application/json",
                 Authorization: `Bearer ${token}`,

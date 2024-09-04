@@ -270,7 +270,7 @@ import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/css/lg-zoom.css';
 
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const plugins = ref([lgThumbnail, lgZoom]);
 
@@ -309,7 +309,7 @@ const handleAddComment = async() =>{
 
 const getImageUrl = (image: any) => {
     if (image && image.path) {
-        return 'https://classifieds-app-back.onrender.com/storage/' + image.path;
+        return `${backendUrl}/storage/` + image.path;
     }
     return ''; // Ou une URL par défaut si aucune image n'est disponible
 };

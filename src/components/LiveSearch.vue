@@ -37,10 +37,12 @@
   <script setup lang="ts">
   import { ref, watch } from 'vue'
   import axios from 'axios'
+
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   
   const token = localStorage.getItem('token')
   const clientHttp = axios.create({
-    baseURL: 'https://classifieds-app-back.onrender.com/api/',
+    baseURL: `${backendUrl}/api/`,
     headers: {
       Accept: 'application/json',
       Authorization: `Bearer ${token}`,
@@ -70,7 +72,7 @@
 
 const getImageUrl = (images: Image[]) => {
     if (images && images.length > 0) {
-      return 'https://classifieds-app-back.onrender.com/storage/' + images[0].path;
+      return `${backendUrl}/storage/` + images[0].path;
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
   };

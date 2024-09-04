@@ -52,13 +52,15 @@
 import {onMounted} from 'vue';
 import {useAds} from './composables/adsApi'
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const { myAds, myAdsData } = useAds()
 
 onMounted(myAds)
 
 const getImageUrl = (images: string) => {
   if (images && images.length > 0) {
-    return 'https://classifieds-app-back.onrender.com/storage/' + images[0].path;
+    return `${backendUrl}/storage/` + images[0].path;
   }
   return ''; // Ou une image par défaut si aucune image n'est disponible
 };

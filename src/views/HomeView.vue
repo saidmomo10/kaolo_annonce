@@ -381,6 +381,8 @@ import WOW from 'wow.js';
 import {useAds} from '../components/composables/adsApi';
 import axios from 'axios';
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 const { nextPage, previousPage, currentPage, totalPages, statusData, fetchPageAds, fetchNextAds, fetchPrevAds, status } = useAds();
 
 // Initialisation de WOW.js après le chargement du composant
@@ -394,7 +396,7 @@ onMounted(() => {
 
 const token = localStorage.getItem('token');
 const clientHttp = axios.create({
-    baseURL: "https://classifieds-app-back.onrender.com/api/",
+    baseURL: `${backendUrl}/api/`,
     headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
@@ -433,7 +435,7 @@ async function activateSubscription(id: number) {
 // Fonction pour obtenir l'URL de l'image
 const getImageUrl = (images: string) => {
     if (images && images.length > 0) {
-        return 'https://classifieds-app-back.onrender.com/storage/' + images[0].path;
+        return `${backendUrl}/storage/` + images[0].path;
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
 };

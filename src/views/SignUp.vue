@@ -86,14 +86,16 @@
 </template>
 
 <script setup lang="ts">
-    import NavBar from '../components/NavBar.vue'
-    import axios from 'axios';
-    import router from '@/router';
-    import { ref } from 'vue';
+import NavBar from '../components/NavBar.vue'
+import axios from 'axios';
+import router from '@/router';
+import { ref } from 'vue';
 
-    const clientHttp = axios.create(
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
+const clientHttp = axios.create(
     {
-        baseURL: "https://classifieds-app-back.onrender.com/api/",
+        baseURL: `${backendUrl}/api/`,
         headers: {
             Accept: "application/json",
         }
