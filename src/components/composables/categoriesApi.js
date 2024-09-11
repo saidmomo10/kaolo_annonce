@@ -2,7 +2,6 @@ import { ref } from 'vue';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
 export function useCategories() {
     const token = localStorage.getItem('token');
 
