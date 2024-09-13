@@ -77,7 +77,7 @@ async function confirm(){
 
         try {
             loading.value = true;
-            const user = await clientHttp.post('auth/confirm', userdata.value);
+            const user = await clientHttp.post('confirm', userdata.value);
             console.log(user);            
             router.push('/login');
             loading.value = false;

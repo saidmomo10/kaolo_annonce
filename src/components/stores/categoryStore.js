@@ -2,9 +2,11 @@ import { defineStore } from "pinia";
 import axios from "axios";
 import { ref } from "vue";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const useCategoryStore = defineStore('category-store', () => {
     const token = localStorage.getItem('token');
+
 
     const clientHttp = axios.create(
         {
