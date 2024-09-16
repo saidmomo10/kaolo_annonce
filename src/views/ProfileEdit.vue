@@ -80,32 +80,33 @@
                             <div class="inner-block">
                                 <form @submit.prevent="handleUpdatePassword" class="default-form-style" method="post" action="#">
                                     <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Current Password*</label>
-                                                <input v-if="showPassword" v-model="passwordData.current_password" name="current-password" type="text" placeholder="Enter old password">
-                                                <input v-else v-model="passwordData.current_password" name="current-password" type="password" placeholder="Enter old password">
-                                            </div>
-                                            <div class="control">
-                                                <span @click = "toggleShow">
-                                                    <span class="icon is-small is-right">
+                                        <!-- Champ de mot de passe actuel -->
+                                    <div class="form-group">
+                                        <label>Current Password*</label>
+                                        <div class="control has-icons-right">
+                                            <input v-if="showPassword" v-model="passwordData.current_password" name="current-password" type="text" placeholder="Enter old password">
+                                            <input v-else v-model="passwordData.current_password" name="current-password" type="password" placeholder="Enter old password">
+                                            <span @click="toggleShow" aria-label="Toggle password visibility">
+                                                <span class="icon is-right">
                                                     <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
-                                                    </span>
                                                 </span>
-                                            </div>
+                                            </span>
                                         </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>New Password*</label>
-                                                <div class="control has-icons-right">
-                                                    <input v-if="showNewPassword" v-model="passwordData.new_password" name="new-password" type="text" placeholder="Enter new password" class="input">
-                                                    <input v-else v-model="passwordData.new_password" name="new-password" type="password" placeholder="Enter new password" class="input">
-                                                    <span class="icon is-right" @click="toggleShowNewPassword">
-                                                        <i class="fas" :class="{ 'fa-eye': showNewPassword, 'fa-eye-slash': !showNewPassword }"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                    </div>
+
+                                    <!-- Champ de nouveau mot de passe -->
+                                    <div class="form-group">
+                                        <label>New Password*</label>
+                                        <div class="control has-icons-right">
+                                            <input v-if="showNewPassword" v-model="passwordData.new_password" name="new-password" type="text" placeholder="Enter new password" class="input">
+                                            <input v-else v-model="passwordData.new_password" name="new-password" type="password" placeholder="Enter new password" class="input">
+                                            <span @click="toggleShowNewPassword" aria-label="Toggle new password visibility">
+                                                <span class="icon is-right">
+                                                    <i class="fas" :class="{ 'fa-eye': showNewPassword, 'fa-eye-slash': !showNewPassword }"></i>
+                                                </span>
+                                            </span>
                                         </div>
+                                    </div>
                                         <!-- <div class="col-12">
                                             <div class="form-group">
                                                 <label>Retype Password*</label>
@@ -168,3 +169,46 @@ const toggleShowNewPassword = () => {
 const buttonLabel = computed(() => (showPassword.value) ? "Hide" : "Show");
 
 </script>
+
+<style scoped>
+/* Style pour les champs de mot de passe et les icônes */
+.form-group {
+    position: relative;
+}
+
+.control {
+    position: relative;
+}
+
+.icon.is-right {
+    position: absolute;
+    top: 50%;
+    right: 15px; /* Ajustez selon votre besoin */
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: color 0.3s ease; /* Ajoute une transition pour un effet visuel */
+}
+
+.icon.is-right:hover {
+    color: #2c7873; /* Change la couleur au survol pour un effet visuel */
+}
+
+.input {
+    width: 100%;
+    padding-right: 50px; /* Assure qu'il y a suffisamment d'espace pour les icônes */
+    box-sizing: border-box;
+}
+
+.control.has-icons-right .input {
+    padding-right: 60px; /* Ajuste le padding pour faire de la place pour les icônes */
+}
+
+/* Accessibilité : amélioration pour les icônes */
+.icon.is-right[aria-label] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+</style>

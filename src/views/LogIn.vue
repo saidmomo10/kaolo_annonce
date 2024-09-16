@@ -24,7 +24,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
-                    <div class="form-head">
+                    <div class="form-head" v-loading="loading">
                         <h4 class="title">Login</h4>
                         <form @submit.prevent="login" action="" >
                             <div class="form-group">
@@ -33,7 +33,15 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input name="password" type="password" v-model="userdata.password">
+                                <div class="control has-icons-right">
+                                    <input v-if="showPassword" name="password" type="text" v-model="userdata.password">
+                                    <input v-else name="password" type="password" v-model="userdata.password">
+                                    <span @click="toggleShow" aria-label="Toggle new password visibility">
+                                        <span class="icon is-right">
+                                            <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
+                                        </span>
+                                    </span>
+                                </div>
                             </div>
                             <div class="check-and-pass">
                                 <div class="row align-items-center">
@@ -50,17 +58,10 @@
                                 </div>
                             </div>
                             <div class="button">
-                                <!-- <button v-if="loading" class="btn btn-primary" type="button" disabled>
-                                    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-                                    <span class="visually-hidden" role="status">Loading...</span>
-                                </button> -->
-
-                                <button v-if="loading" class="btn btn-primary" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                    <span role="status">Loading...</span>
+                                <button class="btn" type="submit" :disabled="loading">
+                                    <span v-if="loading" class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                                    <span v-else>Login Now</span>
                                 </button>
-                                <button v-else class="btn">Login Now</button>
-                                <div class="spiner-border spiner-border-sm"></div>
                             </div>
                             <div class="alt-option">
                                 <span>Or</span>
@@ -74,7 +75,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <p class="outer-link">Don't have an account? <a href="registration.html">Register here</a>
+                            <p class="outer-link">Don't have an account? <a href="signup">Register here</a>
                             </p>
                         </form>
                     </div>
@@ -85,10 +86,10 @@
 </template>
 
 <script setup lang="ts">
-import NavBar from '../components/NavBar.vue'
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
 import router from '@/router';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -109,35 +110,55 @@ const userdata = ref({
     password: '',
 })
 
-// const isFormValid = computed(() => {
-//   return userdata.value.name && userdata.value.password && userdata.value.age > 0;
-// });
 const loading = ref(false);
 
 async function login(){
 
+    emailError.value = '';
+    passwordError.value = '';
+
     if (!userdata.value.email) {
         emailError.value = 'Veuillez entrer votre adresse e-mail';
-        return;
+        toast.error(emailError.value, {
+            autoClose: 3000,
+        });
+        return; // Stopper la fonction si l'email est vide
     }
 
     if (!userdata.value.password) {
         passwordError.value = 'Veuillez entrer votre mot de passe';
-        return;
+        toast.error(passwordError.value, {
+            autoClose: 3000,
+        });
+        return; // Stopper la fonction si le mot de passe est vide
     }
 
-        try {
-            loading.value = true;
-            const user = await clientHttp.post('auth/login', userdata.value);
-            console.log(user);
-            localStorage.setItem('token', user.data.data.token);
-            localStorage.setItem('userId', user.data.data.user.id);            
-            router.push('/');
-            loading.value = false;
-        }catch(error){
-            console.error('Axios error:', error);
-            loading.value = false;
-        }
+    try {
+        loading.value = true;
+        const user = await clientHttp.post('auth/login', userdata.value);
+        
+        toast.success(user.data.message, {
+            autoClose: 2000, // Le toast va rester visible pendant 2 secondes
+        });
+        
+        console.log(user);
+        
+        localStorage.setItem('token', user.data.data.token);
+        localStorage.setItem('userId', user.data.data.user.id);            
+        
+        setTimeout(() => {
+        router.push('/');
+        }, 2000); // Délai de 2 secondes avant la redirection
+        
+        loading.value = false;
+    }catch(error){
+        toast.error(error.response.data.message, {
+            autoClose: 1000, // Même logique pour l'erreur
+        });
+        console.error('Axios error:', error);
+    }finally {
+        loading.value = false;
+    }
 }
 
 const token = localStorage.getItem('token');
@@ -146,4 +167,57 @@ const isLoggedIn = ref(!!token);
 if(token){
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
 }
+
+const showPassword = ref(false);
+// const password = ref<string | null>(null);
+
+const toggleShow = () => {
+  showPassword.value = !showPassword.value;
+};
+
+const buttonLabel = computed(() => (showPassword.value) ? "Hide" : "Show");
+
 </script>
+
+<style scoped>
+/* Style pour les champs de mot de passe et les icônes */
+.form-group {
+    position: relative;
+}
+
+.control {
+    position: relative;
+}
+
+.icon.is-right {
+    position: absolute;
+    top: 50%;
+    right: 15px; /* Ajustez selon votre besoin */
+    transform: translateY(-50%);
+    cursor: pointer;
+    transition: color 0.3s ease; /* Ajoute une transition pour un effet visuel */
+}
+
+.icon.is-right:hover {
+    color: #2c7873; /* Change la couleur au survol pour un effet visuel */
+}
+
+.input {
+    width: 100%;
+    padding-right: 50px; /* Assure qu'il y a suffisamment d'espace pour les icônes */
+    box-sizing: border-box;
+}
+
+.control.has-icons-right .input {
+    padding-right: 60px; /* Ajuste le padding pour faire de la place pour les icônes */
+}
+
+/* Accessibilité : amélioration pour les icônes */
+.icon.is-right[aria-label] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+</style>

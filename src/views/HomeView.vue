@@ -8,8 +8,8 @@
                     <div class="hero-text text-center">
                         <!-- Start Hero Text -->
                         <div class="section-heading">
-                            <h2 class="wow fadeInUp" data-wow-delay=".3s">Bienvenue sur <span style = "color: #5830E0;">KAOLO ANNONCE</span></h2>
-                            <p class="wow fadeInUp" data-wow-delay=".5s">Votre plateforme de publication d'annonces de toutes sortes <br> Achetez, vendez, développez votre business et denichez l'emploi de vos rêves</p>
+                            <h2 style = "color: white;" class="wow fadeInUp" data-wow-delay=".3s">Bienvenue sur <span>KAOLO ANNONCE</span></h2>
+                            <p style = "color: white;" class="wow fadeInUp" data-wow-delay=".5s">Votre plateforme de publication d'annonces de toutes sortes <br> Achetez, vendez, développez votre business et denichez l'emploi de vos rêves</p>
                         </div>
                         <!-- End Search Form -->
                         <!-- Start Search Form -->
