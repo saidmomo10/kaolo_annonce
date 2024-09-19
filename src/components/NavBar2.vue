@@ -24,6 +24,20 @@
                                     <router-link aria-label="Toggle navigation" :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
                                     </li>
                                 </ul>
+                                <div class="button header-button">
+                                    <a href="adCreate" class="btn">Publier une annonce</a>
+                                </div>
+
+                                <div class="login-button">
+                                    <ul>
+                                        <li>
+                                            <a href="login"><i class="lni lni-enter"></i> Se connecter</a>
+                                        </li>
+                                        <li>
+                                            <a href="signup"><i class="lni lni-user"></i> Register</a>
+                                        </li>
+                                    </ul> 
+                                </div>
                                 <!-- <ul id="nav" class="navbar-nav ms-auto">
                                     <li class="nav-item">
                                         <a class=" active dd-menu collapsed" href="javascript:void(0)"
@@ -50,22 +64,9 @@
                                     </li>
                                     
                                 </ul> -->
-                            </div> <!-- navbar collapse -->
-                            <div class="button header-button">
-                                <a href="adCreate" class="btn">Publier une annonce</a>
-                            </div>
-
-                            <div class="login-button">
-                                <ul>
-                                    <li>
-                                        <a href="login"><i class="lni lni-enter"></i> Se connecter</a>
-                                    </li>
-                                    <li>
-                                        <a href="signup"><i class="lni lni-user"></i> Register</a>
-                                    </li>
-                                </ul> 
-                            </div>
-                        </nav> <!-- navbar -->
+                            </div> 
+                            
+                        </nav> 
                     </div>
                 </div>
             </div> <!-- row -->

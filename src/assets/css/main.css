@@ -128,6 +128,8 @@ a {
   -moz-transition: all 0.4s ease;
 }
 
+
+
 audio,
 canvas,
 iframe,
@@ -1596,7 +1598,7 @@ ol {
 
 .navbar-expand-lg .navbar-nav {
   margin: 0;
-  margin-right: auto !important;
+  /* margin-right: auto !important; */
 }
 
 .navbar-nav .nav-item {
@@ -6908,7 +6910,7 @@ blockquote .shape {
     padding: 0 220px;
   }
   .header .header .login-button {
-    margin-left: 20px;
+    margin-left: -20px;
   }
   .header .login-button ul {
     padding: 0;
@@ -7277,7 +7279,7 @@ blockquote .shape {
     width: 170px;
   }
   .header-button {
-    display: none;
+    
   }
   .header {
     padding: 20px 0;
@@ -7286,7 +7288,9 @@ blockquote .shape {
     display: none;
   }
   .header .login-button {
-    display: none;
+    margin-left: -7px;
+    display: flex;
+    flex-direction: column;
   }
   .header .navbar-collapse {
     top: 59px !important;
