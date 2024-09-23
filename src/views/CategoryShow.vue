@@ -216,7 +216,7 @@ import { RouterLink } from 'vue-router'
 import { useCategories } from '../components/composables/categoriesApi'
 import { useRoute } from 'vue-router';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const imageUrl = import.meta.env.VITE_IMAGE_URL
 
 const route = useRoute()
 
@@ -255,7 +255,7 @@ interface Image {
 
 const getImageUrl = (images: Image[]) => {
   if (images && images.length > 0) {
-    return `${backendUrl}/storage/` + images[0].path;
+    return `${imageUrl}/storage/` + images[0].path;
   }
   return ''; // Ou une image par défaut si aucune image n'est disponible
 };

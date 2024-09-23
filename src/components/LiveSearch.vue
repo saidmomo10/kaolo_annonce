@@ -39,6 +39,7 @@
   import axios from 'axios'
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const imageUrl = import.meta.env.VITE_IMAGE_URL
   
   const token = localStorage.getItem('token')
   const clientHttp = axios.create({
@@ -72,7 +73,7 @@
 
 const getImageUrl = (images: Image[]) => {
     if (images && images.length > 0) {
-      return `${backendUrl}/storage/` + images[0].path;
+      return `${imageUrl}/storage/` + images[0].path;
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
   };

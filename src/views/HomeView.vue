@@ -382,6 +382,7 @@ import {useAds} from '../components/composables/adsApi';
 import axios from 'axios';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const imageUrl = import.meta.env.VITE_IMAGE_URL
 
 const { nextPage, previousPage, currentPage, totalPages, statusData, fetchPageAds, fetchNextAds, fetchPrevAds, status } = useAds();
 
@@ -435,7 +436,7 @@ async function activateSubscription(id: number) {
 // Fonction pour obtenir l'URL de l'image
 const getImageUrl = (images: string) => {
     if (images && images.length > 0) {
-        return `${backendUrl}/storage/` + images[0].path;
+        return `${imageUrl}/storage/` + images[0].path;
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
 };

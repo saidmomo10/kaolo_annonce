@@ -16,6 +16,7 @@
   import { tns } from 'tiny-slider/src/tiny-slider';
 
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const imageUrl = import.meta.env.VITE_IMAGE_URL
   
   const token = localStorage.getItem('token');
   const categories = ref<any[]>([]);
@@ -63,7 +64,7 @@
   };
   
   const getImageUrl = (icone: string) => {
-    return `${backendUrl}/storage/${icone}`;
+    return `${imageUrl}/storage/${icone}`;
   };
   
   onMounted(fetchCategories);

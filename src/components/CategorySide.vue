@@ -18,6 +18,7 @@ import { useCategories } from './composables/categoriesApi';
 import { RouterLink } from 'vue-router'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const imageUrl = import.meta.env.VITE_IMAGE_URL
 
 const {categoryData, status} = useCategories()
 onMounted(status)
@@ -37,7 +38,7 @@ const reloadPage = (categoryId: any) => {
 }
 
 const getImageUrl = (icone: string) => {
-    return `https://${backendUrl}/storage/${icone}`;
+    return `https://${imageUrl}/storage/${icone}`;
   };
 
 </script>

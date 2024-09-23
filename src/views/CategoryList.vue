@@ -62,7 +62,7 @@ import NavBar from '@/components/NavBar.vue';
 import SearchCategories from '@/components/SearchCategories.vue';
 import WOW from 'wow.js';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const imageUrl = import.meta.env.VITE_IMAGE_URL
 
 import { useCategoryStore } from '../components/stores/categoryStore.js'
 
@@ -73,7 +73,7 @@ categoryStore.getAdsCategories()
  const getImageUrl = (icone: string) =>{
     // Implémentez votre fonction getImageUrl ici
     // Par exemple, si les images ont des chemins relatifs, vous pouvez les préfixer avec une URL de base
-    return `${backendUrl}/storage/${icone}`;
+    return `${imageUrl}/storage/${icone}`;
 }
 
 // const getImageUrl = (images: string) => {

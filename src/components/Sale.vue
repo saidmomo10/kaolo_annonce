@@ -52,7 +52,7 @@
 import {onMounted} from 'vue';
 import {useAds} from './composables/adsApi'
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const imageUrl = import.meta.env.VITE_IMAGE_URL
 
 const { myAds, myAdsData } = useAds()
 
@@ -60,7 +60,7 @@ onMounted(myAds)
 
 const getImageUrl = (images: string) => {
   if (images && images.length > 0) {
-    return `${backendUrl}/storage/` + images[0].path;
+    return `${imageUrl}/storage/` + images[0].path;
   }
   return ''; // Ou une image par défaut si aucune image n'est disponible
 };
