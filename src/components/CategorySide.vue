@@ -38,7 +38,7 @@ const reloadPage = (categoryId: any) => {
 }
 
 const getImageUrl = (icone: string) => {
-    return `https://${imageUrl}/storage/${icone}`;
+    return `${imageUrl}/storage/${icone}`;
   };
 
 </script>
