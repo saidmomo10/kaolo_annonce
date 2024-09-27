@@ -11,9 +11,17 @@
                             <!-- Lien vers la page d'accueil pour les utilisateurs -->
                             <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logos.png" alt="Logo" width="80px"></router-link>
                             
-                            <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                                aria-expanded="false" aria-label="Toggle navigation">
+                            <button
+                                class="navbar-toggler mobile-menu-btn"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="Toggle navigation"
+                                @click="toggleMenu"
+                                :class="{ active: isActive }"
+                            >
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
                                 <span class="toggler-icon"></span>
@@ -24,51 +32,26 @@
                                     <router-link aria-label="Toggle navigation" :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
                                     </li>
                                 </ul>
-                                <!-- <ul id="nav" class="navbar-nav ms-auto">
-                                    <li class="nav-item">
-                                        <a class=" active dd-menu collapsed" href="javascript:void(0)"
-                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-1"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">Accueil</a>
-                                        <ul class="sub-menu collapse" id="submenu-1-1">
-                                            <li class="nav-item active"><a href="/">Home Default</a></li>
+                                <div class="button header-button">
+                                    <div id="drop" class="dropdown dropend">
+                                        <button class="btn btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{statuData.name}}
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="myAds">Dashbord</a></li>
+                                            <li><a class="dropdown-item" href="myAds">Mes annonces</a></li>
+                                            <li><span class="dropdown-item">{{ statusData.status }}</span></li>
+                                            <li>
+                                                <form @submit.prevent = "logout" action="">
+                                                    <button class="dropdown-item" href="">Se déconnecter</button>
+                                                </form>
+                                            </li>
                                         </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="/category" aria-label="Toggle navigation">Categories</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class=" dd-menu collapsed" href="javascript:void(0)"
-                                            data-bs-toggle="collapse" data-bs-target="#submenu-1-3"
-                                            aria-controls="navbarSupportedContent" aria-expanded="false"
-                                            aria-label="Toggle navigation">Annonces</a>
-                                        <ul class="sub-menu collapse" id="submenu-1-3">
-                                            <li class="nav-item"><a href="javascript:void(0)">Ad Grid</a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)">Ad Listing</a></li>
-                                            <li class="nav-item"><a href="javascript:void(0)">Ad Details</a></li>
-                                        </ul>
-                                    </li>
-                                    
-                                </ul> -->
-                            </div> <!-- navbar collapse -->
-                            
-                            <div class="button header-button">
-                                <div id="drop" class="dropdown">
-                                    <button class="btn btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        {{statuData.name}}
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="myAds">Dashbord</a></li>
-                                        <li><a class="dropdown-item" href="myAds">Mes annonces</a></li>
-                                        <li><span class="dropdown-item">{{ statusData.status }}</span></li>
-                                        <li>
-                                            <form @submit.prevent = "logout" action="">
-                                                <button class="dropdown-item" href="">Se déconnecter</button>
-                                            </form>
-                                        </li>
-                                    </ul>
+                                    </div>
                                 </div>
                             </div>
+                            
+                            
                             
                         </nav> <!-- navbar -->
                     </div>
@@ -86,6 +69,14 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
+
+// Variable réactive pour gérer l'état actif du bouton
+const isActive = ref(false);
+
+// Fonction pour basculer l'état du bouton
+const toggleMenu = () => {
+  isActive.value = !isActive.value;
+};
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

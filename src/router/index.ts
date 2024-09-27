@@ -19,6 +19,7 @@ import MyadsView from '@/views/MyadsView.vue'
 import useUserRoles from '@/components/composables/userRoleApi'
 import UnauthorizedView from '../views/UnauthorizedView.vue'
 import AdminDashBord from '../views/Admin/AdminDashBord.vue'
+import ProdList from '@/views/ProdList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/prod',
+      name: 'prod',
+      component: ProdList,
     },
     {
       path: '/guest',

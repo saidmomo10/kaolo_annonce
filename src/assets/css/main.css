@@ -5264,7 +5264,7 @@ blockquote .shape {
   border-bottom: 2px solid #eee;
 }
 
-.post-ad-tab nav button {
+.post-ad-tab .nav-link button {
   padding: 20px 40px;
   border: none !important;
   text-align: left;
@@ -5281,7 +5281,7 @@ blockquote .shape {
   color: #081828;
 }
 
-.post-ad-tab nav button .serial {
+.post-ad-tab .nav-link button .serial {
   height: 50px;
   width: 50px;
   line-height: 50px;
@@ -5307,6 +5307,16 @@ blockquote .shape {
   border-color: transparent;
   background: #fff;
   color: #2c7873;
+  border: 1px solid #eee;
+  border-radius: 50%;
+  font-size: 19px;
+  font-weight: 600;
+  height: 20px;
+  text-align: center;
+  /* display: block;
+  position: absolute; */
+  left: 30px;
+  top: 50%;
 }
 
 .post-ad-tab nav button.active .sub-title {

@@ -47,7 +47,7 @@
                                                 >
                                                 <span class="serial">0{{ index + 1 }}</span> 
                                                 Step
-                                                <span class="sub-title">{{ step.__name }}</span>
+                                                <!-- <span class="sub-title">{{ step.__name }}</span> -->
                                                 </button>
                                             </div>
                                         </nav>

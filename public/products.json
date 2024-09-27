@@ -1,0 +1,43 @@
+[
+    {
+      "id": 1,
+      "name": "Produit A",
+      "price": 19.99,
+      "description": "Une description du produit A.",
+      "category": "Électronique",
+      "image": "https://example.com/images/product_a.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Produit B",
+      "price": 29.99,
+      "description": "Une description du produit B.",
+      "category": "Vêtements",
+      "image": "https://example.com/images/product_b.jpg"
+    },
+    {
+      "id": 3,
+      "name": "Produit C",
+      "price": 9.99,
+      "description": "Une description du produit C.",
+      "category": "Maison",
+      "image": "https://example.com/images/product_c.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Produit D",
+      "price": 49.99,
+      "description": "Une description du produit D.",
+      "category": "Jouets",
+      "image": "https://example.com/images/product_d.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Produit E",
+      "price": 89.99,
+      "description": "Une description du produit E.",
+      "category": "Sports",
+      "image": "https://example.com/images/product_e.jpg"
+    }
+  ]
+  

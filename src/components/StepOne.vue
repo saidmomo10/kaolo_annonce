@@ -18,7 +18,7 @@
                             <option value="">Selectionner</option>
                             <option v-for = "category in statusData" :key="category.id" :value="`${category.id}`">{{ category.name }}</option>
                         </select>
-                    </div>
+                     </div>
                 </div>
             </div>
             <div class="col-12">
