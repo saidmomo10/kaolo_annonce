@@ -70,7 +70,7 @@
                                 <ul>
                                     <li><a href="javascript:void(0)" class="facebook"><i class="lni lni-facebook-original"></i>Login With
                                             Facebook</a></li>
-                                    <li><a href="javascript:void(0)" class="google"><i class="lni lni-google"></i>Login With Google
+                                    <li><a href="javascript:void(0)" @click="loginWithGoogle" class="google"><i class="lni lni-google"></i>Login With Google
                                             Plus</a>
                                     </li>
                                 </ul>
@@ -90,6 +90,16 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import router from '@/router';
 import { ref, computed } from 'vue';
+
+
+import { redirectToProvider } from '@/services/auth';
+
+// Fonction pour rediriger l'utilisateur vers Google OAuth
+const loginWithGoogle = () => {
+  redirectToProvider('google');
+};
+
+
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

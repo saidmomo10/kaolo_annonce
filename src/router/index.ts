@@ -20,6 +20,7 @@ import useUserRoles from '@/components/composables/userRoleApi'
 import UnauthorizedView from '../views/UnauthorizedView.vue'
 import AdminDashBord from '../views/Admin/AdminDashBord.vue'
 import ProdList from '@/views/ProdList.vue'
+import { handleProviderCallback } from '@/services/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,6 +30,22 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: { requiresAuth: true }
+    },
+    {
+      path: '/auth/callback/:provider',
+      name: 'OAuthCallback',
+      component: LoginView,  // Ajoute un composant ici
+      beforeEnter: async (to, from, next) => {
+        const provider = to.params.provider;
+        const searchParams = new URLSearchParams(window.location.search);
+    
+        try {
+          await handleProviderCallback(provider as string, searchParams);
+          next({ name: 'home' }); // Redirige vers la page d'accueil après authentification
+        } catch (error) {
+          next(false); // Bloquer la navigation en cas d'erreur
+        }
+      }
     },
     {
       path: '/prod',
