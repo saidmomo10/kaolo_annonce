@@ -176,9 +176,9 @@
                             <div class="single-block author">
                                 <h3>Author</h3>
                                 <div v-if="editData.user" class="content">
-                                    <img src="" alt="#">
+                                    <img :src="getAvatarUrl(editData.user.avatar)" :alt="editData.user.name" width="60px">
                                     <h4>{{ editData.user.name }}</h4>
-                                    <span>Member Since {{ editData.user.created_at }}</span>
+                                    <span>Membre depuis {{ formatDate(editData.user.created_at) }}</span>
                                     <a href="javascript:void(0)" class="see-all">See All Ads</a>
                                 </div>
                             </div>
@@ -313,6 +313,18 @@ const getImageUrl = (image: any) => {
         return `${imageUrl}/storage/` + image.path;
     }
     return ''; // Ou une URL par défaut si aucune image n'est disponible
+};
+
+const getAvatarUrl = (avatar: string) =>{
+    // Implémentez votre fonction getImageUrl ici
+    // Par exemple, si les images ont des chemins relatifs, vous pouvez les préfixer avec une URL de base
+    return `${imageUrl}/storage/${avatar}`;
+}
+
+const formatDate = (dateString: string | number | Date) => {
+  const date = new Date(dateString);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return date.toLocaleDateString('fr-FR', options);
 };
 
 

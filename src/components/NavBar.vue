@@ -33,13 +33,13 @@
                                     </li>
                                 </ul>
                                 <div class="button header-button">
-                                    <div id="drop" class="dropdown dropend">
+                                    <div id="drop" class="dropdown">
                                         <button class="btn btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             {{statuData.name}}
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a class="dropdown-item" href="myAds">Dashbord</a></li>
-                                            <li><a class="dropdown-item" href="myAds">Mes annonces</a></li>
+                                            <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
+                                            <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
                                             <li><span class="dropdown-item">{{ statusData.status }}</span></li>
                                             <li>
                                                 <form @submit.prevent = "logout" action="">

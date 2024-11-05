@@ -55,7 +55,7 @@
                                         <div class="col-12">
                                             <div class="form-group upload-image">
                                                 <label>Profile Image*</label>
-                                                <input name="profile-image" type="file" placeholder="Upload Image">
+                                                <input name="avatar" type="file" @change="onFileChange" placeholder="Upload Image" accept="image/*">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -144,6 +144,27 @@ import useProfile from '../components/composables/profileApi'
 const {getUser, statusData, updateProfile, updatePassword, passwordData} = useProfile()
 
 onMounted(getUser)
+
+// Références pour stocker l'image et le produit
+const image = ref<File | null>(null);
+// const product = ref<{ image_url: string } | null>(null);
+
+// Gérer le changement d'image dans le champ file
+const onFileChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files && target.files[0]) {
+        const selectedFile = target.files[0];
+
+        // Vérifier le type MIME
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml'];
+        if (!allowedTypes.includes(selectedFile.type)) {
+            alert("Veuillez sélectionner une image de type valide (jpeg, png, jpg, gif, svg).");
+            return;
+        }
+
+        image.value = selectedFile;
+    }
+};
 
 function handleUpdateProfile(){
     updateProfile(statusData.value)

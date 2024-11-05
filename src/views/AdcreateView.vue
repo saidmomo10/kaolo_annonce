@@ -1,93 +1,90 @@
 <template>
-    <body>
-        <NavBar/>
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <div class="breadcrumbs-content">
-                            <h1 class="page-title">Publier une annonce</h1>
-                        </div>
+  <body>
+    <NavBar/>
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Publier une annonce</h1>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-12">
-                        <ul class="breadcrumb-nav">
-                            <li><a href="index.html">Accueil</a></li>
-                            <li>Publier une annonce</li>
-                        </ul>
-                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li><a href="index.html">Accueil</a></li>
+                        <li>Publier une annonce</li>
+                    </ul>
                 </div>
             </div>
         </div>
-        <!-- End Breadcrumbs -->
+    </div>
+    <!-- End Breadcrumbs -->
 
-        <!-- Start Dashboard Section -->
-        <section class="dashboard section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-12">
-                        <!-- Start Dashboard Sidebar -->
-                        <DashboardSidebar/>
-                        <!-- Start Dashboard Sidebar -->
-                    </div>
-                    <div class="col-lg-9 col-md-8 col-12">
-                        <div class="main-content">
-                            <!-- Start Post Ad Block Area -->
-                            <div class="dashboard-block mt-0">
-                                <h3 class="block-title">Nouvelle Annonce</h3>
-                                <div class="inner-block">
-                                    <!-- Start Post Ad Tab -->
-                                    <div class="post-ad-tab">
-                                        <nav>
-                                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                <button 
-                                                v-for="(step, index) in steps" 
-                                                :key="index" 
-                                                :class="{ 'nav-link': true, active: currentStep === index }" 
-                                                @click="currentStep = index"
-                                                >
-                                                <span class="serial">0{{ index + 1 }}</span> 
-                                                Step
-                                                <!-- <span class="sub-title">{{ step.__name }}</span> -->
-                                                </button>
-                                            </div>
-                                        </nav>
-                                        <div class="tab-content" id="nav-tabContent">
-                                            <div 
-                                                v-for="(step, index) in steps" 
-                                                :key="index" 
-                                                class="tab-pane fade" 
-                                                :class="{ 'show active': currentStep === index }"
-                                            >
-                                                <!-- Contenu de chaque étape du formulaire -->
-                                                <component
-                                                
-                                                v-bind:is="steps[currentStep]"
-                                                v-bind:formValues = "values"
-                                                
-                                                ></component>
-                                                <div class="col-12">
-                                                    <div id="bt" class="form-group button">
-                                                        <button v-on:click="previousStep" v-if = "currentStep > 0" type="submit" class="btn alt-btn">Précédent</button>
-                                                        <button v-on:click="nextStep" v-if = "currentStep < steps.length - 1" type="submit" class="btn ">Suivant</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+    <!-- Start Dashboard Section -->
+    <section class="dashboard section">
+        <div class="container">
+            <div class="row">
+              <div class="col-lg-3 col-md-4 col-12">
+                  <!-- Start Dashboard Sidebar -->
+                  <DashboardSidebar/>
+                  <!-- Start Dashboard Sidebar -->
+              </div>
+              <div class="col-lg-9 col-md-8 col-12">
+                <div class="main-content">
+                    <!-- Start Post Ad Block Area -->
+                    <div class="dashboard-block mt-0">
+                        <h3 class="block-title">Nouvelle Annonce</h3>
+                        <div class="inner-block">
+                            <!-- Start Post Ad Tab -->
+                            <div class="post-ad-tab">
+                                <nav>
+                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                        <button class="nav-link" 
+                                                :class="{ active: currentStep === 1 }"
+                                                :disabled="!isStepOneValid" 
+                                                @click="currentStep = 1">
+                                        
+                                        <span class="serial">01</span>
+                                        
+                                        <span class="sub-title">Ad Information</span>
+                                        </button>
+                                        <button class="nav-link" 
+                                                :class="{ active: currentStep === 2 }"
+                                                :disabled="!isStepTwoValid" 
+                                                @click="currentStep = 2">
+                                        
+                                        <span class="serial">02</span>
+                                        
+                                        <span class="sub-title">Ad Details</span>
+                                        </button>
+                                        <button class="nav-link" 
+                                                :class="{ active: currentStep === 3 }"
+                                                :disabled="!isStepThreeValid" 
+                                                @click="currentStep = 3">
+                                        
+                                        <span class="serial">03</span>
+                                        
+                                        <span class="sub-title">User Information</span>
+                                        </button>
                                     </div>
-                                    <!-- End Post Ad Tab -->
+                                </nav>
+
+                                <div class="tab-content">
+                                    <StepOne :formValues="values" v-if="currentStep === 1" @next-step="goToNextStep" @validation-status="setStepOneValidity" />
+                                    <StepTwo :formValues="values" v-if="currentStep === 2" @previous-step="goToPreviousStep" @next-step="goToNextStep" @validation-status="setStepTwoValidity" />
+                                    <StepThree :formValues="values" v-if="currentStep === 3" @previous-step="goToPreviousStep" @validation-status="setStepThreeValidity" />
                                 </div>
                             </div>
-                            <!-- End Post Ad Block Area -->
+                            <!-- End Post Ad Tab -->
                         </div>
                     </div>
+                    <!-- End Post Ad Block Area -->
                 </div>
+              </div>
             </div>
-        </section>
-        <!-- End Dashboard Section -->
-
-        <!-- Start Newsletter Area -->
-    <!-- <FooterComponent/> -->
-    </body>
+        </div>
+    </section>
+  </body>
 </template>
 
 <script setup lang="ts">
@@ -95,33 +92,40 @@
 //   import FooterComponent from '@/components/FooterComponent.vue';
   import DashboardSidebar from '@/components/DashboardSidebar.vue'
   import { ref } from 'vue';
-  import useForm from '@/components/composables/formValues'
+  import useForm from '@/components/composables/formValues';
+
+  const { values } = useForm();
 
   import StepOne from '../components/StepOne.vue';
   import StepTwo from '../components/StepTwo.vue';
   import StepThree from '../components/StepThree.vue';
 
-  const {
-    values
-  } = useForm();
-
-  const currentStep = ref(0);
-  console.log(currentStep);
   
+  const currentStep = ref(1);
 
-    const steps = [
-        StepOne,
-        StepTwo,
-        StepThree,
-    ];
+const goToNextStep = () => {
+  if (currentStep.value < 3) {
+    currentStep.value += 1;
+  }
+};
 
-    const previousStep = () =>{
-        currentStep.value--
-    }
+const goToPreviousStep = () => {
+  if (currentStep.value > 1) {
+    currentStep.value -= 1;
+  }
+};
 
-    const nextStep = () =>{
-        currentStep.value++
-    }
+const setStepOneValidity = (valid: boolean) => {
+  isStepOneValid.value = valid;
+};
+
+const setStepTwoValidity = (valid: boolean) => {
+  isStepTwoValid.value = valid;
+};
+
+const setStepThreeValidity = (valid: boolean) => {
+  isStepThreeValid.value = valid;
+};
 
     // const csrfToken = document.head.querySelector<HTMLMetaElement>('meta[name="csrf-token"]')?.content;
         // const csrfToken = () => {

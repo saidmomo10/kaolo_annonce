@@ -47,22 +47,22 @@
                 </div>
             </div>
             <div class="single-head">
-                <div class="row">
-                    <div v-for="ads in statusData" class="col-lg-4 col-md-6 col-12">
+                <div v-if="statusData" class="row">
+                    <div v-for="ads in statusData" :key="ads.id" class="col-lg-4 col-md-6 col-12">
                         <!-- Start Single Grid -->
                         <div class="single-grid wow fadeInUp" data-wow-delay=".2s">
                             <div class="image">
                                 <RouterLink :to="{name: 'adShow', params: {id:ads.id}}"><img :src="getImageUrl(ads.images)" alt="#"></RouterLink>
                                 <div class="author">
                                     <div class="author-image">
-                                        <a href="javascript:void(0)"><img src="../assets/images/items-grid/author-1.jpg" alt="#">
-                                            <span>Smith jeko</span></a>
+                                        <a href=""><img :src="getAvatarUrl(ads.user.avatar)" :alt="ads.user.name" width="60px">
+                                        <span>{{ ads.user.name }}</span></a>
                                     </div>
                                 </div>
                             </div>
                             <div class="content">
                                 <div class="top-content">
-                                    <a href="javascript:void(0)" class="tag">{{ ads.subcategory.name }}</a>
+                                    <a href="javascript:void(0)" v-if="ads.subcategory" class="tag">{{ ads.subcategory.name }}</a>
                                     <h3 class="title">
                                         <a href="item-details.html">{{ ads.title }}</a>
                                     </h3>
@@ -85,20 +85,21 @@
                     <div class="col-12">
                         <div class="pagination left">
                             <ul class="pagination-list">
-                            <!-- Bouton "Précédent" -->
                                 <li v-if="previousPage"><a @click="fetchPrevAds(previousPage)" href="javascript:void(0)"><i class="lni lni-chevron-left"></i></a></li>
-                                <!-- Boucle pour afficher les numéros de page -->
                                 <li v-for="pageNumber in totalPages" :key="pageNumber" :class="{ active: currentPage === pageNumber }">
                                     <a @click="fetchPageAds(pageNumber)" href="javascript:void(0)">{{ pageNumber }}</a>
                                 </li>
-                                <!-- Bouton "Suivant" -->
                                 <li v-if="nextPage"><a @click="fetchNextAds(nextPage)" href="javascript:void(0)"><i class="lni lni-chevron-right"></i></a></li>
                             </ul>
                         </div>
                         
-                        <!--/ End Pagination -->
                     </div>
                 </div>
+                <!-- <div class="row">
+                    <div class="col-12">
+                        <a href="/adsList" class="btn">Voir plus</a>
+                    </div>
+                </div> -->
             </div>
         </div>
     </section>
@@ -440,6 +441,12 @@ const getImageUrl = (images: string) => {
     }
     return ''; // Ou une image par défaut si aucune image n'est disponible
 };
+
+const getAvatarUrl = (avatar: string) =>{
+    // Implémentez votre fonction getImageUrl ici
+    // Par exemple, si les images ont des chemins relatifs, vous pouvez les préfixer avec une URL de base
+    return `${imageUrl}/storage/${avatar}`;
+}
 
 // Définir d'autres fonctions ou variables nécessaires ici
 

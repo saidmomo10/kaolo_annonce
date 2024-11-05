@@ -11,10 +11,6 @@
                                 <label>Email</label>
                                 <input name="email" type="email" v-model="userdata.email">
                             </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input name="confirm_email" type="text" v-model="userdata.confirmation_code">
-                            </div>
 
                             <div class="button">
                                 <!-- <button v-if="loading" class="btn btn-primary" type="button" disabled>
@@ -55,7 +51,6 @@ const clientHttp = axios.create(
 
 const userdata = ref({
     email: '',
-    confirmation_code: '',
 })
 
 // const isFormValid = computed(() => {
@@ -77,9 +72,9 @@ async function confirm(){
 
         try {
             loading.value = true;
-            const user = await clientHttp.post('confirm', userdata.value);
+            const user = await clientHttp.post('/password/email', userdata.value);
             console.log(user);            
-            router.push('/login');
+            router.push('/reset');
             loading.value = false;
         }catch(error){
             console.error('Axios error:', error);

@@ -21,7 +21,7 @@
                         <img :src="getImageUrl(ad.images)" alt="#">
                         <div class="content">
                             <h6 class="title"><a href="">{{ ad.title }}</a></h6>
-                            <span class="price">{{ ad.subcategory.name }}</span>
+                            <span v-if="ad.subcategory" class="price">{{ ad.subcategory.name }}</span>
                         </div>
                     </div>
                     <div v-else-if="ad == null">

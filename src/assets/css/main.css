@@ -5311,16 +5311,19 @@ blockquote .shape {
   border-radius: 50%;
   font-size: 19px;
   font-weight: 600;
-  height: 20px;
-  text-align: center;
+  height: 30px;
+  width: 30px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
   /* display: block;
   position: absolute; */
   left: 30px;
-  top: 50%;
 }
 
 .post-ad-tab nav button.active .sub-title {
   color: #fff;
+  margin-top: 5px;
 }
 
 .post-ad-tab nav button .sub-title {

@@ -53,7 +53,7 @@
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6 col-12">
-                                        <a href="javascript:void(0)" class="lost-pass">Mot de passe oublié?</a>
+                                        <a href="/forgot" class="lost-pass">Mot de passe oublié?</a>
                                     </div>
                                 </div>
                             </div>
@@ -70,7 +70,7 @@
                                 <ul>
                                     <li><a href="javascript:void(0)" class="facebook"><i class="lni lni-facebook-original"></i>Login With
                                             Facebook</a></li>
-                                    <li><a href="javascript:void(0)" @click="loginWithGoogle" class="google"><i class="lni lni-google"></i>Login With Google
+                                    <li><a href="" @click="loginWithGoogle" class="google"><i class="lni lni-google"></i>Login With Google
                                             Plus</a>
                                     </li>
                                 </ul>

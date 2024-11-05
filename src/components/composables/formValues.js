@@ -21,7 +21,7 @@ const clientHttp = axios.create(
 const status = async () => {
     if (token){
         try {
-            const statusResponse = await clientHttp.get('user');
+            const statusResponse = await clientHttp.get('profile');
             
             // Vérifiez si la réponse est réussie et si elle contient des données
             if (statusResponse.status === 200 && statusResponse.data.id) {

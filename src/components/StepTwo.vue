@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-    <form class="default-form-style" method="post" action="#">
+    <form class="default-form-style" @submit.prevent="validateAndProceed">
         <div class="row">
             <div class="col-lg-6 col-12">
                 <div class="form-group">
@@ -25,6 +25,7 @@
 
                         </select>
                     </div>
+                    <span v-if="errors.city" class="error-message">{{ errors.city }}</span>
                 </div>
             </div>
             <div class="col-lg-6 col-12">
@@ -53,6 +54,12 @@
                     </label>
                 </div>
             </div>
+            <div class="col-12">
+                <div class="form-group button mb-0">
+                    <button @click="$emit('previous-step')" type="button" class="btn alt-btn">Retour</button>
+                    <button type="submit" class="btn">Next Step</button>
+                </div>
+            </div>
             
             <!-- <div class="col-12">
                 <div class="form-group button mb-0">
@@ -61,58 +68,46 @@
                 </div>
             </div> -->
         </div>
-        </form>
+    </form>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 const props = defineProps(['formValues'])
 
-// import { ref } from 'vue';
-// import axios from 'axios';
+const errors = ref({
+city: ''
+});
 
-// eslint-disable-next-line vue/no-dupe-keys
-// const formData = ref({
-//     price: '',
-//     country:'',
-//     city:'',
-//     description:'',
-//     delivery_statut:'' 
-// });
+const emit = defineEmits<{
+(event: 'next-step'): void;
+}>();
 
-// import { defineProps, defineEmits } from 'vue';
+const validateAndProceed = () => {
+  // Reset errors
+  for (const key in errors.value) {
+    errors.value[key] = '';
+  }
 
-// const props = defineProps<{
-//   formData: Record<string, any>;
-// }>();
+  let valid = true;
 
-// const clientHttp = axios.create(
-//     {
-//         baseURL: "http://localhost:8000/api/",
-//         headers: {
-//             Accept: "application/json",
-//         }
-//     }
-// )
+  // Validate title
+  if (!props.formValues.city.trim()) {
+    errors.value.city = 'Le titre est requis.';
+    valid = false;
+  }
 
+  
 
-// // eslint-disable-next-line vue/valid-define-emits
-// const emit = defineEmits();
-
-// const submitStepTwo = async () => {
-//   try {
-//     const response = await clientHttp.post('/api/ad/step-two', props.formData);
-//     console.log(response.data.message);
-//     emit('nextStep');
-//   } catch (error) {
-//     console.error('Error submitting step two:', error);
-//   }
-// };
-
-// const prevStep = () => {
-//   emit('prevStep');
-// };
+  if (valid) {
+    emit('next-step');
+  }
+}
 </script>
 
-<style >
-
+<style scoped>
+.error-message {
+color: red;
+font-size: 0.875em;
+}
 </style>

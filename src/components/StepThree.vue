@@ -1,6 +1,6 @@
 <template>
     <div>
-      <form action="" @submit.prevent="submitStepThree" enctype="multipart/form-data">
+      <form action="" @submit.prevent="submitStepThree">
         <section class="item-details section">
           <div class="container" >
             <div class="top-area">
@@ -46,7 +46,12 @@
             </div>
           </div>
         </section>
-        <button id="bt" type="submit" class="btn alt-btn">Publier</button>
+        <div class="col-12">
+          <div class="form-group button mb-0">
+            <button id="bt" @click="$emit('previous-step')" type="button" class="btn alt-btn">Retour</button>
+            <button id="bt" type="submit" class="btn alt-btn">Publier</button>
+          </div>
+        </div>
       </form>
     </div>
 </template>

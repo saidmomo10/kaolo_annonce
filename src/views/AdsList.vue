@@ -27,20 +27,10 @@
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="category-sidebar">
-                        <!-- Start Single Widget -->
-                        <!-- <div class="single-widget search">
-                            <h3>Search Ads</h3>
-                                <form action="">
-                                    <input v-model="query" @keyup.enter = "search()" type="text" placeholder="Search Here...">
-                                <button @click="search()" type="button"><i class="lni lni-search-alt"></i></button>
-                                </form>
-                        </div> -->
-                        <SearchAds/>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
+                        <CheckCondition/>
+                        
                         <CategorySide/>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
+                        
                         <div class="single-widget range">
                             <h3>Price Range</h3>
                             <input type="range" class="form-range" name="range" step="1" min="100" max="10000"
@@ -50,11 +40,7 @@
                                 <input type="text" id="rangePrimary" placeholder="100" />
                             </div>
                         </div>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
-                        <CheckCondition/>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
+
                         <div class="single-widget banner">
                             <h3>Advertisement</h3>
                             <a href="javascript:void(0)">

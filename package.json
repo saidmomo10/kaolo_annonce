@@ -32,6 +32,7 @@
     "mdb-vue-ui-kit": "^5.0.0",
     "moment": "^2.30.1",
     "pinia": "^2.1.7",
+    "sweetalert2": "^11.14.4",
     "tiny-slider": "^2.9.4",
     "vue": "^3.4.15",
     "vue-cool-lightbox": "^2.7.5",

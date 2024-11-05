@@ -24,7 +24,7 @@ import NotificationComponent from './NotificationComponent.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 const links = [
-  { text: 'Dashbord', url: '/dashbord' },
+  { text: 'Dashboard', url: '/dashboard' },
   { text: 'Publier une annonce', url: '/adCreate' },
   { text: 'Mes Annonces', url: '/myAds' },
   { text: 'Mettre à jour Profile', url: '/profileEdit' },

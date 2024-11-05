@@ -39,19 +39,29 @@ export const useAdStore = defineStore('ad-store', () => {
         }
     }
 
-    const filter = (query) =>{
-        if(query == ''){
-            filteredAds.value = ads.value
-            return 
-        }
+    // Méthode de filtrage
+    // Filtre les annonces en fonction des critères de filtre
+    const filter = (query) => {
         filteredAds.value = ads.value.filter(ad => {
-            return (
-                ad.title.toLowerCase().includes(query.toLowerCase()) ||
-                ad.subcategory.name.toLowerCase().includes(query.toLowerCase()) ||
-                ad.state.toLowerCase().includes(query.toLowerCase())
-            );
-        })
-    }
+            // Filtrage par state (neuf ou usé)
+            const matchesstate = query.state.length === 0 || query.state.includes(ad.state.toLowerCase());
+
+            // Filtrage par mode de prix (prix fixe ou négociable)
+            const matchesPrice_type = query.price_type.length === 0 || query.price_type.includes(ad.price_type.toLowerCase());
+
+            // Filtrage par plage de prix maximum
+            const matchesMaxPrice = ad.price <= query.maxPrice;
+
+            // Filtrage par titre
+            const matchesTitle = !query.title || ad.title.toLowerCase().includes(query.title.toLowerCase());
+
+            // Annonce correspondante si elle satisfait tous les critères
+            return matchesstate && matchesPrice_type && matchesMaxPrice && matchesTitle;
+        });
+    };
+
+
+
 
 
 

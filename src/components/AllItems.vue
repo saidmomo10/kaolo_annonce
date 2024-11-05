@@ -38,11 +38,12 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-12 align-right">
                     <ul class="action-btn">
+                        <li><RouterLink :to="{name: 'adEdit', params: {id:ad.id}}"><i class="lni lni-pencil"></i></RouterLink></li>
                         <li><RouterLink :to="{name: 'adShow', params: {id:ad.id}}"><i class="lni lni-eye"></i></RouterLink></li>
-                        <li><button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="lni lni-trash"></i></button></li>
+                        <li><button type="button" @click = "confirmDelete(ad.id)"><i class="lni lni-trash"></i></button></li>
                     </ul>
                 </div>
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                         <div class="modal-body">
@@ -50,11 +51,11 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                            <button type="button" @click = 'deleteAd(ad.id)' class="btn btn-danger">Confirmer</button>
+                            <button type="button" @click = 'deleteAd(ad.id)' class="btn btn-danger" data-bs-dismiss="modal">Confirmer</button>
                         </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
         <!-- End Single List -->
@@ -63,6 +64,7 @@
 
 <script setup lang="ts">
 import {onMounted} from 'vue';
+import Swal from 'sweetalert2';
 // import { useRoute } from 'vue-router';
 import { useAds } from './composables/adsApi';
 
@@ -72,9 +74,28 @@ const { myAds, myAdsData, deleteAd } = useAds()
 
 onMounted(myAds)
 
+// Fonction pour confirmer la suppression
+const confirmDelete = (id: number) => {
+  Swal.fire({
+    title: 'Confirmez-vous la suppression ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, supprimer',
+    confirmButtonColor: '#d33',
+    cancelButtonText: 'Annuler',
+    cancelButtonColor: '#2c7873',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await deleteAd(id);
+      await myAds(); // Recharge la liste après la suppression
+      Swal.fire('Supprimé!', 'L\'annonce a été supprimée.', 'success');
+    }
+  });
+};
+
 interface Image {
   path: string;
-}
+} 
 
 const getImageUrl = (images: Image[]) => {
   if (images && images.length > 0) {

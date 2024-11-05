@@ -3,6 +3,8 @@ import HomeView from '../views/HomeView.vue'
 import HomeView2 from '../views/HomeView2.vue'
 import LoginView from '../views/LogIn.vue'
 import ConfirmEmail from '../views/ConfirmEmail.vue'
+import ForgotEmail from '../views/ForgotEmail.vue'
+import PasswordReset from '../views/PasswordReset.vue'
 import SignUpView from '../views/SignUp.vue'
 import AdsListView from '@/views/AdsList.vue'
 import CategoryView from '../views/Admin/CategoryView.vue'
@@ -10,7 +12,7 @@ import CategoryListView from '../views/CategoryList.vue'
 import RolesView from '@/views/Admin/RolesView.vue'
 import UsersView from '@/views/Admin/UsersView.vue'
 import AdShowView from '@/views/AdShow.vue'
-import DashBord from '@/views/DashBord.vue'
+import DashBoard from '@/views/DashBoard.vue'
 import AdEdit from '@/views/AdEdit.vue'
 import ProfileEdit from '@/views/ProfileEdit.vue'
 // import CategoryShowView from '@/views/CategoryShow.vue'
@@ -69,6 +71,18 @@ const router = createRouter({
 
     },
     {
+      path: '/forgot',
+      name: 'forgot',
+      component: ForgotEmail
+
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: PasswordReset
+
+    },
+    {
       path: '/signup',
       name: 'signup',
       component: SignUpView
@@ -106,9 +120,9 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
-      path: '/dashbord',
-      name: 'Dashbord',
-      component: DashBord,
+      path: '/dashboard',
+      name: 'dashboard',
+      component: DashBoard,
       meta: { requiresAuth: true }
     },
     {
