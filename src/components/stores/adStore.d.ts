@@ -1,16 +1,28 @@
 import { Ref } from 'vue';
 
-export interface Ad {
+interface Ad {
     id: number;
     title: string;
-    subcategory: {
-        name: string;
-    };
+    price: string;
+    sold: string;
     state: string;
-    [key: string]: any; // Add more fields as necessary
+    user: User;
 }
 
-export interface AdStore {
+interface User {
+    id: number;
+    name: string;
+    email: string;
+    password: string;
+    avatar: string;
+    created_at: string;
+}
+
+interface Subcategory {
+    name: string;
+}
+
+export function useAdStore(): {
     ads: Ref<Ad[]>;
     filteredAds: Ref<Ad[]>;
     getAds: () => Promise<void>;

@@ -21,3 +21,15 @@ app.use(router)
 app.use(Vue3Toastify)
 
 app.mount('#app')
+
+// 4. Utilisation dans un composant avec <script setup>
+import { ref } from 'vue'
+import moment from 'moment'
+
+// Pour vérifier que la configuration fonctionne
+console.log(moment.locale()) // Devrait afficher 'fr'
+
+// Exemple d'utilisation
+const date = ref(new Date())
+const timeAgo = moment(date.value).fromNow()
+const fullDate = moment(date.value).format('LLLL')

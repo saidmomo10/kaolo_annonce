@@ -12,103 +12,23 @@
                 </div>
             </div>
             <div class="row ">
-                <div class="col-lg-4 col-md-4 col-12">
+                <div v-for="dept in departments" :key="dept" class="col-lg-4 col-md-4 col-12">
                     <!-- Start Single City -->
                     <div class="single-city wow fadeInUp" data-wow-delay=".2s">
-                        <a href="category.html" class="info-box">
+                        <router-link :to="'/annonces/' + dept">
                             <div class="image">
                                 <img src="../assets/images/hero/hero-bg.jpg" alt="#">
                             </div>
                             <div class="content">
                                 <h4 class="name">
-                                    New York City
+                                    {{ dept }}
                                     <span>155 Ads</span>
                                 </h4>
                             </div>
                             <div class="more-btn">
                                 <i class="lni lni-circle-plus"></i>
                             </div>
-                        </a>
-                    </div>
-                    <!-- Start Single City -->
-                </div>
-                <div class="col-lg-4 col-md-4 col-12">
-                    <!-- Start Single City -->
-                    <div class="single-city wow fadeInUp" data-wow-delay=".4s">
-                        <a href="category.html" class="info-box">
-                            <div class="image">
-                                <img src="../assets/images/hero/hero-bg.jpg" alt="#">
-                            </div>
-                            <div class="content">
-                                <h4 class="name">
-                                    Philadelphia
-                                    <span>288 Ads</span>
-                                </h4>
-                            </div>
-                            <div class="more-btn">
-                                <i class="lni lni-circle-plus"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Start Single City -->
-                </div>
-                <div class="col-lg-4 col-md-4 col-12">
-                    <!-- Start Single City -->
-                    <div class="single-city wow fadeInUp" data-wow-delay=".6s">
-                        <a href="category.html" class="info-box">
-                            <div class="image">
-                                <img src="../assets/images/hero/hero-bg.jpg" alt="#">
-                            </div>
-                            <div class="content">
-                                <h4 class="name">
-                                    Los Angeles
-                                    <span>95 Ads</span>
-                                </h4>
-                            </div>
-                            <div class="more-btn">
-                                <i class="lni lni-circle-plus"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Start Single City -->
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <!-- Start Single City -->
-                    <div class="single-city wow fadeInUp" data-wow-delay=".2s">
-                        <a href="category.html" class="info-box">
-                            <div class="image">
-                                <img src="../assets/images/hero/hero-bg.jpg" alt="#">
-                            </div>
-                            <div class="content">
-                                <h4 class="name">
-                                    San Francisco
-                                    <span>355 Ads</span>
-                                </h4>
-                            </div>
-                            <div class="more-btn">
-                                <i class="lni lni-circle-plus"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <!-- Start Single City -->
-                </div>
-                <div class="col-lg-6 col-md-6 col-12">
-                    <!-- Start Single City -->
-                    <div class="single-city wow fadeInUp" data-wow-delay=".4s">
-                        <a href="category.html" class="info-box">
-                            <div class="image">
-                                <img src="/src/assets/images/hero/hero-bg.jpg" alt="#">
-                            </div>
-                            <div class="content">
-                                <h4 class="name">
-                                    Newe Orleans
-                                    <span>76 Ads</span>
-                                </h4>
-                            </div>
-                            <div class="more-btn">
-                                <i class="lni lni-circle-plus"></i>
-                            </div>
-                        </a>
+                        </router-link>
                     </div>
                     <!-- Start Single City -->
                 </div>
@@ -119,5 +39,7 @@
 </template>
 
 <script setup lang="ts">
-
+const departments = [
+  "Atlantique", "Atacora", "Borgou", "Ouémé", "Zou"
+];
 </script>

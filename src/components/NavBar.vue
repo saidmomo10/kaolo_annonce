@@ -6,10 +6,10 @@
                 <div class="col-lg-12">
                     <div class="nav-inner">
                         <nav class="navbar navbar-expand-lg">
-                            <router-link v-if="!isLoggedIn" to="/guest"><img src="../assets/images/logo/logos.png" alt="Logo" width="80px"></router-link>
+                            <router-link v-if="!isLoggedIn" to="/guest"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
     
                             <!-- Lien vers la page d'accueil pour les utilisateurs -->
-                            <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logos.png" alt="Logo" width="80px"></router-link>
+                            <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
                             
                             <button
                                 class="navbar-toggler mobile-menu-btn"
@@ -34,16 +34,16 @@
                                 </ul>
                                 <div class="button header-button">
                                     <div id="drop" class="dropdown">
-                                        <button class="btn btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{statuData.name}}
+                                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{profile.name}}
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
                                             <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
-                                            <li><span class="dropdown-item">{{ statusData.status }}</span></li>
+                                            <li><span class="dropdown-item">{{ showSubscription.status }}</span></li>
                                             <li>
                                                 <form @submit.prevent = "logout" action="">
-                                                    <button class="dropdown-item" href="">Se déconnecter</button>
+                                                    <button class="logout dropdown-item" href="">Se déconnecter</button>
                                                 </form>
                                             </li>
                                         </ul>
@@ -69,6 +69,10 @@ import { ref, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
+import { useProfile } from '../components/composables/profileApi'
+
+const { getUser, profile } = useProfile()
+onMounted(getUser);
 
 // Variable réactive pour gérer l'état actif du bouton
 const isActive = ref(false);
@@ -91,8 +95,7 @@ const clientHttp = axios.create({
     }
 });
 
-const statusData = ref<any>([]);
-const statuData = ref<any>([]);
+const showSubscription = ref<any>([]);
 
 const status = async () => {
     if (token) {
@@ -100,7 +103,7 @@ const status = async () => {
             const statusResponse = await clientHttp.get('showSubscription');
             console.log(statusResponse);
             if (statusResponse.status === 200) {
-                statusData.value = statusResponse.data;
+                showSubscription.value = statusResponse.data;
             }
         } catch (error) {
             console.log(error);
@@ -108,23 +111,9 @@ const status = async () => {
     }
 };
 
-const profile = async () => {
-    if (token) {
-        try {
-            const statusResponse = await clientHttp.get('profile');
-            console.log(statusResponse);
-            if (statusResponse.status === 200) {
-                statuData.value = statusResponse.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-};
 
 onMounted(() => {
     status();
-    profile();
 });
 
 async function logout() {

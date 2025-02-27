@@ -29,7 +29,7 @@
       <a class="dropdown-item" v-show="unreadnotifications.length > 0" @click="markAsRead">Marquer tout comme lu</a>
       <a class="dropdown-item" v-for="(unread, index) in unreadnotifications" :key="index" @click="showPost(index)">
         <p><strong>{{unread.data.user_name}}</strong> a commenté <br> votre annonce</p>  
-        <p id="moment">{{moment(unread.created_at).fromNow()}}</p>
+        <p id="moment">{{ fromNow(unread.created_at) }}</p>
       </a>
       <a class="dropdown-item" v-show="unreadnotifications.length == 0">Pas de nouvelles notifications</a>
     </ul>
@@ -40,7 +40,7 @@
 import IconNotification from './icons/IconNotification.vue'
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import moment from 'moment';
+import { DateTime } from "luxon";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -90,6 +90,11 @@ onMounted(() => {
   const interval = setInterval(getNotifications, 500);
   return () => clearInterval(interval); // Cleaning up the interval
 });
+
+// Convertir la date en relatif avec Luxon
+const fromNow = (date: string) => {
+  return DateTime.fromISO(date).setLocale("fr").toRelative();
+};
 </script>
 
 

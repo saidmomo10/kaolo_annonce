@@ -66,14 +66,15 @@
                                     <h3 class="title">
                                         <a href="item-details.html">{{ ads.title }}</a>
                                     </h3>
-                                    <p class="update-time">{{moment(ads.created_at).fromNow()}}</p>
+                                    <p class="update-time">Publié {{ fromNow(ads.created_at) }}</p>
 
                                     <ul class="info-list">
                                         <li><i class="lni lni-map-marker"></i>{{ ads.city }}</li>
                                     </ul>
                                 </div>
                                 <div class="bottom-content">
-                                    <p class="price">Prix: <span>CFA {{ ads.price }}</span></p>
+                                    <p v-if="ads.price" class="price">Prix: <span>CFA {{ ads.price }}</span></p>
+                                    <p v-if="ads.price == null" class="price">Prix: <span>À débattre</span></p>
                                     <a href="javascript:void(0)" class="like"><i class="lni lni-heart"></i></a>
                                 </div>
                             </div>
@@ -180,6 +181,7 @@
     <!-- /End Why Choose Area -->
 
     <ByCity/>
+    <MostViews/>
 
     <!-- Start Call Action Area -->
     <section class="call-action overlay section">
@@ -376,105 +378,56 @@ import NavBar from '@/components/NavBar.vue'
 import CategorySlider from '@/components/CategorySlider.vue';
 import LiveSearch from '@/components/LiveSearch.vue';
 import ByCity from '@/components/ByCity.vue'
-import moment from 'moment'
+import { DateTime } from "luxon";
 import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import WOW from 'wow.js';
 import {useAds} from '../components/composables/adsApi';
 import axios from 'axios';
+import { useProfile } from '../components/composables/profileApi'
+import { useSubscription } from '../components/composables/subscriptionsApi'
+import MostViews from '@/components/MostViews.vue';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-const imageUrl = import.meta.env.VITE_IMAGE_URL
+    const { subscriptionData, subscription, activateSubscription } = useSubscription()
+    onMounted(subscription);
 
-const { nextPage, previousPage, currentPage, totalPages, statusData, fetchPageAds, fetchNextAds, fetchPrevAds, status } = useAds();
+    const route = useRoute()
 
-// Initialisation de WOW.js après le chargement du composant
-onMounted(() => {
-    new WOW().init();
-    fetchPrevAds();
-    fetchNextAds();
-    fetchPageAds();
-    status();
-});
-
-const token = localStorage.getItem('token');
-const clientHttp = axios.create({
-    baseURL: `${backendUrl}/api/`,
-    headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
+    const handleActivateSubscription = async() =>{
+        await activateSubscription(Number(route.params.id))
     }
-});
 
-const subscriptionData = ref([]);
 
-// Fonction pour récupérer les données d'abonnement depuis l'API
-const subscription = async () => {
-    if (token) {
-        try {
-            const subscriptionResponse = await clientHttp.get('subscriptions-list');
-            if (subscriptionResponse.status === 200) {
-                subscriptionData.value = subscriptionResponse.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-};
+    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const imageUrl = import.meta.env.VITE_IMAGE_URL
 
-// Appeler la fonction d'abonnement lors du chargement du composant
-subscription();
+    const { nextPage, previousPage, currentPage, totalPages, statusData, fetchPageAds, fetchNextAds, fetchPrevAds, status } = useAds();
 
-// Fonction pour activer un abonnement
-async function activateSubscription(id: number) {
-    try {
-        const activate = await clientHttp.put(`activateSubscription/${id}`);
-        window.location.reload();
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-// Fonction pour obtenir l'URL de l'image
-const getImageUrl = (images: string) => {
-    if (images && images.length > 0) {
-        return `${imageUrl}/storage/` + images[0].path;
-    }
-    return ''; // Ou une image par défaut si aucune image n'est disponible
-};
-
-const getAvatarUrl = (avatar: string) =>{
-    // Implémentez votre fonction getImageUrl ici
-    // Par exemple, si les images ont des chemins relatifs, vous pouvez les préfixer avec une URL de base
-    return `${imageUrl}/storage/${avatar}`;
-}
-
-// Définir d'autres fonctions ou variables nécessaires ici
-
-const statuData = ref([])
-
-    const statu = async ()=>{
-    
-        try{
-            // const email = router.currentRoute.params.email;
-            const statusResponse = await clientHttp.get('profile')
-      console.log(statusResponse);
-      
-            if(statusResponse.status === 200){
-                statuData.value = statusResponse.data.message
-            }
-        } catch(error){
-            console.log(error);
-            
-        }
-    
-}
-onMounted(() => {
-        // Appeler fetchStatus au démarrage
-        statu();
-
-        // Actualiser les données toutes les X secondes (par exemple, toutes les 5 secondes)
-        // setInterval(status, 2000);
+    // Initialisation de WOW.js après le chargement du composant
+    onMounted(() => {
+        new WOW().init();
+        fetchPrevAds(previousPage.value);
+        fetchNextAds(nextPage.value);
+        fetchPageAds(currentPage.value);
+        status();
     });
+
+    interface AdImage {
+    path: string;
+    }
+
+    // Fonction pour obtenir l'URL de l'image
+    const getImageUrl = (images: AdImage[]) => {
+        if (images && images.length > 0) {
+            return `${imageUrl}/storage/` + images[0].path;
+        }
+        return ''; // Ou une image par défaut si aucune image n'est disponible
+    };
+
+    // Convertir la date en relatif avec Luxon
+    const fromNow = (date: string) => {
+        return DateTime.fromISO(date).setLocale("fr").toRelative();
+    };
 </script>
 
 

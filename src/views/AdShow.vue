@@ -104,19 +104,8 @@
                         <div class="single-block description">
                             <h3>Description</h3>
                             <p>
-                                There are many variations of passages of Lorem Ipsum available, but the majority have
-                                suffered alteration in some form, by injected humour, or randomised words which don't
-                                look even slightly believable.
+                                {{ editData.description }}
                             </p>
-                            <ul>
-                                <li>Model: Apple MacBook Pro 13.3-Inch MYDA2</li>
-                                <li>Apple M1 chip with 8-core CPU and 8-core GPU</li>
-                                <li>8GB RAM</li>
-                                <li>256GB SSD</li>
-                                <li>13.3-inch 2560x1600 LED-backlit Retina Display</li>
-                            </ul>
-                            <p>The generated Lorem Ipsum is therefore always free from repetition, injected humour, or
-                                non-characteristic words etc.</p>
                         </div>
                         <!-- End Single Block -->
                         <!-- Start Single Block -->
@@ -132,7 +121,7 @@
                         <!-- End Single Block -->
                         <!-- Start Single Block -->
                         <div class="single-block comments">
-                            <h3>Comments</h3>
+                            <h3>Commentaires</h3>
                             <!-- Start Single Comment -->
                             <div class="single-comment">
                                 <div v-for="commentaire in comment" :key="commentaire.id" class="content">
@@ -141,7 +130,7 @@
                                     <span>
                                         {{ commentaire.comment }}
                                     </span>
-                                    <span>{{moment(commentaire.created_at).fromNow()}}</span>
+                                    <span>{{ fromNow(commentaire.created_at) }}</span>
                                     <!-- <a href="javascript:void(0)" class="reply"><i class="lni lni-reply"></i> Reply</a> -->
                                 </div>
                             </div>
@@ -150,7 +139,7 @@
                         <!-- End Single Block -->
                         <!-- Start Single Block -->
                         <div class="single-block comment-form">
-                            <h3>Post a comment</h3>
+                            <h3>Poster un commentaire</h3>
                             <form @submit.prevent = "handleAddComment" action="#">
                                 <div class="row">
                                     <div class="col-12">
@@ -174,12 +163,12 @@
                         <div class="item-details-sidebar">
                             <!-- Start Single Block -->
                             <div class="single-block author">
-                                <h3>Author</h3>
+                                <h3>Auteur</h3>
                                 <div v-if="editData.user" class="content">
-                                    <img :src="getAvatarUrl(editData.user.avatar)" :alt="editData.user.name" width="60px">
+                                    <img :src="editData.user.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16" width="60%">
                                     <h4>{{ editData.user.name }}</h4>
                                     <span>Membre depuis {{ formatDate(editData.user.created_at) }}</span>
-                                    <a href="javascript:void(0)" class="see-all">See All Ads</a>
+                                    <a href="javascript:void(0)" class="see-all">Voir ses annonces</a>
                                 </div>
                             </div>
                             
@@ -257,7 +246,8 @@
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
 import {ref, onMounted} from 'vue';
-import moment from 'moment';
+import { DateTime } from "luxon";
+
 import { useRoute } from 'vue-router';
 import {useAds} from '../components/composables/adsApi'
 
@@ -289,21 +279,18 @@ const {showAd, editData, comment, commentData, updateStatus, userData, getUser, 
 const index = ref(null);
 
 onMounted(() => {
-    const intervalId = setInterval(() => {
-        showAd(route.params.id); // Appeler la fonction showAd avec le bon paramètre
-    }, 2000); // Exécuter toutes les 2 secondes
-
-    return () => clearInterval(intervalId); // Nettoyer l'intervalle lors du démontage du composant
+    const adId = Number(route.params.id); // Récupère l'ID depuis l'URL
+    showAd(adId); // Appelle la fonction pour récupérer l'annonce
 });
 
 onMounted(getUser);
 onMounted(getComment)
 
 function handleUpdateStatus(){
-    updateStatus(route.params.id)
+    updateStatus(Number(route.params.id))
 }
 const handleAddComment = async() =>{
-    await addComment(route.params.id)
+    await addComment(Number(route.params.id))
 
 
 }
@@ -321,10 +308,13 @@ const getAvatarUrl = (avatar: string) =>{
     return `${imageUrl}/storage/${avatar}`;
 }
 
-const formatDate = (dateString: string | number | Date) => {
-  const date = new Date(dateString);
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  return date.toLocaleDateString('fr-FR', options);
+const formatDate = (date: string) => {
+  return DateTime.fromISO(date).setLocale("fr").toFormat("dd/MM/yyyy HH:mm");
+};
+
+// Convertir la date en relatif avec Luxon
+const fromNow = (date: string) => {
+  return DateTime.fromISO(date).setLocale("fr").toRelative();
 };
 
 
@@ -337,11 +327,16 @@ const formatDate = (dateString: string | number | Date) => {
   font-size: 15px;
   font-weight: 500;
   padding: 15px 30px;
-  background-color: #5830E0;
+  background-color: #2c7873;
   color: #fff;
   border: none;
   -webkit-transition: 0.5s;
   transition: 0.5s;
   border-radius: 4px;
+}
+
+#bt:hover {
+    background-color: #ffda06;
+    color: #2c7873;
 }
 </style>

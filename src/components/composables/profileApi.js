@@ -7,7 +7,7 @@ import { useRoute } from 'vue-router';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-export default function useProfile(){
+export function useProfile(){
     const token = localStorage.getItem('token');
     // const user = localStorage.getItem('userId')
 
@@ -21,7 +21,7 @@ export default function useProfile(){
         }
     )
 
-    const statusData = ref({});
+    const profile = ref({});
 
     const getUser = async ()=>{
         if (token){
@@ -31,7 +31,7 @@ export default function useProfile(){
                 console.log(statusResponse.data);
         
                 if(statusResponse.status === 200){
-                    statusData.value = statusResponse.data
+                    profile.value = statusResponse.data
                 }
             } catch(error){
                 console.log(error);
@@ -46,7 +46,7 @@ export default function useProfile(){
           // Envoyer les données de l'étape trois une fois soumises
           // Vous pouvez également ajouter des validations ici
           // et déclencher l'événement resetForm une fois le formulaire soumis avec succès
-          const response = await clientHttp.put('profile', statusData.value);
+          const response = await clientHttp.put('profile', profile.value);
           toast.success(response.data.success)
           console.log(response.data);
           // router.replace('/adsList')
@@ -85,12 +85,24 @@ export default function useProfile(){
         }
     };
 
+    async function logout() {
+      try {
+          const user = await clientHttp.post('logout');
+          console.log(user);
+          localStorage.removeItem('token');
+          router.replace('/login');
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
     
     return{
         getUser,
         updateProfile,
-        statusData,
+        profile,
         updatePassword,
-        passwordData
+        passwordData,
+        logout
     }
 }

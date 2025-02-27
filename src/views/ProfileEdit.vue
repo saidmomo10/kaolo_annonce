@@ -43,13 +43,13 @@
                                         <div class="col-lg-6 col-12">
                                             <div class="form-group">
                                                 <label>Nom*</label>
-                                                <input v-model.trim="statusData.name" name="usernames" type="text" placeholder="@username">
+                                                <input v-model.trim="profile.name" name="usernames" type="text" placeholder="@username">
                                             </div>
                                         </div>
                                         <div class="col-lg-6 col-12">
                                             <div class="form-group">
                                                 <label>Email*</label>
-                                                <input v-model.trim="statusData.email" name="email" type="email" placeholder="username@gmail.com">
+                                                <input v-model.trim="profile.email" name="email" type="email" placeholder="username@gmail.com">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -82,10 +82,10 @@
                                     <div class="row">
                                         <!-- Champ de mot de passe actuel -->
                                     <div class="form-group">
-                                        <label>Current Password*</label>
+                                        <label>Mot de passe actuel*</label>
                                         <div class="control has-icons-right">
                                             <input v-if="showPassword" v-model="passwordData.current_password" name="current-password" type="text" placeholder="Enter old password">
-                                            <input v-else v-model="passwordData.current_password" name="current-password" type="password" placeholder="Enter old password">
+                                            <input v-else v-model="passwordData.current_password" name="current-password" type="password" placeholder="Entrez actuel mot de passe">
                                             <span @click="toggleShow" aria-label="Toggle password visibility">
                                                 <span class="icon is-right">
                                                     <i class="fas" :class="{ 'fa-eye': showPassword, 'fa-eye-slash': !showPassword }"></i>
@@ -96,10 +96,10 @@
 
                                     <!-- Champ de nouveau mot de passe -->
                                     <div class="form-group">
-                                        <label>New Password*</label>
+                                        <label>Nouveau mot de passe*</label>
                                         <div class="control has-icons-right">
                                             <input v-if="showNewPassword" v-model="passwordData.new_password" name="new-password" type="text" placeholder="Enter new password" class="input">
-                                            <input v-else v-model="passwordData.new_password" name="new-password" type="password" placeholder="Enter new password" class="input">
+                                            <input v-else v-model="passwordData.new_password" name="new-password" type="password" placeholder="Entrez nouveau mot de passe" class="input">
                                             <span @click="toggleShowNewPassword" aria-label="Toggle new password visibility">
                                                 <span class="icon is-right">
                                                     <i class="fas" :class="{ 'fa-eye': showNewPassword, 'fa-eye-slash': !showNewPassword }"></i>
@@ -139,9 +139,9 @@ import NavBar from '@/components/NavBar.vue';
 // import FooterComponent from '@/components/FooterComponent.vue';
 import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import {ref, onMounted, computed} from 'vue'
-import useProfile from '../components/composables/profileApi'
+import { useProfile } from '@/components/composables/profileApi'
 
-const {getUser, statusData, updateProfile, updatePassword, passwordData} = useProfile()
+const {getUser, profile, updateProfile, updatePassword, passwordData} = useProfile()
 
 onMounted(getUser)
 
@@ -167,7 +167,7 @@ const onFileChange = (e: Event) => {
 };
 
 function handleUpdateProfile(){
-    updateProfile(statusData.value)
+    updateProfile(profile.value)
 }
 
 function handleUpdatePassword(){

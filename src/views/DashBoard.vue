@@ -80,38 +80,14 @@
                             <div class="col-lg-6 col-md-12 col-12">
                                 <!-- Start Recent Items -->
                                 <div class="recent-items dashboard-block">
-                                    <h3 class="block-title">Recent Ads</h3>
-                                    <ul>
+                                    <h3 class="block-title">Annonces récentes</h3>
+                                    <ul v-for="ad in myAdsData.all">
                                         <li>
                                             <div class="image">
-                                                <a href="javascript:void(0)"><img src="" alt="#"></a>
+                                                <RouterLink :to="{name: 'adShow', params: {id:ad.id}}"><img :src="getImageUrl(ad.images)" alt="#"></RouterLink>
                                             </div>
-                                            <a href="javascript:void(0)" class="title">iPhone 11 Pro Max</a>
-                                            <span class="time">12 Minutes Ago</span>
-                                            <span class="remove"><a href="javascript:void(0)"><i class="lni lni-close"></i></a></span>
-                                        </li>
-                                        <li>
-                                            <div class="image">
-                                                <a href="javascript:void(0)"><img src="" alt="#"></a>
-                                            </div>
-                                            <a href="javascript:void(0)" class="title">Polaris 600 Assault 144</a>
-                                            <span class="time">5 days Ago</span>
-                                            <span class="remove"><a href="javascript:void(0)"><i class="lni lni-close"></i></a></span>
-                                        </li>
-                                        <li>
-                                            <div class="image">
-                                                <a href="javascript:void(0)"><img src="" alt="#"></a>
-                                            </div>
-                                            <a href="javascript:void(0)" class="title">Brand New Bagpack</a>
-                                            <span class="time">1 week Ago</span>
-                                            <span class="remove"><a href="javascript:void(0)"><i class="lni lni-close"></i></a></span>
-                                        </li>
-                                        <li>
-                                            <div class="image">
-                                                <a href="javascript:void(0)"><img src="" alt="#"></a>
-                                            </div>
-                                            <a href="javascript:void(0)" class="title">Honda Civic VTi 2023</a>
-                                            <span class="time">3 week Ago</span>
+                                            <a href="javascript:void(0)" class="title">{{ ad.title }}</a>
+                                            <span class="time">Il y a {{ fromNow(ad.created_at) }}</span>
                                             <span class="remove"><a href="javascript:void(0)"><i class="lni lni-close"></i></a></span>
                                         </li>
                                     </ul>
@@ -131,10 +107,11 @@
 
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue';
+import { DateTime } from "luxon";
 // import FooterComponent from '@/components/FooterComponent.vue';
 import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import {ref, onMounted, computed} from 'vue'
-import {useAds} from '../components/composables/adsApi'
+import {useAds, type AdImage} from '../components/composables/adsApi'
 
 const { myAds, myAdsData } = useAds()
 const loading = ref(false);
@@ -143,5 +120,18 @@ onMounted(async () => {
     await myAds(); // Fetch data
     loading.value = false; // Set loading to false after data is fetched
 });
+
+const imageUrl = import.meta.env.VITE_IMAGE_URL
+
+const getImageUrl = (images: AdImage[]) => {
+        if (images && images.length > 0) {
+            return `${imageUrl}/storage/` + images[0].path;
+        }
+        return ''; // Ou une image par défaut si aucune image n'est disponible
+};
+
+const fromNow = (date: string) => {
+    return DateTime.fromISO(date).setLocale("fr").toRelative();
+};
 
 </script>

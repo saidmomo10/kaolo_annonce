@@ -12,6 +12,7 @@ import CategoryListView from '../views/CategoryList.vue'
 import RolesView from '@/views/Admin/RolesView.vue'
 import UsersView from '@/views/Admin/UsersView.vue'
 import AdShowView from '@/views/AdShow.vue'
+import AdsDeptmtView from '@/views/AdsDeptmt.vue'
 import DashBoard from '@/views/DashBoard.vue'
 import AdEdit from '@/views/AdEdit.vue'
 import ProfileEdit from '@/views/ProfileEdit.vue'
@@ -144,6 +145,11 @@ const router = createRouter({
       path: '/ad/:id',
       name: 'adShow',
       component: AdShowView
+    },
+    {
+      path: '/annonces/:department',
+      name: 'adDeptmt',
+      component: AdsDeptmtView
     },
     {
       path: '/edit/:id',

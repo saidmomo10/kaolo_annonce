@@ -6,10 +6,10 @@
                 <div class="col-lg-12">
                     <div class="nav-inner">
                         <nav class="navbar navbar-expand-lg">
-                            <router-link v-if="!isLoggedIn" to="/guest"><img src="../assets/images/logo/logos.png" alt="Logo" width="80px"></router-link>
+                            <router-link v-if="!isLoggedIn" to="/guest"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
     
                             <!-- Lien vers la page d'accueil pour les utilisateurs -->
-                            <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logos.png" alt="Logo" width="80px"></router-link>
+                            <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
                             
                             <button class="navbar-toggler mobile-menu-btn" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

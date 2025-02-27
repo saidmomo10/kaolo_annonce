@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import router from '@/router';
-// import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -75,7 +75,7 @@ export function useAds(){
     const fetchNextAds = async (url) => {
     try {
         const statusResponse = await clientHttp.get(url);
-        console.log(statusResponse);
+        // console.log(statusResponse);
 
         if (statusResponse.status === 200) {
         const pagination = statusResponse.data;
@@ -144,6 +144,21 @@ export function useAds(){
             } catch(error){
                 console.log(error);
                 
+            }
+        }
+    }
+
+    const mostVisitedAds = ref([])
+
+    const getMostVisitedAds = async () => {
+        if (token) {
+            try {
+                const response = await clientHttp.get('most-visited');
+                if (response.status === 200) {
+                    mostVisitedAds.value = response.data;
+                }
+            } catch (error) {
+                console.error("Erreur lors de la récupération des annonces les plus visitées:", error);
             }
         }
     }
@@ -219,9 +234,9 @@ export function useAds(){
 
         try {
             const comments = await clientHttp.post('comments',formData.value);
-            console.log(comments.data);
+            // console.log(comments.data);
             formData.value.comment = "";
-            // window.location.reload();
+            window.location.reload();
         }catch(error){
                 // emailError.value = 'L\'adresse email doit contenir le symbole "@".';
                 // passwordError.value = 'Le mot de passe doit avoir au moins 8 caractères.';
@@ -233,7 +248,7 @@ export function useAds(){
     const getComment = async () => {
         try {
             const statusResponse = await clientHttp.get('comments');
-            console.log(statusResponse);
+            // console.log(statusResponse);
 
             if (statusResponse.status === 200) {
                 commentData.value = statusResponse.data;
@@ -271,6 +286,19 @@ export function useAds(){
             console.log(error);
         }
     }
+
+    const route = useRoute();
+    const department = ref(route.params.department);
+    const annonces = ref([]);
+
+    const fetchAnnonces = async () => {
+    try {
+        const response = await clientHttp.get(`/annonces/department/${department.value}`);
+        annonces.value = response.data;
+    } catch (error) {
+        console.error("Erreur de récupération :", error);
+    }
+    };
 
     //Post
 
@@ -343,6 +371,8 @@ export function useAds(){
         myAdsData,
         formData,
         commentData,
+        annonces,
+        mostVisitedAds,
         addComment,
         getComment,
         UpdateAd,
@@ -354,6 +384,8 @@ export function useAds(){
         fetchNextAds,
         fetchPrevAds,
         status,
+        fetchAnnonces,
+        getMostVisitedAds,
         
         // // getResults,
         // // selectedItem

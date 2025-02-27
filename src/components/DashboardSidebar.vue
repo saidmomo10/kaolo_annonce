@@ -1,9 +1,12 @@
 <template>
   <div class="dashboard-sidebar">
     <div class="row user-image">
-      <NotificationComponent/>
-      <h3>Steve Aldridge
-        <span><a href="javascript:void(0)">@username</a></span>
+      <div class="single">
+        <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
+        <NotificationComponent/>
+      </div>
+      <h3>{{ profile.name }}
+        <span><a href="javascript:void(0)">{{ profile.email }}</a></span>
       </h3>
     </div>
     <div class="dashboard-menu">
@@ -12,16 +15,23 @@
           <router-link :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
         </li>
       </ul>
-      <div class="button">
-        <a class="btn" href="javascript:void(0)">Logout</a>
-      </div>
+      <form @submit.prevent = "logout" action="">
+        <div class="button">
+          <a class="btn" href="">Logout</a>
+        </div>
+      </form>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import NotificationComponent from './NotificationComponent.vue';
 import { useRouter, useRoute } from 'vue-router';
+import { useProfile } from '../components/composables/profileApi'
+
+const { getUser, profile } = useProfile()
+onMounted(getUser);
 
 const links = [
   { text: 'Dashboard', url: '/dashboard' },

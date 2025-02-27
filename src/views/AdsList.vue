@@ -95,7 +95,8 @@
                                                         <p class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
                                                                 </i>Boston</a></p>
                                                         <ul class="info">
-                                                            <li class="price">{{ ad.price }}</li>
+                                                            <li v-if="ad.price" class="price">Prix: {{ ad.price }} CFA</li>
+                                                            <li v-if="ad.price == null" class="price">Prix: À débattre</li>
                                                             <li class="like"><a href="javascript:void(0)"><i
                                                                         class="lni lni-heart"></i></a>
                                                             </li>
@@ -135,7 +136,8 @@
                                                                             class="lni lni-map-marker">
                                                                         </i>San Francisco</a></p>
                                                                 <ul class="info">
-                                                                    <li class="price">{{ ad.price }}</li>
+                                                                    <li v-if="ad.price" class="price">Prix: {{ ad.price }} CFA</li>
+                                                                    <li v-if="ad.price == null" class="price">Prix: À débattre</li>
                                                                     <li class="like"><a href="javascript:void(0)"><i
                                                                                 class="lni lni-heart"></i></a>
                                                                     </li>
@@ -182,7 +184,7 @@ import CheckCondition from '@/components/CheckCondition.vue'
 import { RouterLink } from 'vue-router'
 // import useAds from '../components/composables/adsApi'
 
-import { useAdStore } from '../components/stores/adStore.js'
+import { useAdStore } from '../components/stores/adStore'
 const adStore = useAdStore()
 adStore.getAds()
 

@@ -27,54 +27,20 @@
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-12">
                     <div class="category-sidebar">
-                        <!-- Start Single Widget -->
-                        <!-- <div class="single-widget search">
-                            <h3>Search Ads</h3>
-                                <form action="">
-                                    <input v-model="query" @keyup.enter = "search()" type="text" placeholder="Search Here...">
-                                <button @click="search()" type="button"><i class="lni lni-search-alt"></i></button>
-                                </form>
-                        </div> -->
+                        <CheckCondition/>
                         
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
                         <CategorySide/>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
+                        
                         <div class="single-widget range">
                             <h3>Price Range</h3>
                             <input type="range" class="form-range" name="range" step="1" min="100" max="10000"
                                 value="10" onchange="rangePrimary.value=value">
                             <div class="range-inner">
-                                <label>$</label>
+                                <label>F</label>
                                 <input type="text" id="rangePrimary" placeholder="100" />
                             </div>
                         </div>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
-                        <div class="single-widget condition">
-                            <h3>Condition</h3>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-                                <label class="form-check-label" for="flexCheckDefault1">
-                                    All
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-                                <label class="form-check-label" for="flexCheckDefault2">
-                                    New
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
-                                <label class="form-check-label" for="flexCheckDefault3">
-                                    Used
-                                </label>
-                            </div>
-                        </div>
-                        <!-- End Single Widget -->
-                        <!-- Start Single Widget -->
+
                         <div class="single-widget banner">
                             <h3>Advertisement</h3>
                             <a href="javascript:void(0)">
@@ -90,8 +56,8 @@
                             <div class="col-12">
                                 <div class="category-grid-topbar">
                                     <div class="row align-items-center">
-                                        <div v-if="statusData.subCategory" class="col-lg-6 col-md-6 col-12">
-                                            <h3>{{ statusData.subCategory.name }}</h3>                                  
+                                        <div class="col-lg-6 col-md-6 col-12">
+                                            <h3 class="title">Showing 1-12 of 21 ads found</h3>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-12">
                                             <nav>
@@ -113,7 +79,7 @@
                                     <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
                                         aria-labelledby="nav-grid-tab">
                                         <div class="row">
-                                            <div class="col-lg-4 col-md-6 col-12" v-for = "ad in statusData.ads" :key="ad.id">
+                                            <div class="col-lg-4 col-md-6 col-12" v-for = "ad in annonces" :key="ad.id">
                                                 <!-- Start Single Item -->
                                                 <div class="single-item-grid">
                                                     <div class="image">
@@ -127,11 +93,12 @@
                                                             <a href="item-details.html">{{ ad.title }}</a>
                                                         </h3>
                                                         <p class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
-                                                                </i>{{ ad.department }}, {{ ad.city }}</a></p>
+                                                                </i>Boston</a></p>
                                                         <ul class="info">
-                                                            <li v-if="ad.price !== null" class="price">{{ ad.price }} CFA</li>
-                                                            <li v-if="ad.price == null" class="price">{{ ad.price_type }}</li>
-                                                            <li class="like">{{ ad.views }} vues</li>
+                                                            <li class="price">{{ ad.price }}</li>
+                                                            <li class="like"><a href="javascript:void(0)"><i
+                                                                        class="lni lni-heart"></i></a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -147,7 +114,7 @@
                                     <div class="tab-pane fade" id="nav-list" role="tabpanel"
                                         aria-labelledby="nav-list-tab">
                                         <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-12" v-for = "ad in statusData.ads" :key="ad.id">
+                                            <div class="col-lg-12 col-md-12 col-12" v-for = "ad in annonces" :key="ad.id">
                                                 <div class="single-item-grid">
                                                     <div class="row align-items-center">
                                                         <div class="col-lg-5 col-md-7 col-12">
@@ -159,8 +126,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-7 col-md-5 col-12">
-                                                            <div class="content">
-                                                                <!-- <a href="javascript:void(0)" class="tag">{{ ad.subcategory.name }}</a> -->
+                                                            <div v-if="ad.subcategory" class="content">
+                                                                <a href="javascript:void(0)" class="tag">{{ ad.subcategory.name }}</a>
                                                                 <h3 class="title">
                                                                     <a href="item-details.html">{{ ad.title }}</a>
                                                                 </h3>
@@ -168,7 +135,7 @@
                                                                             class="lni lni-map-marker">
                                                                         </i>San Francisco</a></p>
                                                                 <ul class="info">
-                                                                    <li class="price">{{ ad.price }} CFA</li>
+                                                                    <li class="price">{{ ad.price }}</li>
                                                                     <li class="like"><a href="javascript:void(0)"><i
                                                                                 class="lni lni-heart"></i></a>
                                                                     </li>
@@ -209,20 +176,13 @@
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
 import {ref, onMounted} from 'vue';
-import SearchAds from '@/components/SearchAds.vue';
-import CategorySide from '@/components/CategorySide.vue';
 import { RouterLink } from 'vue-router'
-import { useCategories } from '../components/composables/categoriesApi'
-import { useRoute } from 'vue-router';
+import {useAds} from '../components/composables/adsApi'
 
-const imageUrl = import.meta.env.VITE_IMAGE_URL
+const {annonces, fetchAnnonces} = useAds()
 
-const route = useRoute()
 
-const {showCategory, statusData} = useCategories()
-onMounted(()=>{
-    showCategory(route.params.id)
-})
+onMounted(fetchAnnonces);
 
 
 
@@ -248,11 +208,10 @@ onMounted(()=>{
 
 
 
-interface Image {
-  path: string;
-}
 
-const getImageUrl = (images: Image[]) => {
+const imageUrl = import.meta.env.VITE_IMAGE_URL
+
+const getImageUrl = (images: string) => {
   if (images && images.length > 0) {
     return `${imageUrl}/storage/` + images[0].path;
   }

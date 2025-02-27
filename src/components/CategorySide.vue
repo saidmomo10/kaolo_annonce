@@ -5,6 +5,7 @@
             <li v-for="category in categoryData" :key="category.id">
                 <RouterLink @click="reloadPage(category.id)" :to="{ name: 'categoryShow', params: { id: category.id }}" :class="{ 'nav-link': true, 'active': isActiveLink({ name: 'categoryShow', params: { id: category.id } }) }">
                     <img :src="getImageUrl(category.icone)" :alt="category.name" width="40px" id="icone">{{ category.name }}
+                    <span>{{ category.ads_count }}</span>
                 </RouterLink>
             </li>
         </ul>
