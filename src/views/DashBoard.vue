@@ -94,6 +94,29 @@
                                 </div>
                                 <!-- End Recent Items -->
                             </div>
+
+                            <div class="col-lg-6 col-md-12 col-12">
+                                <!-- Start Recent Items -->
+                                <div class="infos dashboard-block">
+                                    <h3 class="block-title">Annonces récentes</h3>
+                                    <ul>
+                                        <li>
+                                            <h6>Offre</h6>
+                                            <p v-if="subscriptionStatut">{{ subscriptionName.name }}</p>
+                                            <p v-if="subscriptionStatut">{{ subscriptionName.name }}</p>
+                                        </li>
+                                        <li>
+                                            <h6>Data d'échéance</h6>
+                                            <p>Evasion</p>
+                                        </li>
+                                        <li>
+                                            <h6>Offre</h6>
+                                            <p>Evasion</p>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- End Recent Items -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -112,6 +135,7 @@ import { DateTime } from "luxon";
 import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import {ref, onMounted, computed} from 'vue'
 import {useAds, type AdImage} from '../components/composables/adsApi'
+import { useSubscription } from '@/components/composables/subscriptionsApi'
 
 const { myAds, myAdsData } = useAds()
 const loading = ref(false);
@@ -133,5 +157,10 @@ const getImageUrl = (images: AdImage[]) => {
 const fromNow = (date: string) => {
     return DateTime.fromISO(date).setLocale("fr").toRelative();
 };
+
+
+const { subscriptionStatut, subscriptionName, showSubscription } = useSubscription()
+onMounted(showSubscription);
+
 
 </script>

@@ -19,7 +19,7 @@
         </div>
         <!-- End List Title -->
         <!-- Start Single List -->
-        <div v-if="myAdsData && myAdsData.sale && myAdsData.sale.length > 0">
+        <div v-if="myAdsData && myAdsData.sale">
             <div v-for="ad in myAdsData.sale" :key="ad.id" class="single-item-list">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-5 col-12">

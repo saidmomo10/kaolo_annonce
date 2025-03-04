@@ -3947,7 +3947,8 @@ blockquote .shape {
 
 .category-sidebar .single-widget .list li a {
   color: #888;
-  display: block;
+  display: flex;
+  gap: 10px;
   position: relative;
   padding-right: 35px;
 }
@@ -3959,6 +3960,7 @@ blockquote .shape {
 .category-sidebar .single-widget .list li a span {
   height: 30px;
   width: 30px;
+  margin-right: 10px;
   line-height: 28px;
   text-align: center;
   display: block;
@@ -3978,6 +3980,9 @@ blockquote .shape {
 
 .category-sidebar .single-widget .list li a.router-link-active {
   color: #2c7873;
+  font-weight: 900;
+  border: 1px solid #b0dad7;
+  border-radius: 20px;
 }
 
 .category-sidebar .single-widget .list li a:hover span {
@@ -4897,6 +4902,23 @@ blockquote .shape {
 
 .dashboard .main-content .recent-items {
   padding-bottom: 20px;
+}
+
+.dashboard .main-content .infos ul {
+  display: block;
+  position: relative;
+  padding-right: 50px;
+  padding-left: 30px;
+  padding-bottom: 25px;
+  background: #fff;
+  -webkit-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.dashboard .main-content .infos ul li {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
 }
 
 .dashboard .main-content .recent-items .block-title {

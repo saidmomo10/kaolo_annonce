@@ -39,9 +39,30 @@ export function useSubscription() {
         }
     }
 
+    const subscriptionStatut = ref([])
+    const subscriptionName = ref([])
+
+    const showSubscription = async () => {
+        if (token) {
+            try {
+                const statusResponse = await clientHttp.get('showSubscription');
+                console.log(statusResponse);
+                if (statusResponse.status === 200) {
+                    subscriptionStatut.value = statusResponse.data.status;
+                    subscriptionName.value = statusResponse.data.subscription;
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
     return {
+        subscriptionName,
+        subscriptionStatut,
         subscriptionData,
         subscription,
-        activateSubscription
+        activateSubscription,
+        showSubscription
     }
 }

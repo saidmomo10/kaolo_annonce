@@ -35,12 +35,13 @@
                                 <div class="button header-button">
                                     <div id="drop" class="dropdown">
                                         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            {{profile.name}}
+                                            <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
+                                            <span>{{profile.name}}</span>
                                         </button>
                                         <ul class="dropdown-menu">
                                             <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
                                             <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
-                                            <li><span class="dropdown-item">{{ showSubscription.status }}</span></li>
+                                            <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
                                             <li>
                                                 <form @submit.prevent = "logout" action="">
                                                     <button class="logout dropdown-item" href="">Se déconnecter</button>
@@ -70,10 +71,14 @@ import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
 import router from '@/router';
 import { useProfile } from '../components/composables/profileApi'
+import { useSubscription } from '../components/composables/subscriptionsApi'
 
 const { getUser, profile } = useProfile()
 onMounted(getUser);
 
+const { subscriptionStatut, showSubscription } = useSubscription()
+
+onMounted(showSubscription);
 // Variable réactive pour gérer l'état actif du bouton
 const isActive = ref(false);
 
@@ -93,27 +98,6 @@ const clientHttp = axios.create({
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
     }
-});
-
-const showSubscription = ref<any>([]);
-
-const status = async () => {
-    if (token) {
-        try {
-            const statusResponse = await clientHttp.get('showSubscription');
-            console.log(statusResponse);
-            if (statusResponse.status === 200) {
-                showSubscription.value = statusResponse.data;
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-};
-
-
-onMounted(() => {
-    status();
 });
 
 async function logout() {
@@ -139,4 +123,43 @@ const isActiveLink = (url: string) => {
     return route.path === url;
 };
 </script>
+
+<style scoped>
+
+#nav{
+    
+}
+.dropdown-toggle{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.dropdown-toggle img{
+    border-radius: 100%;
+    width: 15%;
+    border: 5px solid #eee;
+    margin-right: 10px;
+}
+
+.dropdown-toggle span{
+    font-size: 18px;
+}
+
+.dropdown-menu{
+    position: absolute;
+  margin: 20px 0 0 0;
+  padding: 20px 0;
+  width: var(--dropdown-width);
+  left: 50%;
+  margin-left: calc((var(--dropdown-width) / 2)  * -1);
+  box-sizing: border-box;
+  z-index: 2;
+  
+  background: #fff;
+  border-radius: 6px;
+  list-style: none;
+  z-index: 2000;
+}
+</style>
 

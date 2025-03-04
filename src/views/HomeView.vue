@@ -338,6 +338,7 @@
             </div>
         </div>
     </section>
+    <ScrollTop/>
     <!-- End How Works Area -->
 
     <!-- Start Newsletter Area -->
@@ -387,6 +388,7 @@ import axios from 'axios';
 import { useProfile } from '../components/composables/profileApi'
 import { useSubscription } from '../components/composables/subscriptionsApi'
 import MostViews from '@/components/MostViews.vue';
+import ScrollTop from '@/components/ScrollTop.vue';
 
     const { subscriptionData, subscription, activateSubscription } = useSubscription()
     onMounted(subscription);
