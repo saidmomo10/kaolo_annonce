@@ -33,6 +33,9 @@
                                     </li>
                                 </ul>
                                 <div class="button header-button">
+                                    <RouterLink class="btn" :to="{name: 'adCreate'}">Publier une annonce</RouterLink>
+                                </div>
+                                <div class="button header-button">
                                     <div id="drop" class="dropdown">
                                         <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                             <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
@@ -48,7 +51,11 @@
                                                 </form>
                                             </li>
                                         </ul>
+                                        
                                     </div>
+                                </div>
+                                <div class="button header-button">
+                                    <RouterLink class="btn" :to="{name: 'users'}">Admin</RouterLink>
                                 </div>
                             </div>
                             
@@ -72,9 +79,13 @@ import axios from 'axios';
 import router from '@/router';
 import { useProfile } from '../components/composables/profileApi'
 import { useSubscription } from '../components/composables/subscriptionsApi'
+import useUserRoles from '@/components/composables/userRoleApi'
 
 const { getUser, profile } = useProfile()
 onMounted(getUser);
+
+const { userRole, getUserRole } = useUserRoles();
+onMounted(getUserRole);
 
 const { subscriptionStatut, showSubscription } = useSubscription()
 
@@ -114,7 +125,7 @@ async function logout() {
 const links = ref([
     { text: 'Annonces', url: '/adsList' },
     { text: 'Catégories', url: '/categoryList' },
-    { text: 'Nouvelle Annonce', url: '/adCreate' }
+    { text: 'Abonnements', url: '/pricing' }
 ]);
 
 const route = useRoute();

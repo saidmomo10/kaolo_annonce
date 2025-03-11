@@ -13,7 +13,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input name="confirm_email" type="text" v-model="userdata.confirmation_code">
+                                <input name="confirmation_code" type="text" v-model="userdata.confirmation_code">
                             </div>
 
                             <div class="button">

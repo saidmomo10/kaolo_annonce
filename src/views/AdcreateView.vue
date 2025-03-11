@@ -34,7 +34,7 @@
                     <!-- Start Post Ad Block Area -->
                     <div class="dashboard-block mt-0">
                         <h3 class="block-title">Nouvelle Annonce</h3>
-                        <div class="inner-block">
+                        <div class="container inner-block">
                             <!-- Start Post Ad Tab -->
                             <div class="post-ad-tab">
                                 <nav>

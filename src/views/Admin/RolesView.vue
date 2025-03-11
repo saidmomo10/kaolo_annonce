@@ -12,9 +12,9 @@
                         <!-- Start Post Ad Block Area -->
                         <div class="dashboard-block mt-0">
                             <h3 class="block-title">Nouvelle Annonce</h3>
-                            <div class="inner-block">
+                            <div class="container inner-block">
                                 <!-- Start Post Ad Tab -->
-                                <form @submit.prevent="handleAddRole" action="">
+                                <form class="default-form-style" @submit.prevent="handleAddRole" action="">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">

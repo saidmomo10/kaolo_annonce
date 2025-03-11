@@ -327,7 +327,7 @@ const fromNow = (date: string) => {
   font-size: 15px;
   font-weight: 500;
   padding: 15px 30px;
-  background-color: #2c7873;
+  background-color: #222222;
   color: #fff;
   border: none;
   -webkit-transition: 0.5s;
@@ -336,7 +336,7 @@ const fromNow = (date: string) => {
 }
 
 #bt:hover {
-    background-color: #ffda06;
-    color: #2c7873;
+    background-color: #ff8c00;
+    color: #fff;
 }
 </style>

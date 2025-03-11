@@ -98,16 +98,16 @@
                             <div class="col-lg-6 col-md-12 col-12">
                                 <!-- Start Recent Items -->
                                 <div class="infos dashboard-block">
-                                    <h3 class="block-title">Annonces récentes</h3>
+                                    <h3 class="block-title">Mon abonnement</h3>
                                     <ul>
                                         <li>
                                             <h6>Offre</h6>
-                                            <p v-if="subscriptionStatut">{{ subscriptionName.name }}</p>
-                                            <p v-if="subscriptionStatut">{{ subscriptionName.name }}</p>
+                                            <p v-if="subscriptionStatut === 'Abonnement actif'">{{ subscriptionName.name }}</p>
+                                            <p v-else>Aucun abonnement</p>
                                         </li>
                                         <li>
                                             <h6>Data d'échéance</h6>
-                                            <p>Evasion</p>
+                                            <p v-if="subscriptionStatut === 'Abonnement actif'">{{ subscriptionName.end_date }}</p>
                                         </li>
                                         <li>
                                             <h6>Offre</h6>

@@ -24,9 +24,9 @@
   import { useRouter } from 'vue-router';
   
   const links = [
-    { text: 'category', url: '/category' },
-    { text: 'Users', url: '/users' },
-    { text: 'roles', url: '/roles' },
+    { text: 'category', url: '/admin/category' },
+    { text: 'Users', url: '/admin/users' },
+    { text: 'roles', url: '/admin/roles' },
     // { text: 'Mettre à jour Profile', url: '/profileEdit' },
   ];
   

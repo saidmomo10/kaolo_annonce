@@ -88,7 +88,7 @@ export default function useRoles(){
             console.log(deleteResponse);
             
         }
-        router.replace('/roles')
+        router.replace('/admin/roles')
     }
 
     return{

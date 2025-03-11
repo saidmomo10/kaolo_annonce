@@ -95,8 +95,8 @@
                                                         <p class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
                                                                 </i>Boston</a></p>
                                                         <ul class="info">
-                                                            <li v-if="ad.price" class="price">Prix: {{ ad.price }} CFA</li>
-                                                            <li v-if="ad.price == null" class="price">Prix: À débattre</li>
+                                                            <li v-if="ad.price" class="price">{{ ad.price }} CFA</li>
+                                                            <li v-if="ad.price == null" class="price">À débattre</li>
                                                             <li class="like"><a href="javascript:void(0)"><i
                                                                         class="lni lni-heart"></i></a>
                                                             </li>

@@ -1,10 +1,13 @@
+import type { DateTime } from 'luxon';
 import { Ref } from 'vue';
 
 interface Subscription {
   id?: number;
   name?: string;
+  price?: string;
   status?: string;
   subscription?: Subscription;
+  end_date?: DateTime;
 }
 
 interface Subscription {
@@ -12,8 +15,7 @@ interface Subscription {
 }
 
 export function useSubscription(): {
-  subscriptionStatut: Ref<Subscription>;
-  subscriptionData: Ref<Subscription>;
+  subscriptionData: ref<Subscription[]>;
   subscriptionName: Ref<Subscription>;
   subscription: () => Promise<void>;
   activateSubscription: () => Promise<void>;

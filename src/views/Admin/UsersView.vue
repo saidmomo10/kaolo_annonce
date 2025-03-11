@@ -1,14 +1,7 @@
 <template>
     <!-- <NavBar/> -->
-    
-
-
-
-
-
-
     <section class="dashboard sections">
-        <div>
+        <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-12">
                     <!-- Start Dashboard Sidebar -->
@@ -22,50 +15,54 @@
                             <h3 class="block-title">Nouvelle Annonce</h3>
                             <div class="container inner-block">
                                 <!-- Start Post Ad Tab -->
-                                <form @submit.prevent="handleAddUser" action="">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Add Title*</label>
-                                                <input name="title" type="text" placeholder="Enter Title" v-model="formData.name">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Add email*</label>
-                                                <input name="email" type="email" placeholder="Enter email" v-model="formData.email">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Add password*</label>
-                                                <input name="password" type="password" placeholder="Enter password" v-model="formData.password">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label>Category*</label>
-                                                <div class="selector-head">
-                                                    <span class="arrow"><i class="lni lni-chevron-down"></i></span>
-                                                    <select class="user-chosen-select" v-model="formData.roles">
-                                                        <option value="none">Select a Category</option>
-
-                                                        <option v-for="(role,key) in getRoleData" :key = "key" :value="`${role.name}`">{{ role.name }}</option>
-                                                    </select>
+                                <div class="tab-content">
+                                    <div class="step-one-content">
+                                        <form class="default-form-style" @submit.prevent="handleAddUser" action="">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Add Title*</label>
+                                                        <input name="title" type="text" placeholder="Enter Title" v-model="formData.name">
+                                                    </div>
                                                 </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Add email*</label>
+                                                        <input name="email" type="email" placeholder="Enter email" v-model="formData.email">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Add password*</label>
+                                                        <input name="password" type="password" placeholder="Enter password" v-model="formData.password">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <label>Category*</label>
+                                                        <div class="selector-head">
+                                                            <span class="arrow"><i class="lni lni-chevron-down"></i></span>
+                                                            <select class="user-chosen-select" v-model="formData.roles">
+                                                                <option value="none">Select a Category</option>
+
+                                                                <option v-for="(role,key) in getRoleData" :key = "key" :value="`${role.name}`">{{ role.name }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                
                                             </div>
-                                        </div>
-
-
-                                        
+                                            <div class="button">
+                                                <button class="btn">Registration</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="button">
-                                        <button class="btn">Registration</button>
-                                    </div>
-                                </form>
+                                </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
                                         <table class="table table-bordered">

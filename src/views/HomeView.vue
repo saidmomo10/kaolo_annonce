@@ -215,7 +215,7 @@
                 </div>
             </div>
             <div v-if = "subscriptionData" class="row">
-                <div  v-for = "sub in subscriptionData" class="col-lg-4 col-md-6 col-12">
+                <div  v-for = "sub in subscriptionData" :key="sub.id" class="col-lg-4 col-md-6 col-12">
                     <!-- Single Table -->
                     <div class="single-table wow fadeInUp" data-wow-delay=".2s">
                         <!-- Table Head -->
@@ -238,58 +238,12 @@
                         <!-- End Table List -->
                         <!-- Table Bottom -->
                             <div class="button">
-                                <button @click="activateSubscription(sub.id)" class="btn">Activate</button>                            </div>
+                                <button @click="activateSubscription()" class="btn">Activate</button>                            
+                            </div>
                         <!-- End Table Bottom -->
                     </div>
                     <!-- End Single Table-->
                 </div>
-                <!-- <div class="col-lg-4 col-md-6 col-12">
-                    
-                    <div class="single-table wow fadeInUp" data-wow-delay=".4s">
-                        
-                        <div class="table-head">
-                            <div class="price">
-                                <h2 class="amount">$59<span class="duration">/ Month</span></h2>
-                            </div>
-                            <h4 class="title">Standard</h4>
-                        </div>
-                        
-                        
-                        <ul class="table-list">
-                            <li>One Listing</li>
-                            <li>Contact Display</li>
-                            <li>Image Gallery</li>
-                            <li>60 Days Availablity</li>
-                            <li>Non-Featured</li>
-                            <li>Business Tagline</li>
-                        </ul>
-                        
-                        <div class="button">
-                            <a class="btn" href="javascript:void(0)">Select Plan</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 col-12">
-                    <div class="single-table wow fadeInUp" data-wow-delay=".6s">
-                        <div class="table-head">
-                            <div class="price">
-                                <h2 class="amount">$99<span class="duration">/ Month</span></h2>
-                            </div>
-                            <h4 class="title">Premium</h4>
-                        </div>
-                        <ul class="table-list">
-                            <li>One Listing</li>
-                            <li>Contact Display</li>
-                            <li>Image Gallery</li>
-                            <li>90 Days Availablity</li>
-                            <li>Non-Featured</li>
-                            <li>Business Tagline</li>
-                        </ul>
-                        <div class="button">
-                            <a class="btn" href="javascript:void(0)">Select Plan</a>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
     </section>
@@ -382,6 +336,7 @@ import ByCity from '@/components/ByCity.vue'
 import { DateTime } from "luxon";
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+// @ts-ignore
 import WOW from 'wow.js';
 import {useAds} from '../components/composables/adsApi';
 import axios from 'axios';
@@ -396,7 +351,7 @@ import ScrollTop from '@/components/ScrollTop.vue';
     const route = useRoute()
 
     const handleActivateSubscription = async() =>{
-        await activateSubscription(Number(route.params.id))
+        await activateSubscription()
     }
 
 

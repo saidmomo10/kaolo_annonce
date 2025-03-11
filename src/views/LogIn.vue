@@ -158,13 +158,18 @@ async function login(){
         
         setTimeout(() => {
         router.push('/');
-        }, 2000); // Délai de 2 secondes avant la redirection
+        }, 2000);
         
         loading.value = false;
     }catch(error){
         toast.error(error.response.data.message, {
-            autoClose: 1000, // Même logique pour l'erreur
+            autoClose: 3000,
         });
+        
+        setTimeout(() => {
+        router.push('/confirm');
+        }, 3000);
+
         console.error('Axios error:', error);
     }finally {
         loading.value = false;

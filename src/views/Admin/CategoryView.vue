@@ -158,50 +158,64 @@ async function sub(){
   
 
 <template>
-    <form @submit.prevent="submitForm" enctype="multipart/form-data" action="" >
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <label>Add Title*</label>
-                    <input name="title" type="text" placeholder="Enter Title" v-model="name">
-                </div>
-            </div>
-            <div class="col-lg-6 col-12">
-                <div class="upload-input">
-                    <input type="file" id="upload" name="icone" multiple @change="onFileChange">
-                    <label for="upload" class="text-center content">
-                        <span class="text">
-                            <span class="d-block mb-15">Drop files anywhere
-                                to Upload</span>
-                            <span class=" mb-15 plus-icon"><i
-                                    class="lni lni-plus"></i></span>
-                            <span class="main-btn d-block btn-hover">Select
-                                File</span>
-                            <span class="d-block">Maximum upload file size
-                                10Mb</span>
-                        </span>
-                    </label>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="form-group">
-                    <label>Category*</label>
-                    <div class="selector-head">
-                        <span class="arrow"><i class="lni lni-chevron-down"></i></span>
-                        <select class="user-chosen-select" v-model="category_id">
-                            <option value="none">Select a Category</option>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-12">
+            <!-- Start Dashboard Sidebar -->
+            <AdminDashboardSidebar/>
+            <!-- Start Dashboard Sidebar -->
+        </div>
+        <div class="col-lg-9 col-md-8 col-12">
+            <div class="main-content">
+                <!-- Start Post Ad Block Area -->
+                <div class="dashboard-block mt-0">
+                    <h3 class="block-title">Catégories</h3>
+                    <div class="container inner-block">
+                        <form class="default-form-style" @submit.prevent="submitForm" enctype="multipart/form-data" action="" >
+                            <div class="row">
+                                <div class="col-lg-9 col-md-8 col-12">
+                                    <div class="form-group">
+                                        <label>Add Title*</label>
+                                        <input name="title" type="text" placeholder="Enter Title" v-model="name">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="upload-input">
+                                        <input type="file" id="upload" name="icone" multiple @change="onFileChange">
+                                        <label for="upload" class="text-center content">
+                                            <span class="text">
+                                                <span class="d-block mb-15">Drop files anywhere
+                                                    to Upload</span>
+                                                <span class=" mb-15 plus-icon"><i
+                                                        class="lni lni-plus"></i></span>
+                                                <span class="main-btn d-block btn-hover">Select
+                                                    File</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-12">
+                                    <div class="form-group">
+                                        <div class="selector-head">
+                                            <span class="arrow"><i class="lni lni-chevron-down"></i></span>
+                                            <select class="user-chosen-select" v-model="category_id">
+                                                <option value="none">Select a Category</option>
 
-                            <option v-for = "category in category" :key="category.id" :value="`${category.id}`">{{ category.name }}</option>
-                            
-                        </select>
+                                                <option v-for = "category in category" :key="category.id" :value="`${category.id}`">{{ category.name }}</option>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <button class="btn">Registration</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="button">
-            <button class="btn">Registration</button>
-        </div>
-    </form>
+    </div>
  </template>
 
 
@@ -210,6 +224,7 @@ async function sub(){
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useCategories } from '../../components/composables/categoriesApi'
+import AdminDashboardSidebar from '@/components/Admin/AdminDashboardSidebar.vue';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 

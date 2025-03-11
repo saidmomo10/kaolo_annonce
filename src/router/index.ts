@@ -16,6 +16,7 @@ import AdsDeptmtView from '@/views/AdsDeptmt.vue'
 import DashBoard from '@/views/DashBoard.vue'
 import AdEdit from '@/views/AdEdit.vue'
 import ProfileEdit from '@/views/ProfileEdit.vue'
+import PricingView from '@/views/PricingView.vue'
 // import CategoryShowView from '@/views/CategoryShow.vue'
 import AdcreateView from '@/views/AdcreateView.vue'
 import MyadsView from '@/views/MyadsView.vue'
@@ -89,7 +90,7 @@ const router = createRouter({
       component: SignUpView
     },
     {
-      path: '/category',
+      path: '/admin/category',
       name: 'category',
       component: CategoryView,
       meta: { requiresAuth: true, requiredRole: 'Admin' }
@@ -115,6 +116,11 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/pricing',
+      name: 'pricing',
+      component: PricingView,
+    },
+    {
       path: '/profileEdit',
       name: 'profileEdit',
       component: ProfileEdit,
@@ -132,14 +138,16 @@ const router = createRouter({
       component: AdsListView
     },
     {
-      path: '/roles',
+      path: '/admin/roles',
       name: 'roles',
-      component: RolesView
+      component: RolesView,
+      meta: { requiresAuth: true, requiredRole: 'Admin' }
     },
     {
-      path: '/users',
+      path: '/admin/users',
       name: 'users',
-      component: UsersView
+      component: UsersView,
+      meta: { requiresAuth: true, requiredRole: 'Admin' }
     },
     {
       path: '/ad/:id',
