@@ -29,13 +29,25 @@ export function useSubscription() {
         }
     };
 
-    // Fonction pour activer un abonnement
+    const isLoading = ref(false);
+    const error = ref(null);
+
+     // Activer un abonnement via FedaPay
     async function activateSubscription(id) {
+        isLoading.value = true;
+        error.value = null;
         try {
-            const activate = await clientHttp.put(`activateSubscription/${id}`);
-            window.location.reload();
-        } catch (error) {
-            console.log(error);
+            const response = await clientHttp.post(`subscriptions/${id}/pay`);
+            console.log(response);
+            
+            if (response.data.payment_url) {
+                window.location.href = response.data.payment_url; // Redirection vers FedaPay
+            }
+        } catch (err) {
+            error.value = "Erreur lors de l'activation de l'abonnement.";
+            console.error("Erreur :", err);
+        } finally {
+            isLoading.value = false;
         }
     }
 
@@ -61,6 +73,8 @@ export function useSubscription() {
         subscriptionName,
         subscriptionStatut,
         subscriptionData,
+        isLoading,
+        error,
         subscription,
         activateSubscription,
         showSubscription

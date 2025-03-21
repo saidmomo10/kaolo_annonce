@@ -294,6 +294,8 @@ export function useAds(){
     const fetchAnnonces = async () => {
     try {
         const response = await clientHttp.get(`/annonces/department/${department.value}`);
+        console.log(response);
+        
         annonces.value = response.data;
     } catch (error) {
         console.error("Erreur de récupération :", error);

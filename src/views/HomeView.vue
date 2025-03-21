@@ -69,7 +69,7 @@
                                     <p class="update-time">Publié {{ fromNow(ads.created_at) }}</p>
 
                                     <ul class="info-list">
-                                        <li><i class="lni lni-map-marker"></i>{{ ads.city }}</li>
+                                        <li v-if="ads.department"><i class="lni lni-map-marker"></i>{{ ads.department.name }}</li>
                                     </ul>
                                 </div>
                                 <div class="bottom-content">
@@ -237,9 +237,16 @@
                         </ul>
                         <!-- End Table List -->
                         <!-- Table Bottom -->
-                            <div class="button">
-                                <button @click="activateSubscription()" class="btn">Activate</button>                            
-                            </div>
+                        <div class="button">
+                <button 
+                    class="btn" 
+                    :disabled="isLoading"
+                    @click="activateSubscription(sub.id)"
+                >
+                    {{ isLoading ? "Chargement..." : "Activer" }}
+                </button>
+            </div>
+            <p v-if="error" class="error-message">{{ error }}</p>
                         <!-- End Table Bottom -->
                     </div>
                     <!-- End Single Table-->
@@ -323,13 +330,13 @@
     </div> -->
     <!-- End Newsletter Area -->
         <!-- Start Footer Top -->
-    <!-- <FooterComponent/> -->
+    <FooterComponent/>
   </main>
 </template>
 
 <script setup lang="ts">
 import NavBar from '@/components/NavBar.vue'
-// import FooterComponent from '@/components/FooterComponent.vue';
+import FooterComponent from '@/components/FooterComponent.vue';
 import CategorySlider from '@/components/CategorySlider.vue';
 import LiveSearch from '@/components/LiveSearch.vue';
 import ByCity from '@/components/ByCity.vue'
@@ -345,14 +352,14 @@ import { useSubscription } from '../components/composables/subscriptionsApi'
 import MostViews from '@/components/MostViews.vue';
 import ScrollTop from '@/components/ScrollTop.vue';
 
-    const { subscriptionData, subscription, activateSubscription } = useSubscription()
+    const { subscriptionData, isLoading, error, subscription, activateSubscription } = useSubscription()
     onMounted(subscription);
 
     const route = useRoute()
 
-    const handleActivateSubscription = async() =>{
-        await activateSubscription()
-    }
+    // const handleActivateSubscription = async() =>{
+    //     await activateSubscription()
+    // }
 
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;

@@ -10,39 +10,36 @@
                 </div>
             </div>
 
-            <div class="col-lg-6 col-12">
-                <div class="form-group">
-                    <label>Ville*</label>
-                    <div class="selector-head">
-                        <span class="arrow"><i
-                                class="lni lni-chevron-down"></i></span>
-                        <select class="user-chosen-select" v-model="props.formValues.city">
-                            <option value="none">Select City</option>
-                            <option value="Parakou">Parakou</option>
-                            <option value="Cotonou">Cotonou</option>
-                            <option value="Porto-Novo">Porto-Novo</option>
-                            <option value="Djougou">Djougou</option>
-
-                        </select>
-                    </div>
-                    <span v-if="errors.city" class="error-message">{{ errors.city }}</span>
-                </div>
-            </div>
+            
             <div class="col-lg-6 col-12">
                 <div class="form-group">
                     <label>Département*</label>
                     <div class="selector-head">
                         <span class="arrow"><i
                                 class="lni lni-chevron-down"></i></span>
-                        <select class="user-chosen-select" v-model="props.formValues.department">
-                            <option value="none">Sélectionner un département</option>
-                            <option value="Alibori">Alibori</option>
-                            <option value="Atlantique">Atlantique</option>
-                            <option value="Borgou">Borgou</option>
-                            <option value="Atacora">Atacora</option>
-
+                        <select class="user-chosen-select" v-model="props.formValues.department_id" @change="filterCities">
+                            <option value="">Selectionner</option>
+                            <option v-for="department in departments" :key="department.id" :value="department.id">
+                                {{ department.name }}
+                            </option>
                         </select>
                     </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="form-group">
+                    <label>Ville*</label>
+                    <div class="selector-head">
+                        <span class="arrow"><i
+                                class="lni lni-chevron-down"></i></span>
+                            <select v-model="props.formValues.city_id" :disabled="!filteredCities.length">
+                                <option value="">Selectionner</option>
+                                <option v-for="city in filteredCities" :key="city.id" :value="city.id">
+                                    {{ city.name }}
+                                </option>
+                            </select>
+                    </div>
+                    <span v-if="errors.city" class="error-message">{{ errors.city }}</span>
                 </div>
             </div>
             <div class="col-12">
@@ -72,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 const props = defineProps(['formValues'])
 
 const errors = ref({
@@ -92,7 +89,7 @@ const validateAndProceed = () => {
   let valid = true;
 
   // Validate title
-  if (!props.formValues.city.trim()) {
+  if (!props.formValues.city_id) {
     errors.value.city = 'Le titre est requis.';
     valid = false;
   }
@@ -103,6 +100,47 @@ const validateAndProceed = () => {
     emit('next-step');
   }
 }
+
+
+
+import axios from 'axios';
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+    const token = localStorage.getItem('token');
+
+    const clientHttp = axios.create({
+        baseURL: `${backendUrl}/api/`,
+        headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    });
+
+    const departments = ref([]);
+    const department_id = ref(null);
+    const city_id = ref(null);
+    const filteredCities = ref([]);
+
+    const status = async () => {
+        try {
+            const statusResponse = await clientHttp.get('departments');
+            console.log(statusResponse);
+
+            if (statusResponse.status === 200) {
+                departments.value = statusResponse.data;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    onMounted(status);
+
+    const filterCities = () => {
+        const dept = departments.value.find(d => d.id === props.formValues.department_id);
+        filteredCities.value = dept ? dept.cities : [];
+    };
+
 </script>
 
 <style scoped>

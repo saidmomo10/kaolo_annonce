@@ -72,8 +72,8 @@ export default function useForm(){
     const values = reactive({
         title:'',
         description:'',
-        department:'',
-        city:'',
+        department_id:'',
+        city_id:'',
         price:'',
         delivery_status:'',
         state:'',

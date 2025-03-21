@@ -10,6 +10,26 @@
     
                             <!-- Lien vers la page d'accueil pour les utilisateurs -->
                             <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
+
+                            <div class="button header-button">
+                                <div id="droped" class="dropdown">
+                                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
+                                        <span>{{profile.name}}</span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
+                                        <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
+                                        <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
+                                        <li>
+                                            <form @submit.prevent = "logout" action="">
+                                                <button class="logout dropdown-item" href="">Se déconnecter</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
                             
                             <button
                                 class="navbar-toggler mobile-menu-btn"
@@ -54,7 +74,7 @@
                                         
                                     </div>
                                 </div>
-                                <div class="button header-button">
+                                <div v-if="userRole=='Admin'" class="button header-button">
                                     <RouterLink class="btn" :to="{name: 'users'}">Admin</RouterLink>
                                 </div>
                             </div>
@@ -140,37 +160,6 @@ const isActiveLink = (url: string) => {
 #nav{
     
 }
-.dropdown-toggle{
-    justify-content: center;
-    align-items: center;
-    display: flex;
-}
 
-.dropdown-toggle img{
-    border-radius: 100%;
-    width: 15%;
-    border: 5px solid #eee;
-    margin-right: 10px;
-}
-
-.dropdown-toggle span{
-    font-size: 18px;
-}
-
-.dropdown-menu{
-    position: absolute;
-  margin: 20px 0 0 0;
-  padding: 20px 0;
-  width: var(--dropdown-width);
-  left: 50%;
-  margin-left: calc((var(--dropdown-width) / 2)  * -1);
-  box-sizing: border-box;
-  z-index: 2;
-  
-  background: #fff;
-  border-radius: 6px;
-  list-style: none;
-  z-index: 2000;
-}
 </style>
 

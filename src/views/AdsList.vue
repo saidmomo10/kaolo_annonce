@@ -92,8 +92,8 @@
                                                         <h3 class="title">
                                                             <a href="item-details.html">{{ ad.title }}</a>
                                                         </h3>
-                                                        <p class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
-                                                                </i>Boston</a></p>
+                                                        <p v-if="ad.department" class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
+                                                                </i>{{ ad.department.name }}</a></p>
                                                         <ul class="info">
                                                             <li v-if="ad.price" class="price">{{ ad.price }} CFA</li>
                                                             <li v-if="ad.price == null" class="price">À débattre</li>

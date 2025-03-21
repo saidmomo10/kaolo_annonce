@@ -8,6 +8,10 @@ interface Subcategory {
   name: string;
 }
 
+interface Department {
+  name: string;
+}
+
 interface User {
   id: number;
   name: string;
@@ -27,6 +31,7 @@ interface Ad {
   images: Image[];
   phone: string;
   description: string;
+  department?: Department;
   subcategory?: Subcategory;
   user: User;
   state: string;
