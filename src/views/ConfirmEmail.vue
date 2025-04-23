@@ -39,6 +39,7 @@
 
 <script setup lang="ts">
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
 import router from '@/router';
 import { ref } from 'vue';
 
@@ -78,10 +79,23 @@ async function confirm(){
         try {
             loading.value = true;
             const user = await clientHttp.post('confirm', userdata.value);
-            console.log(user);            
+            
+            toast.success(user.data.message, {
+                autoClose: 2000, // Le toast va rester visible pendant 2 secondes
+            });
+
+            console.log(user);
+
+            setTimeout(() => {
             router.push('/login');
+            }, 2000);
+
             loading.value = false;
         }catch(error){
+            toast.error(error.response.data.message, {
+                autoClose: 3000,
+            });
+            
             console.error('Axios error:', error);
             loading.value = false;
         }

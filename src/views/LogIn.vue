@@ -1,5 +1,4 @@
 <template>
-    <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
@@ -11,15 +10,13 @@
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
                         <router-link v-if="!isLoggedIn" to="/guest">Retour à l'accueil</router-link>
-    
-                        <!-- Lien vers la page d'accueil pour les utilisateurs -->
                         <router-link v-if="isLoggedIn" to="/">Accueil</router-link>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Breadcrumbs -->
+
     <section class="login section">
         <div class="container">
             <div class="row">
@@ -66,18 +63,19 @@
                             <div class="alt-option">
                                 <span>Or</span>
                             </div>
-                            <div class="socila-login">
-                                <ul>
-                                    <li><a href="javascript:void(0)" class="facebook"><i class="lni lni-facebook-original"></i>Login With
-                                            Facebook</a></li>
-                                    <li><a href="" @click="loginWithGoogle" class="google"><i class="lni lni-google"></i>Login With Google
-                                            Plus</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            
                             <p class="outer-link">Don't have an account? <a href="signup">Register here</a>
                             </p>
                         </form>
+                        <div class="socila-login">
+                            <ul>
+                                <li><a href="javascript:void(0)" class="facebook"><i class="lni lni-facebook-original"></i>Login With
+                                        Facebook</a></li>
+                                <li><a @click="handleGoogleLogin" class="google"><i class="lni lni-google"></i>Login With Google
+                                        Plus</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -86,112 +84,41 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
-import { toast } from 'vue3-toastify';
-import router from '@/router';
 import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify';
+import { authService } from '../services/authService';
 
-
-import { redirectToProvider } from '@/services/auth';
-
-// Fonction pour rediriger l'utilisateur vers Google OAuth
-const loginWithGoogle = () => {
-  redirectToProvider('google');
-};
-
-
-
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
-
-const clientHttp = axios.create(
-    {
-        baseURL: `${backendUrl}/api/`,
-        headers: {
-            Accept: "application/json",
-        }
-    }
-)
-
-let emailError = ref('');
-let passwordError = ref('');
-
-const userdata = ref({
-    email: '',
-    password: '',
-})
-
+const router = useRouter();
+const userdata = ref({ email: '', password: '' });
 const loading = ref(false);
-
-async function login(){
-
-    emailError.value = '';
-    passwordError.value = '';
-
-    if (!userdata.value.email) {
-        emailError.value = 'Veuillez entrer votre adresse e-mail';
-        toast.error(emailError.value, {
-            autoClose: 3000,
-        });
-        return; // Stopper la fonction si l'email est vide
-    }
-
-    if (!userdata.value.password) {
-        passwordError.value = 'Veuillez entrer votre mot de passe';
-        toast.error(passwordError.value, {
-            autoClose: 3000,
-        });
-        return; // Stopper la fonction si le mot de passe est vide
-    }
-
-    try {
-        loading.value = true;
-        const user = await clientHttp.post('auth/login', userdata.value);
-        
-        toast.success(user.data.message, {
-            autoClose: 2000, // Le toast va rester visible pendant 2 secondes
-        });
-        
-        console.log(user);
-        
-        localStorage.setItem('token', user.data.data.token);
-        localStorage.setItem('userId', user.data.data.user.id);            
-        
-        setTimeout(() => {
-        router.push('/');
-        }, 2000);
-        
-        loading.value = false;
-    }catch(error){
-        toast.error(error.response.data.message, {
-            autoClose: 3000,
-        });
-        
-        setTimeout(() => {
-        router.push('/confirm');
-        }, 3000);
-
-        console.error('Axios error:', error);
-    }finally {
-        loading.value = false;
-    }
-}
-
-const token = localStorage.getItem('token');
-const isLoggedIn = ref(!!token);
-
-if(token){
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}` 
-}
-
 const showPassword = ref(false);
-// const password = ref<string | null>(null);
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const toggleShow = () => {
-  showPassword.value = !showPassword.value;
+    showPassword.value = !showPassword.value;
 };
 
-const buttonLabel = computed(() => (showPassword.value) ? "Hide" : "Show");
+const login = async () => {
+    if (!userdata.value.email || !userdata.value.password) {
+        toast.error('Veuillez remplir tous les champs.', { autoClose: 3000 });
+        return;
+    }
+    loading.value = true;
+    try {
+        await authService.login(userdata.value);
+        toast.success('Connexion réussie', { autoClose: 2000 });
+        setTimeout(() => router.push('/'), 2000);
+    } catch (error) {
+        toast.error(error.message, { autoClose: 3000 });
+    } finally {
+        loading.value = false;
+    }
+};
 
+const handleGoogleLogin = () => {
+  authService.googleLogin();
+};
 </script>
 
 <style scoped>

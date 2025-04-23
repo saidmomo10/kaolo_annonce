@@ -64,6 +64,7 @@
                                         <ul class="dropdown-menu">
                                             <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
                                             <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
+                                            <li><RouterLink v-if="profile.id" class="dropdown-item" :to="{name: 'userShow', params: {user:profile.id}}">Profile</RouterLink></li>
                                             <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
                                             <li>
                                                 <form @submit.prevent = "logout" action="">
@@ -99,7 +100,7 @@ import axios from 'axios';
 import router from '@/router';
 import { useProfile } from '../components/composables/profileApi'
 import { useSubscription } from '../components/composables/subscriptionsApi'
-import useUserRoles from '@/components/composables/userRoleApi'
+import { useUserRoles } from '../components/composables/userRoleApi'
 
 const { getUser, profile } = useProfile()
 onMounted(getUser);

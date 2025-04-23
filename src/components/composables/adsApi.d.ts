@@ -46,8 +46,8 @@ interface Comment {
   user: User;
 }
 
-interface AdsData {
-sale: any;
+interface MyAdsData {
+  sale: Ad[];
   all: Ad[];
 }
 
@@ -61,7 +61,7 @@ export function useAds(): {
   editData: Ref<Ad>;
   comment: Ref<Comment[]>;
   userData: Ref<User>;
-  myAdsData: Ref<AdsData>;
+  myAdsData: Ref<MyAdsData>;
   mostVisitedAds: Ref<AdsData>;
   formData: Ref<{ comment: string; ad_id: string; user_id: string | null }>;
   commentData: Ref<Comment[]>;

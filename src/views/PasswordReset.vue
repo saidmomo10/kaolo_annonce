@@ -1,42 +1,17 @@
-<template>
-    <section class="login section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3 col-md-8 offset-md-2 col-12">
-                    <div v-if="userdata" class="form-head">
-                        <h4 class="title">Confirmation du compte</h4>
-                        <p>Un code de confirmation vous a été envoyé par mail. Veuillez saisir le code pour valider votre compte</p>
-                        <form @submit.prevent="confirm" action="" >
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input name="email" type="email" v-model="userdata.email">
-                            </div>
-
-                            <div class="button">
-                                <!-- <button v-if="loading" class="btn btn-primary" type="button" disabled>
-                                    <span class="spinner-grow spinner-grow-sm" aria-hidden="true"></span>
-                                    <span class="visually-hidden" role="status">Loading...</span>
-                                </button> -->
-
-                                <button v-if="loading" class="btn btn-primary" type="button" disabled>
-                                    <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                                    <span role="status">Loading...</span>
-                                </button>
-                                <button v-else class="btn">Login Now</button>
-                                <div class="spiner-border spiner-border-sm"></div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</template>
-
 <script setup lang="ts">
-import axios from 'axios';
-import router from '@/router';
-import { ref } from 'vue';
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
+import { toast } from 'vue3-toastify';
+
+const route = useRoute();
+const router = useRouter();
+
+const email = ref<string>("");
+const token = ref<string>("");
+const password = ref<string>("");
+const passwordConfirmation = ref<string>("");
+const loading = ref<boolean>(false);
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -49,36 +24,66 @@ const clientHttp = axios.create(
     }
 )
 
-const userdata = ref({
-    email: '',
-})
+onMounted(() => {
+  email.value = (route.query.email as string) || "";
+  token.value = (route.query.token as string) || "";
+});
 
-// const isFormValid = computed(() => {
-//   return userdata.value.name && userdata.value.password && userdata.value.age > 0;
-// });
-const loading = ref(false);
+const resetPassword = async () => {
+  loading.value = true;
 
-async function confirm(){
+  try {
+    await clientHttp.post("/password/reset", {
+      email: email.value,
+      token: token.value,
+      password: password.value,
+      password_confirmation: passwordConfirmation.value,
+    });
 
-    // if (!userdata.value.email) {
-    //     emailError.value = 'Veuillez entrer votre adresse e-mail';
-    //     return;
-    // }
+    toast.success("Mot de passe réinitialisé avec succès ! 🎉", {
+        autoClose: 3000,
+    });
 
-    // if (!userdata.value.password) {
-    //     passwordError.value = 'Veuillez entrer votre mot de passe';
-    //     return;
-    // }
-
-        try {
-            loading.value = true;
-            const user = await clientHttp.post('/password/email', userdata.value);
-            console.log(user);            
-            router.push('/reset');
-            loading.value = false;
-        }catch(error){
-            console.error('Axios error:', error);
-            loading.value = false;
-        }
-}
+    setTimeout(() => {
+      router.push("/login");
+    }, 2000);
+  } catch (error: any) {
+    toast.error(
+      error.response?.data?.message || "Une erreur est survenue. ❌",
+      { autoClose: 3000 }
+    );
+  } finally {
+    loading.value = false;
+  }
+};
 </script>
+
+<template>
+  <div class="container">
+    <h2>Réinitialisation du mot de passe</h2>
+    <form @submit.prevent="resetPassword">
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" v-model="email" class="form-control" disabled />
+      </div>
+
+      <div class="form-group">
+        <label>Nouveau mot de passe</label>
+        <input type="password" v-model="password" class="form-control" required />
+      </div>
+
+      <div class="form-group">
+        <label>Confirmer le mot de passe</label>
+        <input type="password" v-model="passwordConfirmation" class="form-control" required />
+      </div>
+
+      <button type="submit" class="btn" :disabled="loading">
+        {{ loading ? "Réinitialisation..." : "Réinitialiser" }}
+      </button>
+    </form>
+  </div>
+</template>
+
+<style scoped>
+
+</style>

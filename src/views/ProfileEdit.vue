@@ -11,7 +11,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Home</a></li>
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
                         <li>My Ads</li>
                     </ul>
                 </div>
@@ -140,6 +143,9 @@ import NavBar from '@/components/NavBar.vue';
 import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import {ref, onMounted, computed} from 'vue'
 import { useProfile } from '@/components/composables/profileApi'
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const {getUser, profile, updateProfile, updatePassword, passwordData} = useProfile()
 

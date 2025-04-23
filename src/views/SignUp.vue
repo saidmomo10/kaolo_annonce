@@ -93,7 +93,7 @@
                                     <span v-else>Créer un compte</span>
                                 </button>
                             </div>
-                            <p class="outer-link">Already have an account? <a href="login.html"> Login Now</a>
+                            <p class="outer-link">Already have an account? <a href="login"> Login Now</a>
                             </p>
                         </form>
                     </div>

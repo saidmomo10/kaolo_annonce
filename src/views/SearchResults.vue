@@ -1,14 +1,12 @@
-<!-- eslint-disable vue/no-parsing-error -->
 <template>
     <NavBar/>
-    
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 col-md-6 col-12">
                     <div class="breadcrumbs-content">
-                        <h1 class="page-title">Catégories</h1>
+                        <h1 class="page-title">Annonces</h1>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
@@ -17,31 +15,35 @@
                             <a href="/guest" v-if="!isLoggedIn">Accueil</a>
                             <a href="/" v-if="isLoggedIn">Accueil</a>
                         </li>
-                        <li>Catégories</li>
+                        <li>Annonces</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <!-- End Breadcrumbs -->
-
-    <!-- Start Items Listing Grid -->
-    <section class="category-page section">
+    <div class="container mt-4">
+        <section v-if="ads.length > 0" class="category-page section">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-4 col-12">
-                    <div class="category-sidebar">                        
-                        <CategorySide/>
+                    <div class="category-sidebar">
+                        <!-- <CheckCondition/>
+                        
+                        <CategorySide/> -->
+                        
+                    
+                        <!-- End Single Widget -->
                     </div>
                 </div>
-                <div class="col-lg-9 col-md-8 col-12">
+                <div class="col-12">
                     <div class="category-grid-list">
                         <div class="row">
                             <div class="col-12">
                                 <div class="category-grid-topbar">
                                     <div class="row align-items-center">
                                         <div class="col-lg-6 col-md-6 col-12">
-                                            <h3 class="title">Showing 1-12 of 21 ads found</h3>
+                                            <h3 class="title">Résultats de la recherche : "{{ route.query.keyword }}"</h3>
                                         </div>
                                         <div class="col-lg-6 col-md-6 col-12">
                                             <nav>
@@ -61,14 +63,10 @@
                                 </div>
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
-                                        aria-labelledby="nav-grid-tab">
-                                        <!-- Affichage du loading -->
-                                        
+                                        aria-labelledby="nav-grid-tab">                                        
                                         <div class="row">
-                                            <div v-if="adStore.loading" class="d-flex justify-content-center align-items-center" style="height: 300px;">
-                                                <div class="spinner"></div> <!-- Exemple d'indicateur de chargement -->
-                                            </div>
-                                            <div v-else class="col-lg-4 col-md-6 col-12" v-for = "ad in adStore.filteredAds" :key="ad.id">
+                                            
+                                            <div class="col-lg-4 col-md-6 col-12" v-for = "ad in ads" :key="ad.id">
                                                 <!-- Start Single Item -->
                                                 <div class="single-item-grid">
                                                     <div class="image">
@@ -96,15 +94,10 @@
                                             </div>
                                         </div>
                                     </div>
-
-
-
-
-
                                     <div class="tab-pane fade" id="nav-list" role="tabpanel"
                                         aria-labelledby="nav-list-tab">
                                         <div class="row">
-                                            <div class="col-lg-12 col-md-12 col-12" v-for = "ad in adStore.filteredAds" :key="ad.id">
+                                            <div class="col-lg-12 col-md-12 col-12" v-for = "ad in ads" :key="ad.id">
                                                 <div class="single-item-grid">
                                                     <div class="row align-items-center">
                                                         <div class="col-lg-5 col-md-7 col-12">
@@ -160,83 +153,63 @@
                 </div>
             </div>
         </div>
-    </section>
-    <!-- End Items Listing Grid -->
+        </section>
+        <div v-else>
+        <p>Aucune annonce trouvée.</p>
+        </div>
+    </div>
 </template>
-
+  
 <script setup lang="ts">
-import NavBar from '../components/NavBar.vue'
-import {computed} from 'vue';
-import SearchAds from '@/components/SearchAds.vue';
-import CategorySide from '@/components/CategorySide.vue';
-import CheckCondition from '@/components/CheckCondition.vue'
-import { RouterLink } from 'vue-router'
-// import useAds from '../components/composables/adsApi'
+import NavBar from '@/components/NavBar.vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRoute } from 'vue-router'
+import axios from 'axios'
 import { authService } from '../services/authService';
 
 const isLoggedIn = computed(() => authService.isAuthenticated());
 
-import { useAdStore } from '../components/stores/adStore'
-const adStore = useAdStore()
-adStore.getAds()
+const route = useRoute()
+const keyword = route.query.keyword || ''
+const ads = ref<any[]>([])
 
-
-
-
-
-// const {nextPage,
-//         previousPage,
-//         currentPage,
-//         totalPages,
-//         statusData,
-//         fetchPageAds,
-//         fetchNextAds,
-//         fetchPrevAds,
-//         filteredAds,
-//         status} = useAds()
-// onMounted(fetchPrevAds)
-// onMounted(fetchNextAds)
-// onMounted(fetchPageAds)
-// onMounted(status)
-// const { getAds, filter, filteredAds } = useAds()
-// onMounted(getAds)
-// onMounted(filter)
-
-
-
-
+const backendUrl = import.meta.env.VITE_BACKEND_URL
 const imageUrl = import.meta.env.VITE_IMAGE_URL
 
-const getImageUrl = (images: string) => {
-  if (images && images.length > 0) {
-    return `${imageUrl}/storage/` + images[0].path;
-  }
-  return ''; // Ou une image par défaut si aucune image n'est disponible
-};
+const clientHttp = axios.create({
+baseURL: `${backendUrl}/api/`,
+headers: {
+    Accept: 'application/json',
+}
+})
 
+onMounted(() => {
+if (keyword) {
+    clientHttp.get('/live', { params: { keyword } })
+    .then(res => ads.value = res.data)
+    .catch(err => console.error(err))
+}
+})
 
-
+const getImageUrl = (images: any[]) => {
+if (images && images.length > 0) {
+    return `${imageUrl}/storage/` + images[0].path
+}
+return ''
+}
 </script>
-
-<style scoped>
-.loading-indicator {
+  
+  <style scoped>
+  .item-image {
     display: flex;
-    justify-content: center;
     align-items: center;
-}
-
-.spinner {
-    margin: 0 auto;
-    border: 4px solid rgba(255, 255, 255, 0.3);
-    border-top: 4px solid #ff8c00;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
+    gap: 10px;
+  }
+  .item-image img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+  </style>
+  

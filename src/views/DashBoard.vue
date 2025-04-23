@@ -11,8 +11,11 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Home</a></li>
-                        <li>My Ads</li>
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
+                        <li>Tableau de bord</li>
                     </ul>
                 </div>
             </div>
@@ -136,6 +139,9 @@ import DashboardSidebar from '@/components/DashboardSidebar.vue'
 import {ref, onMounted, computed} from 'vue'
 import {useAds, type AdImage} from '../components/composables/adsApi'
 import { useSubscription } from '@/components/composables/subscriptionsApi'
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const { myAds, myAdsData } = useAds()
 const loading = ref(false);

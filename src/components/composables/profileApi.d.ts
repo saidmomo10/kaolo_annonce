@@ -6,6 +6,9 @@ interface Profile {
   email?: string;
   phone?: string;
   avatar?: string;
+  ifu?: string;
+  rccm?: string;
+  website?: string;
   [key: string]: any;
 }
 
@@ -18,6 +21,7 @@ interface PasswordData {
 export function useProfile(): {
   profile: Ref<Profile>;
   passwordData: Ref<PasswordData>;
+  complete: () => Promise<void>;
   getUser: () => Promise<void>;
   updateProfile: () => Promise<void>;
   updatePassword: () => Promise<void>;

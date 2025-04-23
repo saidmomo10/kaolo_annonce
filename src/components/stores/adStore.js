@@ -19,15 +19,18 @@ export const useAdStore = defineStore('ad-store', () => {
 
     const ads = ref([])
     const filteredAds = ref([])
+    const loading = ref(false);  // État pour gérer le loading
 
 
     const getAds = async ()=>{
         if (token){
+            loading.value = true; // Déclenche le loading avant de récupérer les données
             try{
                 // const email = router.currentRoute.params.email;
                 const getResponse = await clientHttp.get('livesearch')
-        console.log(getResponse);
-        
+                console.log(getResponse);
+                // Forcer un petit délai pour laisser le loader visible
+                await new Promise(resolve => setTimeout(resolve, 5000))
                 if(getResponse.status === 200){
                     ads.value = getResponse.data
                     filteredAds.value = ads.value
@@ -35,6 +38,8 @@ export const useAdStore = defineStore('ad-store', () => {
             } catch(error){
                 console.log(error);
                 
+            }finally {
+                loading.value = false; // Cache l'indicateur de chargement une fois les données récupérées
             }
         }
     }
@@ -89,7 +94,8 @@ export const useAdStore = defineStore('ad-store', () => {
         getAds,
         filter,
         showAd,
-        statusData
+        statusData,
+        loading,
     }
 
 })

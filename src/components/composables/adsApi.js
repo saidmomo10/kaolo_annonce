@@ -148,6 +148,26 @@ export function useAds(){
         }
     }
 
+    const userShow = ref([])
+    //Show
+    const showUser = async (userId)=>{
+        if (token){
+            try{
+                // const email = router.currentRoute.params.email;
+                const statusResponse = await clientHttp.get(`users/${userId}`)
+                console.log(statusResponse.data);
+        
+                if(statusResponse.status === 200){
+                    userShow.value = statusResponse.data
+
+                }
+            } catch(error){
+                console.log(error);
+                
+            }
+        }
+    }
+
     const mostVisitedAds = ref([])
 
     const getMostVisitedAds = async () => {
@@ -375,6 +395,8 @@ export function useAds(){
         commentData,
         annonces,
         mostVisitedAds,
+        userShow,
+        showUser,
         addComment,
         getComment,
         UpdateAd,

@@ -1,45 +1,49 @@
 import { Ref } from 'vue';
+import type { Department } from './adsApi';
 
-// Définition du type pour une catégorie
 interface Category {
   id: number;
   name: string;
-  // Ajoutez d'autres propriétés si nécessaire
+  icone: string;
+  ads_count: number;
+  ads?: Ads;
 }
 
-// Définition du type pour une sous-catégorie
-interface Subcategory {
+interface Ads {
   id: number;
+  title: string;
+  sold: string;
+  price: string;
+  price_type: string;
+  views: string;
+  images: Image[];
+  department?: Department;
+  city?: City;
+  subcategory?: Category;
+}
+
+interface AdImage {
+  path: string;
+}
+
+interface Department{
   name: string;
-  // Ajoutez d'autres propriétés si nécessaire
 }
 
-// Définition du type pour les données de catégorie
-export declare interface CategoryData {
-  value: Ref<Category[]>;
+interface City{
+  name: string;
 }
 
-// Définition du type pour les données de sous-catégorie
-export declare interface SubcategoryData {
-  value: Ref<Subcategory[]>;
+interface CategoryShow {
+  ads: Ads[];
+  subCategory: Category;
 }
 
-// Définition du type pour la fonction showCategory
-export declare interface ShowCategory {
-  (id: number): Promise<void>;
-}
-
-// Définition du type pour la fonction status
-export declare interface Status {
-  (): Promise<void>;
-}
-
-// Définition du type pour la fonction cat
-export declare interface Cat {
-  (): Promise<void>;
-}
-
-// Définition du type pour la fonction createSubcategory
-export declare interface CreateSubcategory {
-  (categoryData: FormData): Promise<void>;
-}
+export function useCategories(): {
+  showCategory: (id: number) => Promise<void>;
+  createSubcategory: (id: number) => Promise<void>;
+  status: () => Promise<void>;
+  cat: () => Promise<void>;
+  categoryData: Ref<Ads[]>;
+  statusData: Ref<CategoryShow>;
+};

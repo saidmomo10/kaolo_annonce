@@ -111,6 +111,8 @@ import { onMounted } from 'vue';
 import useUsers from '../../components/composables/usersApi'
 
 const { 
+        getUsers,
+        users,
         getRoleData,
         formData,
         getRole,
@@ -118,6 +120,7 @@ const {
         deleteRole } = useUsers()
 
 onMounted(getRole)
+onMounted(users)
 
 const handleAddUser = async() =>{
     await addUser(formData)

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import HomeView2 from '../views/HomeView2.vue'
 import LoginView from '../views/LogIn.vue'
+import AuthCallback from '../views/AuthCallback.vue'
 import ConfirmEmail from '../views/ConfirmEmail.vue'
 import ForgotEmail from '../views/ForgotEmail.vue'
 import PasswordReset from '../views/PasswordReset.vue'
@@ -12,19 +13,22 @@ import CategoryListView from '../views/CategoryList.vue'
 import RolesView from '@/views/Admin/RolesView.vue'
 import UsersView from '@/views/Admin/UsersView.vue'
 import AdShowView from '@/views/AdShow.vue'
+import NotifView from '@/views/NotifView.vue'
+import UserShowView from '@/views/UserShow.vue'
 import AdsDeptmtView from '@/views/AdsDeptmt.vue'
 import DashBoard from '@/views/DashBoard.vue'
+import ChatAssistant from '@/views/ChatAssistant.vue'
 import AdEdit from '@/views/AdEdit.vue'
 import ProfileEdit from '@/views/ProfileEdit.vue'
 import PricingView from '@/views/PricingView.vue'
+import SearchResults from '@/views/SearchResults.vue'
 // import CategoryShowView from '@/views/CategoryShow.vue'
 import AdcreateView from '@/views/AdcreateView.vue'
 import MyadsView from '@/views/MyadsView.vue'
-import useUserRoles from '@/components/composables/userRoleApi'
+import {useUserRoles} from '../components/composables/userRoleApi'
 import UnauthorizedView from '../views/UnauthorizedView.vue'
 import AdminDashBord from '../views/Admin/AdminDashBord.vue'
 import ProdList from '@/views/ProdList.vue'
-import { handleProviderCallback } from '@/services/auth';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,22 +38,6 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta: { requiresAuth: true }
-    },
-    {
-      path: '/auth/callback/:provider',
-      name: 'OAuthCallback',
-      component: LoginView,  // Ajoute un composant ici
-      beforeEnter: async (to, from, next) => {
-        const provider = to.params.provider;
-        const searchParams = new URLSearchParams(window.location.search);
-    
-        try {
-          await handleProviderCallback(provider as string, searchParams);
-          next({ name: 'home' }); // Redirige vers la page d'accueil après authentification
-        } catch (error) {
-          next(false); // Bloquer la navigation en cas d'erreur
-        }
-      }
     },
     {
       path: '/prod',
@@ -67,9 +55,20 @@ const router = createRouter({
       component: LoginView
     },
     {
+      path: "/auth/callback",
+      name: "AuthCallback",
+      component: AuthCallback,
+    },
+    {
       path: '/confirm',
       name: 'confirm',
       component: ConfirmEmail
+
+    },
+    {
+      path: '/chat',
+      name: 'chat',
+      component: ChatAssistant
 
     },
     {
@@ -93,6 +92,13 @@ const router = createRouter({
       path: '/admin/category',
       name: 'category',
       component: CategoryView,
+      meta: { requiresAuth: true, requiredRole: 'Admin' }
+
+    },
+    {
+      path: '/notif',
+      name: 'notif',
+      component: NotifView,
       meta: { requiresAuth: true, requiredRole: 'Admin' }
 
     },
@@ -138,6 +144,11 @@ const router = createRouter({
       component: AdsListView
     },
     {
+      path: '/search-results',
+      name: 'searchResults',
+      component: SearchResults
+    },
+    {
       path: '/admin/roles',
       name: 'roles',
       component: RolesView,
@@ -153,6 +164,11 @@ const router = createRouter({
       path: '/ad/:id',
       name: 'adShow',
       component: AdShowView
+    },
+    {
+      path: '/users/:user',
+      name: 'userShow',
+      component: UserShowView
     },
     {
       path: '/annonces/:department',

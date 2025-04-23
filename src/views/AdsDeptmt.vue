@@ -12,7 +12,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Accueil</a></li>
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
                         <li>Annonces</li>
                     </ul>
                 </div>
@@ -175,9 +178,12 @@
 
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
-import {ref, onMounted} from 'vue';
+import {computed, onMounted} from 'vue';
 import { RouterLink } from 'vue-router'
 import {useAds} from '../components/composables/adsApi'
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const {annonces, fetchAnnonces} = useAds()
 

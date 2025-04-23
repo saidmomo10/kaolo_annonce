@@ -27,7 +27,7 @@
                                         <a href="item-details.html">{{ ad.title }}</a>
                                     </h3>
                                     <p class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
-                                            </i>{{ ad.department }}, {{ ad.city }}</a></p>
+                                            </i>{{ ad.city.name }}, {{ ad.department.name }}</a></p>
                                     <ul class="info">
                                         <li v-if="ad.price !== null" class="price">{{ ad.price }} CFA</li>
                                         <li v-if="ad.price == null" class="price">{{ ad.price_type }}</li>

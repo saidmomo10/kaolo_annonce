@@ -66,6 +66,24 @@ export default function useUsers(){
         }
     }
 
+    const getUsers = ref([])
+    const users = async ()=>{
+        if (token){
+            try{
+                // const email = router.currentRoute.params.email;
+                const users = await clientHttp.get('users')
+                console.log(users);
+        
+                if(users.status === 200){
+                    getUsers.value = users.data
+                }
+            } catch(error){
+                console.log(error);
+                
+            }
+        }
+    }
+
     const deleteRole = async (id) =>{
         if(confirm("sure ???")){
             const deleteResponse = await clientHttp.delete(`roles/${id}`)
@@ -78,6 +96,8 @@ export default function useUsers(){
     return{
         getRoleData,
         formData,
+        getUsers,
+        users,
         getRole,
         addUser,
         deleteRole

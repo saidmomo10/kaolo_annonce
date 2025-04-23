@@ -74,7 +74,7 @@ async function confirm(){
             loading.value = true;
             const user = await clientHttp.post('/password/email', userdata.value);
             console.log(user);            
-            router.push('/reset');
+            // router.push('/reset');
             loading.value = false;
         }catch(error){
             console.error('Axios error:', error);

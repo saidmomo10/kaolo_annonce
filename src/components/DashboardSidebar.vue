@@ -15,7 +15,7 @@
           <router-link :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
         </li>
       </ul>
-      <form @submit.prevent = "logout" action="">
+      <form>
         <div class="button">
           <a class="btn" href="">Logout</a>
         </div>

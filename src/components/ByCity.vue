@@ -26,7 +26,7 @@
                             <div class="content">
                                 <h4 class="name">
                                     {{ dept.name }}
-                                    <span>{{ dept.annonces_count || 0 }} Annonces</span>
+                                    <span>{{ dept.ads.length }}  Annonces</span>
                                 </h4>
                             </div>
                             <div class="more-btn">
@@ -64,6 +64,8 @@ const departments = ref<{ id: number, name: string, annonces_count?: number }[]>
 const fetchDepartments = async () => {
     try {
         const response = await clientHttp.get('departments');
+        console.log(response);
+        
         if (response.status === 200) {
             departments.value = response.data;
         }

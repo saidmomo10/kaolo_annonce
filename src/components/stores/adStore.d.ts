@@ -7,6 +7,7 @@ interface Ad {
     sold: string;
     state: string;
     user: User;
+    isLoading: boolean;
 }
 
 interface User {
@@ -22,11 +23,16 @@ interface Subcategory {
     name: string;
 }
 
+interface Filter{
+    filteredAds: Ad[];
+    
+}
+
 export function useAdStore(): {
-    ads: Ref<Ad[]>;
-    filteredAds: Ref<Ad[]>;
+    ads: Ref<Filter[]>;
     getAds: () => Promise<void>;
     filter: (query: string) => void;
     showAd: (id: number) => Promise<void>;
     statusData: Ref<any[]>;
+    loading: Ref<Ad[]>;
 }

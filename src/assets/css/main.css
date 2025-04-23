@@ -1215,7 +1215,7 @@ ol {
 .button .btn:hover {
   background-color: #fff;
   color: #222222;
-  border: solid 1px #222222;
+  border: #222222;
   -webkit-box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
           box-shadow: 0 1rem 3rem rgba(35, 38, 45, 0.15) !important;
 }
@@ -6331,6 +6331,7 @@ blockquote .shape {
   display: block;
   color: #888;
   font-size: 15px;
+  cursor: pointer;
 }
 
 .login .form-head .socila-login ul li a.facebook:hover {

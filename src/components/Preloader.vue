@@ -1,12 +1,12 @@
 <template>
-    <div v-if="isLoading" class="preloader">
+    <!-- <div v-if="isLoading" class="preloader">
         <div class="preloader-inner">
             <div class="preloader-icon">
                 <span></span>
                 <span></span>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
   
 <script lang="ts">

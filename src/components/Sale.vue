@@ -19,7 +19,7 @@
         </div>
         <!-- End List Title -->
         <!-- Start Single List -->
-        <div v-if="myAdsData && myAdsData.sale">
+        <div v-if="myAdsData && myAdsData.sale && myAdsData.sale.length > 0">
             <div v-for="ad in myAdsData.sale" :key="ad.id" class="single-item-list">
                 <div class="row align-items-center">
                     <div class="col-lg-5 col-md-5 col-12">
@@ -40,14 +40,15 @@
                     <div class="col-lg-3 col-md-3 col-12 align-right">
                         <ul class="action-btn">
                             <li><RouterLink :to="{name: 'adShow', params: {id:ad.id}}"><i class="lni lni-eye"></i></RouterLink></li>
-                            <li><button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="lni lni-trash"></i></button></li>
+                            <li><button type="button" @click = "confirmDelete(ad.id)"><i class="lni lni-trash"></i></button></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="position" v-else>
-            <p>Aucun article vendu</p>
+        <!-- Affichage du message si aucune annonce n'est trouvée -->
+        <div v-else class="position">
+            <p>Aucune annonce vendue</p>
         </div>
         <!-- End Single List -->
     </div>
@@ -56,18 +57,37 @@
 <script setup lang="ts">
 import {ref, onMounted} from 'vue';
 import {useAds} from './composables/adsApi'
+import Swal from 'sweetalert2';
 
 const imageUrl = import.meta.env.VITE_IMAGE_URL
 
-const { myAds, myAdsData } = useAds()
+const { myAds, myAdsData, deleteAd } = useAds()
 myAdsData.sale = ref([]); // Définit une liste vide par défaut pour éviter les erreurs
 onMounted(myAds)
 
-const getImageUrl = (images: string) => {
+const getImageUrl = (images: string[]) => {
   if (images && images.length > 0) {
     return `${imageUrl}/storage/` + images[0].path;
   }
   return ''; // Ou une image par défaut si aucune image n'est disponible
+};
+
+const confirmDelete = (id: number) => {
+  Swal.fire({
+    title: 'Confirmez-vous la suppression ?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Oui, supprimer',
+    confirmButtonColor: '#d33',
+    cancelButtonText: 'Annuler',
+    cancelButtonColor: '#2c7873',
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      await deleteAd(id);
+      await myAds(); // Recharge la liste après la suppression
+      Swal.fire('Supprimé!', 'L\'annonce a été supprimée.', 'success');
+    }
+  });
 };
 </script>
 
@@ -80,5 +100,7 @@ const getImageUrl = (images: string) => {
 
 .position p {
     font-size: 30px;
+    color: #888;
+    text-align: center;
 }
 </style>

@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-parsing-error -->
 <template>
     <NavBar/>
+    
     <!-- Start Breadcrumbs -->
     <div class="breadcrumbs">
         <div class="container">
@@ -12,7 +13,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Accueil</a></li>
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
                         <li>Annonces</li>
                     </ul>
                 </div>
@@ -77,9 +81,12 @@
                                 </div>
                                 <div class="tab-content" id="nav-tabContent">
                                     <div class="tab-pane fade show active" id="nav-grid" role="tabpanel"
-                                        aria-labelledby="nav-grid-tab">
+                                        aria-labelledby="nav-grid-tab">                                        
                                         <div class="row">
-                                            <div class="col-lg-4 col-md-6 col-12" v-for = "ad in adStore.filteredAds" :key="ad.id">
+                                            <div v-if="adStore.loading" class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                                                <div class="spinner"></div> <!-- Exemple d'indicateur de chargement -->
+                                            </div>
+                                            <div v-else class="col-lg-4 col-md-6 col-12" v-for = "ad in adStore.filteredAds" :key="ad.id">
                                                 <!-- Start Single Item -->
                                                 <div class="single-item-grid">
                                                     <div class="image">
@@ -177,12 +184,14 @@
 
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
-import {ref, onMounted} from 'vue';
+import {computed} from 'vue';
 import SearchAds from '@/components/SearchAds.vue';
 import CategorySide from '@/components/CategorySide.vue';
 import CheckCondition from '@/components/CheckCondition.vue'
 import { RouterLink } from 'vue-router'
-// import useAds from '../components/composables/adsApi'
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 import { useAdStore } from '../components/stores/adStore'
 const adStore = useAdStore()
@@ -225,3 +234,21 @@ const getImageUrl = (images: string) => {
 
 
 </script>
+
+<style scoped>
+
+.spinner {
+    margin: 0 auto;
+    border: 4px solid #222222;
+    border-top: 4px solid #ff8c00;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>

@@ -1,22 +1,25 @@
 <template>
     <NavBar/>
     <div class="breadcrumbs">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 col-md-6 col-12">
-                <div class="breadcrumbs-content">
-                    <h1 class="page-title">Annonces</h1>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6 col-12">
+                    <div class="breadcrumbs-content">
+                        <h1 class="page-title">Annonces</h1>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-6 col-12">
-                <ul class="breadcrumb-nav">
-                    <li><a href="index.html">Accueil</a></li>
-                    <li>Annonces</li>
-                </ul>
+                <div class="col-lg-6 col-md-6 col-12">
+                    <ul class="breadcrumb-nav">
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
+                        <li>Annonces</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-</div>
     <!-- Start Item Details -->
     <section class="item-details section">
         <div class="container" >
@@ -49,7 +52,7 @@
                     <div class="col-lg-6 col-md-12 col-12">
                         <div class="product-info">
                             <h2 class="title">{{ editData.title }}</h2>
-                            <p class="location"><i class="lni lni-map-marker"></i>{{ editData.department }}, {{ editData.city }}</p>
+                            <p v-if="editData.department" class="location"><i class="lni lni-map-marker"></i>{{ editData.city.name }}, {{ editData.department.name }}</p>
                             <h3 class="price">{{ editData.price }}</h3>
                             
                             <div class="list-info">
@@ -123,7 +126,7 @@
                         <div class="single-block comments">
                             <h3>Commentaires</h3>
                             <!-- Start Single Comment -->
-                            <div class="single-comment">
+                            <div ref="commentsSection" class="single-comment">
                                 <div v-for="commentaire in comment" :key="commentaire.id" class="content">
                                     <h4>{{ commentaire.user.name }}</h4>
                                     <!-- <span>25 Feb, 2023</span> -->
@@ -165,7 +168,7 @@
                             <div class="single-block author">
                                 <h3>Auteur</h3>
                                 <div v-if="editData.user" class="content">
-                                    <img :src="editData.user.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16" width="60%">
+                                    <RouterLink :to="{name: 'userShow', params: {user:editData.user.id}}"><img :src="editData.user.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16" width="60%"></RouterLink>
                                     <h4>{{ editData.user.name }}</h4>
                                     <span>Membre depuis {{ formatDate(editData.user.created_at) }}</span>
                                     <a href="javascript:void(0)" class="see-all">Voir ses annonces</a>
@@ -245,8 +248,9 @@
 
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, computed} from 'vue';
 import { DateTime } from "luxon";
+import { RouterLink } from 'vue-router'
 
 import { useRoute } from 'vue-router';
 import {useAds} from '../components/composables/adsApi'
@@ -259,6 +263,9 @@ import lgZoom from 'lightgallery/plugins/zoom';
 import 'lightgallery/css/lightgallery.css';
 import 'lightgallery/css/lg-thumbnail.css';
 import 'lightgallery/css/lg-zoom.css';
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const imageUrl = import.meta.env.VITE_IMAGE_URL
 
@@ -316,6 +323,16 @@ const formatDate = (date: string) => {
 const fromNow = (date: string) => {
   return DateTime.fromISO(date).setLocale("fr").toRelative();
 };
+
+// On crée une référence vers la section des commentaires
+const commentsSection = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  if (route.query.focus === 'comments' && commentsSection.value) {
+    // Scroll vers la section des commentaires
+    commentsSection.value.scrollIntoView({ behavior: 'smooth' })
+  }
+})
 
 
 </script>

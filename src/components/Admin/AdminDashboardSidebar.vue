@@ -1,7 +1,7 @@
 <template>
     <div class="dashboard-sidebar">
       <div class="row user-image">
-        <!-- <NotificationComponent/> -->
+        <AdminNotification/>
         <h3>Steve Aldridge
           <span><a href="javascript:void(0)">@username</a></span>
         </h3>
@@ -20,7 +20,7 @@
   </template>
   
   <script setup lang="ts">
-//   import NotificationComponent from './NotificationComponent.vue';
+  import AdminNotification from './AdminNotification.vue';
   import { useRouter } from 'vue-router';
   
   const links = [

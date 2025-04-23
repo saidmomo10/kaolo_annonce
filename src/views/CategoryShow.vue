@@ -12,7 +12,10 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-12">
                     <ul class="breadcrumb-nav">
-                        <li><a href="index.html">Accueil</a></li>
+                        <li>
+                            <a href="/guest" v-if="!isLoggedIn">Accueil</a>
+                            <a href="/" v-if="isLoggedIn">Accueil</a>
+                        </li>
                         <li>Annonces</li>
                     </ul>
                 </div>
@@ -126,7 +129,7 @@
                                                         <h3 class="title">
                                                             <a href="item-details.html">{{ ad.title }}</a>
                                                         </h3>
-                                                        <p v-if="ad.department" class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
+                                                        <p v-if="ad.department && ad.city" class="location"><a href="javascript:void(0)"><i class="lni lni-map-marker">
                                                                 </i>{{ ad.city.name}}, {{ ad.department.name }}</a></p>
                                                         <ul class="info">
                                                             <li v-if="ad.price !== null" class="price">{{ ad.price }} CFA</li>
@@ -208,12 +211,15 @@
 
 <script setup lang="ts">
 import NavBar from '../components/NavBar.vue'
-import {ref, onMounted} from 'vue';
+import {computed, onMounted} from 'vue';
 import SearchAds from '@/components/SearchAds.vue';
 import CategorySide from '@/components/CategorySide.vue';
 import { RouterLink } from 'vue-router'
 import { useCategories } from '../components/composables/categoriesApi'
 import { useRoute } from 'vue-router';
+import { authService } from '../services/authService';
+
+const isLoggedIn = computed(() => authService.isAuthenticated());
 
 const imageUrl = import.meta.env.VITE_IMAGE_URL
 
@@ -221,31 +227,8 @@ const route = useRoute()
 
 const {showCategory, statusData} = useCategories()
 onMounted(()=>{
-    showCategory(route.params.id)
+    showCategory(Number(route.params.id))
 })
-
-
-
-
-
-// const {nextPage,
-//         previousPage,
-//         currentPage,
-//         totalPages,
-//         statusData,
-//         fetchPageAds,
-//         fetchNextAds,
-//         fetchPrevAds,
-//         filteredAds,
-//         status} = useAds()
-// onMounted(fetchPrevAds)
-// onMounted(fetchNextAds)
-// onMounted(fetchPageAds)
-// onMounted(status)
-// const { getAds, filter, filteredAds } = useAds()
-// onMounted(getAds)
-// onMounted(filter)
-
 
 
 interface Image {

@@ -40,6 +40,26 @@ export function useProfile(){
         }
     }
 
+    const userShow = ref([])
+    //Show
+    const showUser = async (id)=>{
+        if (token){
+            try{
+                // const email = router.currentRoute.params.email;
+                const statusResponse = await clientHttp.get(`profile/${id}`)
+                console.log(statusResponse.data);
+        
+                if(statusResponse.status === 200){
+                    userShow.value = statusResponse.data
+
+                }
+            } catch(error){
+                console.log(error);
+                
+            }
+        }
+    }
+
 
     const updateProfile = async () => {
         try {
@@ -56,13 +76,30 @@ export function useProfile(){
         //       });
           console.error('Error submitting', error);
         }
-      };
+    };
 
-      const passwordData = ref({
-        current_password: '',
-        new_password: '',
-        confirm_password: ''
-      });
+    const complete = async () => {
+        try {
+          // Envoyer les données de l'étape trois une fois soumises
+          // Vous pouvez également ajouter des validations ici
+          // et déclencher l'événement resetForm une fois le formulaire soumis avec succès
+          const response = await clientHttp.put('complete', profile.value);
+          toast.success(response.data.success)
+          console.log(response.data);
+          // router.replace('/adsList')
+        } catch (error) {
+        //   toast.error(error.response.data.message, {
+        //       autoClose: 1000,
+        //       });
+          console.error('Error submitting', error);
+        }
+    };
+
+    const passwordData = ref({
+    current_password: '',
+    new_password: '',
+    confirm_password: ''
+    });
 
 
     const updatePassword = async () => {
@@ -100,9 +137,12 @@ export function useProfile(){
     return{
         getUser,
         updateProfile,
+        complete,
         profile,
         updatePassword,
         passwordData,
-        logout
+        logout,
+        userShow,
+        showUser
     }
 }

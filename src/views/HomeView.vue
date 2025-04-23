@@ -52,13 +52,16 @@
                         <!-- Start Single Grid -->
                         <div class="single-grid wow fadeInUp" data-wow-delay=".2s">
                             <div class="image">
-                                <RouterLink :to="{name: 'adShow', params: {id:ads.id}}"><img :src="getImageUrl(ads.images)" alt="#"></RouterLink>
-                                <div class="author">
+                                <RouterLink :to="{name: 'adShow', params: {id:ads.id}}">
+                                    <img :src="getImageUrl(ads.images)" alt="#">
+                                    <div class="author">
                                     <div class="author-image">
                                         <a href=""><img :src="ads.user.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
                                         <span>{{ ads.user.name }}</span></a>
                                     </div>
                                 </div>
+                                </RouterLink>
+                                
                             </div>
                             <div class="content">
                                 <div class="top-content">
@@ -241,7 +244,7 @@
                 <button 
                     class="btn" 
                     :disabled="isLoading"
-                    @click="activateSubscription(sub.id)"
+                    @click="activateSubscription()"
                 >
                     {{ isLoading ? "Chargement..." : "Activer" }}
                 </button>
