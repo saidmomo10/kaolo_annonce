@@ -176,6 +176,8 @@ export function useAds(){
                 const response = await clientHttp.get('most-visited');
                 if (response.status === 200) {
                     mostVisitedAds.value = response.data;
+                    console.log(response);
+                    
                 }
             } catch (error) {
                 console.error("Erreur lors de la récupération des annonces les plus visitées:", error);

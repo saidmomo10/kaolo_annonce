@@ -40,6 +40,7 @@
     "vue": "^3.4.15",
     "vue-cool-lightbox": "^2.7.5",
     "vue-fancybox": "^1.0.3",
+    "vue-multiselect": "^3.2.0",
     "vue-router": "^4.2.5",
     "vue3-google-login": "^2.0.33",
     "vue3-toastify": "^0.2.1",

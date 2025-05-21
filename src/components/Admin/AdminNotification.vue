@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Echo from '@/plugins/echo';
+import { initEcho } from '@/plugins/echo';
 import axios from '@/plugins/axios';
 import IconNotification from '../icons/IconNotification.vue'
 
@@ -60,21 +60,31 @@ const handleNotificationClick = async (notification: Notification) => {
   }
 };
 
-onMounted(() => {
+onMounted(async () => {
   fetchNotifications();
-  
-  // Écouter les nouvelles notifications
-  Echo.private('admin-notifications')
-    .notification((notification: Notification) => {
-      notifications.value.unshift(notification);
-      unreadCount.value++;
-    });
+
+  try {
+    const echo = await initEcho(); // Attendre que Echo soit bien initialisé
+    echo.private('admin-notifications')
+      .notification((notification: Notification) => {
+        notifications.value.unshift(notification);
+        unreadCount.value++;
+      });
+  } catch (e) {
+    console.error('Erreur lors de l\'initialisation de Echo :', e);
+  }
 });
 
-onUnmounted(() => {
-  // Arrêter d'écouter le canal
-  Echo.leave('admin-notifications');
+
+onUnmounted(async () => {
+  try {
+    const echo = await initEcho();
+    echo.leave('admin-notifications');
+  } catch (e) {
+    console.error('Erreur lors du leave Echo :', e);
+  }
 });
+
 </script>
 
 <template>

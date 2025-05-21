@@ -90,7 +90,13 @@ const validateAndProceed = () => {
 
   // Validate title
   if (!props.formValues.city_id) {
-    errors.value.city = 'Le titre est requis.';
+    errors.value.city = 'Ce champ est requis.';
+    valid = false;
+  }
+
+  // Validate title
+  if (!props.formValues.city_id) {
+    errors.value.city = 'Ce champ est requis.';
     valid = false;
   }
 

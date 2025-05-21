@@ -1,95 +1,154 @@
 <template>
-    <!-- Start Header Area -->
     <header class="header navbar-area">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-12">
-                    <div class="nav-inner">
-                        <nav class="navbar navbar-expand-lg">
-                            <router-link v-if="!isLoggedIn" to="/guest"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
-    
-                            <!-- Lien vers la page d'accueil pour les utilisateurs -->
-                            <router-link v-if="isLoggedIn" to="/"><img src="../assets/images/logo/logo.png" alt="Logo" width="80px"></router-link>
-
-                            <div class="button header-button">
-                                <div id="droped" class="dropdown">
-                                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
-                                        <span>{{profile.name}}</span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
-                                        <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
-                                        <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
-                                        <li>
-                                            <form @submit.prevent = "logout" action="">
-                                                <button class="logout dropdown-item" href="">Se déconnecter</button>
-                                            </form>
-                                        </li>
-                                    </ul>
-                                    
-                                </div>
-                            </div>
-                            
-                            <button
-                                class="navbar-toggler mobile-menu-btn"
-                                type="button"
-                                data-bs-toggle="collapse"
-                                data-bs-target="#navbarSupportedContent"
-                                aria-controls="navbarSupportedContent"
-                                aria-expanded="false"
-                                aria-label="Toggle navigation"
+            <div class="nav-inner row align-items-center">
+                <!-- Ligne supérieure spécifique à mobile -->
+                <div class="d-lg-none d-flex justify-content-between align-items-center py-2 position-relative">
+                    <!-- Logo gauche -->
+                    <router-link :to="isLoggedIn ? '/' : '/guest'" class="me-2">
+                        <img src="../assets/images/logo/logo.png" alt="Logo" width="80px">
+                    </router-link>
+        
+                    <!-- Dropdown utilisateur centré (position absolue centrée) -->
+                    <div class="mobile-dropdown-wrapper">
+                        <button
+                            class="dropdown-toggle border-0 bg-transparent"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            <img
+                            :src="profile.avatar"
+                            alt="Avatar utilisateur"
+                            class="rounded-circle"
+                            style="width: 40px; height: 40px;"
+                            />
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-center">
+                            <li><RouterLink class="dropdown-item" :to="{ name: 'dashboard' }">Dashboard</RouterLink></li>
+                            <li><RouterLink class="dropdown-item" :to="{ name: 'myAds' }">Mes annonces</RouterLink></li>
+                            <li v-if="profile.id">
+                                <RouterLink class="dropdown-item" :to="{ name: 'userShow', params: { user: profile.id } }">
+                                    Profil
+                                </RouterLink>
+                            </li>
+                            <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
+                            <li>
+                                <form @submit.prevent="logout">
+                                    <button class="dropdown-item">Se déconnecter</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+        
+                    <!-- Burger menu mobile -->
+                    <button
+                    class="navbar-toggler mobile-menu-btn"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                    @click="toggleMenu"
+                    :class="{ active: isActive }"
+                    >
+                    <span class="toggler-icon"></span>
+                    <span class="toggler-icon"></span>
+                    <span class="toggler-icon"></span>
+                    </button>
+                    <!-- Menu mobile déroulant -->
+                    <div class="collapse navbar-collapse mt-3" :class="{ show: isActive }" id="navbarSupportedContent">
+                        <ul class="navbar-nav d-flex flex-column gap-2">
+                            <li class="nav-item" v-for="(link, index) in links" :key="index">
+                            <router-link
+                                :to="link.url"
+                                class="nav-link"
                                 @click="toggleMenu"
-                                :class="{ active: isActive }"
+                                :class="{ active: isActiveLink(link.url) }"
                             >
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                                <span class="toggler-icon"></span>
-                            </button>
-                            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
-                                <ul id="nav" class="navbar-nav ms-auto">
-                                    <li class="nav-item" v-for="(link, index) in links" :key="index">
-                                    <router-link aria-label="Toggle navigation" :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
-                                    </li>
-                                </ul>
-                                <div class="button header-button">
-                                    <RouterLink class="btn" :to="{name: 'adCreate'}">Publier une annonce</RouterLink>
-                                </div>
-                                <div class="button header-button">
-                                    <div id="drop" class="dropdown">
-                                        <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img :src="profile.avatar" alt="Avatar utilisateur" class="rounded-full w-16 h-16">
-                                            <span>{{profile.name}}</span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            <li><RouterLink class="dropdown-item" :to="{name: 'dashboard'}">Dashboard</RouterLink></li>
-                                            <li><RouterLink class="dropdown-item" :to="{name: 'myAds'}">Mes annonces</RouterLink></li>
-                                            <li><RouterLink v-if="profile.id" class="dropdown-item" :to="{name: 'userShow', params: {user:profile.id}}">Profile</RouterLink></li>
-                                            <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
-                                            <li>
-                                                <form @submit.prevent = "logout" action="">
-                                                    <button class="logout dropdown-item" href="">Se déconnecter</button>
-                                                </form>
-                                            </li>
-                                        </ul>
-                                        
-                                    </div>
-                                </div>
-                                <div v-if="userRole=='Admin'" class="button header-button">
-                                    <RouterLink class="btn" :to="{name: 'users'}">Admin</RouterLink>
-                                </div>
-                            </div>
-                            
-                            
-                            
-                        </nav> <!-- navbar -->
+                                {{ link.text }}
+                            </router-link>
+                            </li>
+                            <li class="button header-button">
+                                <RouterLink class="btn" :to="{ name: 'adCreate' }">Publier une annonce</RouterLink>
+                                <RouterLink v-if="userRole === 'Admin'" class="btn btn-outline-secondary" :to="{ name: 'users' }">Admin</RouterLink>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </div> <!-- row -->
-        </div> <!-- container -->
+        
+                <!-- Menu complet desktop -->
+                <nav class="navbar navbar-expand-lg d-none d-lg-flex w-100">
+                    <div class="container d-flex justify-content-between align-items-center">
+                        <!-- Bloc 1: Logo -->
+                        <router-link
+                        class="navbar-brand"
+                        :to="isLoggedIn ? '/' : '/guest'"
+                        >
+                        <img src="../assets/images/logo/logo.png" alt="Logo" width="80px">
+                        </router-link>
+
+                        <!-- Bloc 2: Liens de navigation centrés -->
+                        <ul id="nav" class="navbar-nav flex-row gap-4">
+                            <li class="nav-item" v-for="(link, index) in links" :key="index">
+                                <router-link
+                                :to="link.url"
+                                class="nav-link"
+                                :class="{ active: isActiveLink(link.url) }"
+                                >
+                                {{ link.text }}
+                                </router-link>
+                            </li>
+                        </ul>
+
+                        <!-- Bloc 3: Dropdown utilisateur -->
+                        <div class="dropdown">
+                            <button
+                                class="dropdown-toggle border-0 bg-transparent"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                            >
+                                <img
+                                :src="profile.avatar"
+                                alt="Avatar utilisateur"
+                                class="rounded-circle"
+                                style="width: 60px; height: 60px;"
+                                />
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><RouterLink class="dropdown-item" :to="{ name: 'dashboard' }">Dashboard</RouterLink></li>
+                                <li><RouterLink class="dropdown-item" :to="{ name: 'myAds' }">Mes annonces</RouterLink></li>
+                                <li v-if="profile.id">
+                                    <RouterLink class="dropdown-item" :to="{ name: 'userShow', params: { user: profile.id } }">
+                                        Profil
+                                    </RouterLink>
+                                </li>
+                                <li><span class="dropdown-item">{{ subscriptionStatut }}</span></li>
+                                <li>
+                                    <form @submit.prevent="logout">
+                                        <button class="dropdown-item">Se déconnecter</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Bloc 4: Boutons -->
+                        <div class="d-flex align-items-center button header-button">
+                            <RouterLink class="btn" :to="{ name: 'adCreate' }">Publier une annonce</RouterLink>
+                            <RouterLink v-if="userRole === 'Admin'" class="btn btn-outline-secondary" :to="{ name: 'users' }">Admin</RouterLink>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
     </header>
-    <!-- End Header Area -->
 </template>
+  
+  
+  
+  
 
 
 

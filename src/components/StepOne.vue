@@ -10,17 +10,21 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="form-group">
-                <label>Categorie*</label>
-                <div class="selector-head">
-                    <span class="arrow"><i class="lni lni-chevron-down"></i></span>
-                    <select class="user-chosen-select" v-model="props.formValues.subcategory_id">
-                        <option value="">Selectionner</option>
-                        <option v-for="category in statusData" :key="category.id" :value="`${category.id}`">{{ category.name }}</option>
-                    </select>
-                    <span v-if="errors.subcategory_id" class="error-message">{{ errors.subcategory_id }}</span>
-                  </div>
+          <div class="form-group">
+            <div>
+              <label>Catégorie*</label>
+              <span class="arrow"><i class="lni lni-chevron-down"></i></span>
+              <Multiselect
+                v-model="selectedCategory"
+                :options="statusData"
+                :label="'name'"
+                :track-by="'id'"
+                placeholder="Sélectionner"
+                :allow-empty="false"
+              />
             </div>
+            <span v-if="errors.subcategory_id" class="error-message">{{ errors.subcategory_id }}</span>
+          </div>
         </div>
         <div class="col-12">
             <div class="form-group">
@@ -132,8 +136,10 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
+import {ref, onMounted, watch} from 'vue';
 import axios from 'axios';
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.css'
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -224,55 +230,55 @@ const validateAndProceed = () => {
 
   // Validate title
   if (!props.formValues.title.trim()) {
-    errors.value.title = 'Le titre est requis.';
+    errors.value.title = 'Ce champ est requis.';
     valid = false;
   }
 
-  // // Validate subcategory
-  // if (!props.formValues.subcategory_id) {
-  //   errors.value.subcategory_id = 'La catégorie est requise.';
-  //   valid = false;
-  // }
+  // Validate subcategory
+  if (!props.formValues.subcategory_id) {
+    errors.value.subcategory_id = 'Ce champ est requis.';
+    valid = false;
+  }
 
   // // Validate price type
   // if (!props.formValues.price_type) {
-  //   errors.value.price_type = 'Le mode de prix est requis.';
+  //   errors.value.price_type = 'Ce champ est requis.';
   //   valid = false;
   // }
 
   // // Validate price if price type is "Fixe"
   // if (props.formValues.price_type === 'Fixe' && !props.formValues.price) {
-  //   errors.value.price = 'Le prix est requis.';
+  //   errors.value.price = 'Ce champ est requis.';
   //   valid = false;
   // }
 
   // // Validate images
   // if (!props.formValues.images || props.formValues.images.length === 0) {
-  //   errors.value.images = 'Veuillez sélectionner des images.';
+  //   errors.value.images = 'Ce champ est requis.';
   //   valid = false;
   // }
 
   // // Validate video link
   // // if (!props.formValues.video.trim()) {
-  // //   errors.value.video = 'Le lien vidéo est requis.';
+  // //   errors.value.video = 'Ce champ est requis.';
   // //   valid = false;
   // // }
 
   // // Validate description
   // if (!props.formValues.description.trim()) {
-  //   errors.value.description = 'La description est requise.';
+  //   errors.value.description = 'Ce champ est requis.';
   //   valid = false;
   // }
 
   // // Validate delivery status
   // if (!props.formValues.delivery_status) {
-  //   errors.value.delivery_status = 'Le statut de livraison est requis.';
+  //   errors.value.delivery_status = 'Ce champ est requis.';
   //   valid = false;
   // }
 
   // // Validate state
   // if (!props.formValues.state) {
-  //   errors.value.state = 'L\'état est requis.';
+  //   errors.value.state = 'Ce champ est requis.';
   //   valid = false;
   // }
 
@@ -280,6 +286,17 @@ const validateAndProceed = () => {
     emit('next-step');
   }
 }
+
+const selectedCategory = ref(null)
+
+watch(selectedCategory, (newVal) => {
+  if (newVal) {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.formValues.subcategory_id = newVal.id
+  } else {
+    props.formValues.subcategory_id = ''
+  }
+})
 </script>
 
 <style scoped>
@@ -287,4 +304,38 @@ const validateAndProceed = () => {
 color: red;
 font-size: 0.875em;
 }
+
+::v-deep .multiselect__tags {
+  height: 50px;
+  width: 100%;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  color: #081828;
+  background: #fff;
+  padding: 0px 20px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  position: relative;
+}
+
+::v-deep .multiselect__input {
+  width: 150px !important;
+  border: none !important;
+  height: 40px !important;
+  color: #000000 !important;
+  font-size: 14px !important;
+}
+
+::v-deep .multiselect__single {
+  padding: 0;
+  width: 100% !important;
+  border: none !important;
+  height: 50% !important;
+  color: #000000 !important;
+  font-size: 14px !important;
+  margin-top: 10px;
+}
+
+
 </style>

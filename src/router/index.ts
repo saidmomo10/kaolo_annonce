@@ -29,6 +29,7 @@ import {useUserRoles} from '../components/composables/userRoleApi'
 import UnauthorizedView from '../views/UnauthorizedView.vue'
 import AdminDashBord from '../views/Admin/AdminDashBord.vue'
 import ProdList from '@/views/ProdList.vue'
+import PaymentSuccess from '@/views/PaymentSuccess.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -164,6 +165,11 @@ const router = createRouter({
       path: '/ad/:id',
       name: 'adShow',
       component: AdShowView
+    },
+    {
+      path: '/payment/success',
+      name: 'PaymentSuccess',
+      component: PaymentSuccess
     },
     {
       path: '/users/:user',

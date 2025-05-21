@@ -15,10 +15,8 @@
           <router-link :to="link.url" :class="{ 'nav-link': true, 'active': isActiveLink(link.url) }">{{ link.text }}</router-link>
         </li>
       </ul>
-      <form>
-        <div class="button">
-          <a class="btn" href="">Logout</a>
-        </div>
+      <form class="button" @submit.prevent="logout">
+        <button class="btn" href="">Logout</button>
       </form>
     </div>
   </div>
@@ -29,6 +27,9 @@ import { ref, onMounted } from 'vue';
 import NotificationComponent from './NotificationComponent.vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useProfile } from '../components/composables/profileApi'
+import axios from 'axios';
+import router from '@/router';
+
 
 const { getUser, profile } = useProfile()
 onMounted(getUser);
@@ -43,6 +44,27 @@ const links = [
 const route = useRoute();
 const isActiveLink = (to: { name: string; params: { id: number } }) => {
     return route.name === to.name && route.params.id === String(to.params.id);
+}
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const token = localStorage.getItem('token');
+
+const clientHttp = axios.create({
+    baseURL: `${backendUrl}/api/`,
+    headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+    }
+});
+async function logout() {
+    try {
+        const user = await clientHttp.post('logout');
+        console.log(user);
+        localStorage.removeItem('token');
+        router.replace('/login');
+    } catch (error) {
+        console.log(error);
+    }
 }
 </script>
 

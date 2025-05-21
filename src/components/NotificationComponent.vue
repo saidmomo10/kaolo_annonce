@@ -18,7 +18,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
-import Echo from '@/plugins/echo';
+import { initEcho } from '@/plugins/echo';
 import axios from '@/plugins/axios';
 import IconNotification from './icons/IconNotification.vue'
 import { DateTime } from "luxon";
@@ -30,17 +30,18 @@ const getCurrentUser = async () => {
   try {
     const response = await axios.get('profile');
     userId.value = response.data.id;
-    
-    // Une fois que nous avons l'ID, configurer Echo
-    setupEcho();
+
+    // Setup Echo après avoir l'ID et récupéré le cookie CSRF
+    await setupEcho();
   } catch (error) {
     console.error("Erreur lors de la récupération de l'utilisateur:", error);
   }
 };
 
-const setupEcho = () => {
+const setupEcho = async () => {
   if (userId.value) {
-    Echo.private(`App.Models.User.${userId.value}`)
+    const echo = await initEcho(); // important !
+    echo.private(`App.Models.User.${userId.value}`)
       .notification((notification: Notification) => {
         notifications.value.unshift(notification);
         unreadCount.value++;
@@ -53,11 +54,13 @@ onMounted(() => {
   getCurrentUser();
 });
 
-onUnmounted(() => {
+onUnmounted(async () => {
   if (userId.value) {
-    Echo.leave(`App.Models.User.${userId.value}`);
+    const echo = await initEcho();
+    echo.leave(`App.Models.User.${userId.value}`);
   }
 });
+
 
 const router = useRouter();
 
@@ -123,22 +126,6 @@ const handleNotificationClick = async (notification: Notification) => {
     console.error('Erreur lors du traitement de la notification:', error);
   }
 };
-
-onMounted(() => {
-  fetchNotifications();
-  
-  // Écouter les nouvelles notifications sur le canal privé de l'utilisateur
-  Echo.private(`App.Models.User.${userId}`)
-    .notification((notification: Notification) => {
-      notifications.value.unshift(notification);
-      unreadCount.value++;
-    });
-});
-
-onUnmounted(() => {
-  // Arrêter d'écouter le canal
-  Echo.leave(`App.Models.User.${userId}`);
-});
 
 // Convertir la date en relatif avec Luxon
 const fromNow = (date: string) => {

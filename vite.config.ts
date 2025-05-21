@@ -19,5 +19,14 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('/src', import.meta.url))
     }
-  }
+  },
+  server: {
+    proxy: {
+      '/broadcasting': {
+        target: 'http://localhost:8000', // port de ton serveur Laravel
+        changeOrigin: true,
+        secure: false,
+      },
+    },
+  },  
 })

@@ -1522,7 +1522,7 @@ ol {
 }
 
 .navbar-brand img {
-  width: 190px;
+  width: 100px;
 }
 
 .mobile-menu-btn {
@@ -1674,6 +1674,9 @@ z-index: 2000;
     justify-content: center;
     align-items: center;
     display: flex;
+    margin-top: 5px;
+    background: none;
+    border: none;
   }
   
   .dropdown-toggle img{

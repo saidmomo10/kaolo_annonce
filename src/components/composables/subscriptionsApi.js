@@ -1,5 +1,9 @@
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 export function useSubscription() {
@@ -43,6 +47,7 @@ export function useSubscription() {
             if (response.data.payment_url) {
                 window.location.href = response.data.payment_url; // Redirection vers FedaPay
             }
+            router.push('/');
         } catch (err) {
             error.value = "Erreur lors de l'activation de l'abonnement.";
             console.error("Erreur :", err);
