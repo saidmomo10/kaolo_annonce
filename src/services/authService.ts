@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { googleTokenLogin } from 'vue3-google-login';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL;
+const backendUrl = import.meta.env.VITE_IMAGE_URL;
 
 const clientHttp = axios.create({
     baseURL: `${backendUrl}/api/`,
